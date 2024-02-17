@@ -141,6 +141,18 @@ h1 {
   font-size: 1.5em;
 }
 
+#time-elapsed-icon {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  top: 1px;
+   filter: brightness(0) invert(1);
+}
+
+#simulation-time-elapsed {
+  margin-left: 8px;
+}
+
 #population-icon {
   position: relative;
   width: 32px;

@@ -194,5 +194,6 @@ export class Game {
   #updateTitleBar() {
     document.getElementById("population-counter").innerHTML =
       this.city.getPopulation();
+    document.getElementById("simulation-time-elapsed").innerHTML = this.simulationtTime;
   }
 }
