@@ -94,6 +94,7 @@ export class SceneManager {
     const gridMaterial = new THREE.MeshBasicMaterial({ 
       color: 0x000000,
       map: this.assetManager.textures['grid'],
+      // map: this.assetManager.textures['specular'],
       transparent: true,
       opacity: 0.2
     });

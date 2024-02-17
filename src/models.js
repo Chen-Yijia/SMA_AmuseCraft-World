@@ -106,6 +106,7 @@ export default {
   },
   "road-straight": {
     "type": "road",
+    // "filename": "f.glb",
     "filename": "tile-road-straight.glb",
     "scale": 100,
     "castShadow": false

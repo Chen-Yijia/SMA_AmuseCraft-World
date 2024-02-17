@@ -25,10 +25,10 @@
     <div id="ui">
       <div id="title-bar">
         <div class="title-bar-left-items title-bar-items">
-          $1000
+          Time: xxx
         </div>
         <div class="title-bar-center-items title-bar-items">
-          My City
+          SMA test
         </div>
         <div class="title-bar-right-items title-bar-items">
           <img id="population-icon" src="public/icons/person.png">
@@ -38,12 +38,23 @@
       <div id="ui-toolbar" class="container">
         <button id='button-select' class="ui-button selected" data-type="select"
           onclick="game.onToolSelected(event)">
-          <img class="toolbar-icon" src="public/icons/select.png">
+          <img class="toolbar-icon" src="public/icons/select-color.png">
         </button>
         <button id='button-bulldoze' class="ui-button" data-type="bulldoze"
           onclick="game.onToolSelected(event)">
-          <img class="toolbar-icon" src="public/icons/bulldozer.png">
+          <img class="toolbar-icon" src="public/icons/bulldozer-color.png">
         </button>
+        <button id='button-road' class="ui-button" data-type="road"
+          onclick="game.onToolSelected(event)">
+          <img class="toolbar-icon" src="public/icons/road-color.png">
+        </button>
+        <!-- <button id='button-pause' class="ui-button" onclick="game.togglePause()">
+          <img id='pause-button-icon' class="toolbar-icon" src="public/icons/pause.png">
+        </button> -->
+        <button id='button-play' class="ui-button" onclick="game.togglePlay()">
+          <img id='play-button-icon' class="toolbar-icon" src="public/icons/play-color.png">
+        </button>
+
         <button id='button-residential' class="ui-button" data-type="residential"
           onclick="game.onToolSelected(event)">
           <img class="toolbar-icon" src="public/icons/house.png">
@@ -55,16 +66,6 @@
         <button id='button-industrial' class="ui-button" data-type="industrial"
           onclick="game.onToolSelected(event)">
           <img class="toolbar-icon" src="public/icons/factory.png">
-        </button>
-        <button id='button-road' class="ui-button" data-type="road"
-          onclick="game.onToolSelected(event)">
-          <img class="toolbar-icon" src="public/icons/road.png">
-        </button>
-        <!-- <button id='button-pause' class="ui-button" onclick="game.togglePause()">
-          <img id='pause-button-icon' class="toolbar-icon" src="public/icons/pause.png">
-        </button> -->
-        <button id='button-play' class="ui-button" onclick="game.togglePlay()">
-          <img id='play-button-icon' class="toolbar-icon" src="public/icons/play.png">
         </button>
       </div>
       <div id="info-panel" class="container">

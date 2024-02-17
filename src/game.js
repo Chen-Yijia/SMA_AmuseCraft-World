@@ -117,10 +117,10 @@ export class Game {
     console.log(`Simulation is started: ${this.simulationStarted}`);
     if (this.simulationStarted) {
       document.getElementById("play-button-icon").src =
-        "public/icons/pause.png";
+        "public/icons/pause-color.png";
     } else {
       document.getElementById("play-button-icon").src =
-        "public/icons/play.png";
+        "public/icons/play-color.png";
     }
   }
 
