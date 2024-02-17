@@ -11,6 +11,7 @@ export class City {
      */
     this.tiles = [];
 
+    // create the city in dimenson size*size
     for (let x = 0; x < this.size; x++) {
       const column = [];
       for (let y = 0; y < this.size; y++) {
@@ -21,7 +22,7 @@ export class City {
     }  
   }
  
-  /** Returns the title at the coordinates. If the coordinates
+  /** Returns the tile at the coordinates. If the coordinates
    * are out of bounds, then `null` is returned.
    * @param {number} x The x-coordinate of the tile
    * @param {number} y The y-coordinate of the tile

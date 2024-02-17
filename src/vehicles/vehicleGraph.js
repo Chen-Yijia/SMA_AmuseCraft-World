@@ -28,7 +28,7 @@ export class VehicleGraph extends THREE.Group {
     /**
      * @type {VehicleGraphHelper}
      */
-    this.helper = new VehicleGraphHelper();
+    this.helper = new VehicleGraphHelper(); // to visualise the nodes/direction
     this.add(this.helper);
 
     // Initialize the vehicle graph tiles array
