@@ -3,6 +3,7 @@ import { ResidentialZone } from './residentialZone.js';
 import { IndustrialZone } from './industrialZone.js';
 import { Road } from './road.js';
 import { Building } from './building.js';
+import { Visitor } from './visitor.js';
 
 /**
  * Creates a new building object
@@ -21,6 +22,8 @@ export function createBuilding(x, y, type) {
       return new IndustrialZone(x, y);
     case 'road': 
       return new Road(x, y);
+    case 'visitor':
+      return new Visitor(x,y);
     default:
       console.error(`${type} is not a recognized building type.`);
   }

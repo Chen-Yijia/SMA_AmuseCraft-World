@@ -40,7 +40,8 @@ export class SceneManager {
 
     // Configure the renderer
     this.renderer.setSize(this.gameWindow.clientWidth, this.gameWindow.clientHeight);
-    this.renderer.setClearColor(0x000000, 0);
+    // this.renderer.setClearColor(0x000000, 0);
+    this.renderer.setClearColor(0x7efcee, 0.3);
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
@@ -163,6 +164,8 @@ export class SceneManager {
         }
       }
     }
+
+    console.log(this.assetManager.mixers);
   }
 
   /**
@@ -186,9 +189,10 @@ export class SceneManager {
     this.vehicleGraph.updateVehicles();
 
     // Update visitor walking animation
+    let delta = this.clock.getDelta();
     if (this.assetManager.mixers) {
       this.assetManager.mixers.map(m => {
-        m.update(this.clock.getDelta())});
+        m.update(delta)});
     }
 
     this.renderer.render(this.scene, this.cameraManager.camera);

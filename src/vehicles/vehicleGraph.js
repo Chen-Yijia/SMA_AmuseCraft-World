@@ -29,7 +29,7 @@ export class VehicleGraph extends THREE.Group {
      * @type {VehicleGraphHelper}
      */
     this.helper = new VehicleGraphHelper(); // to visualise the nodes/direction
-    this.add(this.helper);
+    // this.add(this.helper); // Comment out for actual project delivery
 
     // Initialize the vehicle graph tiles array
     for (let x = 0; x < this.size; x++) {

@@ -25,7 +25,9 @@ export class AssetManager {
 
   constructor(onLoad) {
     this.modelCount = Object.keys(models).length;
+    this.animatedModelCount = Object.keys(animatedModels).length;
     this.loadedModelCount = 0;
+    this.loadedAnimatedModelCount = 0;
 
     for (const [name, meta] of Object.entries(models)) {
       this.loadModel(name, meta);
@@ -62,11 +64,14 @@ export class AssetManager {
       case "residential":
       case "commercial":
       case "industrial":
-        // return this.createZoneMesh(tile); // FOR TEST, TO REMOVE
-        return this.createAnimatedVisitorMesh(tile);
+        return this.createZoneMesh(tile);
 
       case "road":
         return this.createRoadMesh(tile);
+
+      case "visitor":
+        return this.createAnimatedVisitorMesh(tile);
+
       default:
         console.warn(`Mesh type ${tile.building?.type} is not recognized.`);
         return null;
@@ -197,10 +202,20 @@ export class AssetManager {
    */
   cloneFBXMesh(name, transparent = false) {
     const mesh = SkeletonUtils.clone(this.meshes[name]);
+    // try {
+    //   mesh.traverse((obj) => {
+    //     if (obj.material) {
+    //       obj.material = obj.material.clone();
+    //       obj.material.transparent = transparent;
+    //     }
+    //   });
+    // } catch (error) {
+    //   console.log(name, mesh)
+    // }
     mesh.traverse((obj) => {
       if (obj.material) {
-        obj.material = obj.material.clone();
-        obj.material.transparent = false;
+        // obj.material = obj.material.clone();
+        obj.material.transparent = transparent;
       }
     });
 
@@ -290,7 +305,13 @@ export class AssetManager {
         });
 
         this.meshes[name] = fbx;
-        this.onLoad();
+
+        // Once all models are loaded
+        this.loadedAnimatedModelCount++;
+        if (this.loadedAnimatedModelCount == this.animatedModelCount) {
+          this.onLoad();
+          console.log("Done with Animated Model Loading")
+        }
       },
       (xhr) => {
         //console.log(`${name} ${(xhr.loaded / xhr.total) * 100}% loaded`);

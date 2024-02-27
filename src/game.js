@@ -78,7 +78,7 @@ export class Game {
 
     if (this.simulationStarted) {
       this.simulationtTime++;
-    }
+    }    
   }
 
   /**
@@ -177,7 +177,8 @@ export class Game {
       } else if (this.activeToolId === "bulldoze") {
         this.city.bulldoze(tile.x, tile.y);
         this.sceneManager.applyChanges(this.city);
-      } else if (!tile.building) {
+      } 
+      else if (!tile.building) {
         const buildingType = this.activeToolId;
         this.city.placeBuilding(tile.x, tile.y, buildingType);
         this.sceneManager.applyChanges(this.city);
