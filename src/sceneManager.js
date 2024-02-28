@@ -164,8 +164,6 @@ export class SceneManager {
         }
       }
     }
-
-    console.log(this.assetManager.mixers);
   }
 
   /**

@@ -70,7 +70,13 @@ export class AssetManager {
         return this.createRoadMesh(tile);
 
       case "visitor":
-        return this.createAnimatedVisitorMesh(tile);
+        return this.createAnimatedVisitorMesh(tile, "visitor-adult");
+
+      case "ride":
+        return this.CreateRideMesh(tile,"ride");
+
+      case "stand":
+        return this.CreateStandMesh(tile, "stand")
 
       default:
         console.warn(`Mesh type ${tile.building?.type} is not recognized.`);
@@ -137,11 +143,10 @@ export class AssetManager {
   /**
    * Creates a visitor & clip actions mesh (WIP, testing)
    */
-  createAnimatedVisitorMesh(tile) {
+  createAnimatedVisitorMesh(tile, filterType) {
     console.log("creating animated mesh");
     const zone = tile.building;
 
-    const filterType = "visitor-adult";
     const targetModels = Object.entries(animatedModels).filter(
       (x) => x[1].type === filterType
     );
@@ -173,6 +178,45 @@ export class AssetManager {
 
     return mesh;
   }
+
+  /**
+   * Create random ride mesh (WIP, pending change to choose rides from list)
+   */
+  CreateRideMesh(tile, filterType) {
+    const zone = tile.building;
+
+    const targetModels = Object.entries(models).filter(
+      (x) => x[1].type === filterType)
+      .map((x) => x[0]);
+
+    const i = Math.floor(targetModels.length * Math.random());
+    const mesh = this.cloneMesh(targetModels[i]);
+    mesh.userData = tile;
+    mesh.rotation.set(0, zone.rotation * DEG2RAD, 0);
+    mesh.position.set(zone.x, 0, zone.y);
+
+    return mesh;
+  }
+
+    /**
+   * Create random stand mesh (WIP, pending change to choose stands from list)
+   */
+    CreateStandMesh(tile, filterType) {
+      const zone = tile.building;
+  
+      const targetModels = Object.entries(models).filter(
+        (x) => x[1].type === filterType)
+        .map((x) => x[0]);
+  
+      const i = Math.floor(targetModels.length * Math.random());
+      const mesh = this.cloneMesh(targetModels[i]);
+      mesh.userData = tile;
+      mesh.rotation.set(0, zone.rotation * DEG2RAD, 0);
+      mesh.position.set(zone.x, 0, zone.y);
+  
+      return mesh;
+    }
+
 
   /**
    * Returns a cloned copy of a mesh

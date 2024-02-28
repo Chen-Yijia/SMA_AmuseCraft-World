@@ -190,5 +190,47 @@ export default {
     "type": "vehicle",
     "filename": "car-baywatch.glb",
     "rotation": 90
-  }
+  },
+  "ride-circus-tent-performance": {
+    "type": "ride",
+    "filename": "tent-circus-big.glb",
+    "scale": 200
+  },
+  "ride-water-ride-thrill": {
+    "type": "ride",
+    "filename": "water-ride.glb",
+    "scale": 150
+  },
+  "ride-bumper-car-thrill": {
+    "type": "ride",
+    "filename": "bumper-cars-booth.glb",
+    "scale": 180
+  },
+  "stand-hot-dog": {
+    "type": "stand",
+    "filename": "hot-dog-stand.glb",
+    "scale": 600
+  },
+  "stand-marketplace": {
+    "type": "stand",
+    "filename": "marketplace-stand-simple.glb",
+    "scale": 700
+  },
+  "restaurant-burger": {
+    "type": "stand",
+    "filename": "building-burger-joint.glb",
+    "scale": 180
+  },
+  "restaurant-cafe": {
+    "type": "stand",
+    "filename": "building-cafe.glb",
+    "scale": 200
+  },
+  "restaurant-chinese": {
+    "type": "stand",
+    "filename": "building-restuarant-china.glb",
+    "scale": 200
+  },
+
+
 }
