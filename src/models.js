@@ -199,7 +199,7 @@ export default {
   "ride-water-ride-thrill": {
     "type": "ride",
     "filename": "water-ride.glb",
-    "scale": 150
+    "scale": 130
   },
   "ride-bumper-car-thrill": {
     "type": "ride",
@@ -209,11 +209,6 @@ export default {
   "stand-hot-dog": {
     "type": "stand",
     "filename": "hot-dog-stand.glb",
-    "scale": 600
-  },
-  "stand-marketplace": {
-    "type": "stand",
-    "filename": "marketplace-stand-simple.glb",
     "scale": 700
   },
   "restaurant-burger": {
@@ -231,6 +226,5 @@ export default {
     "filename": "building-restuarant-china.glb",
     "scale": 200
   },
-
-
+  
 }

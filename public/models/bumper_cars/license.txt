@@ -1,0 +1,11 @@
+Model Information:
+* title:	Lunapark - Bumper Cars
+* source:	https://sketchfab.com/3d-models/lunapark-bumper-cars-ffa24effe07e470cb0a207cc46b215a5
+* author:	Vetech82 (https://sketchfab.com/Vetech82)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Lunapark - Bumper Cars" (https://sketchfab.com/3d-models/lunapark-bumper-cars-ffa24effe07e470cb0a207cc46b215a5) by Vetech82 (https://sketchfab.com/Vetech82) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

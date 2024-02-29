@@ -2,9 +2,12 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
 import * as SkeletonUtils from "three/addons/utils/SkeletonUtils.js";
+import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 import { Tile } from "./tile.js";
 import models from "./models.js";
 import animatedModels from "./animatedModels.js";
+import gltfModels from "./gltfModels.js";
+import fbxModels from "./fbxModels.js";
 
 const DEG2RAD = Math.PI / 180.0;
 
@@ -26,8 +29,12 @@ export class AssetManager {
   constructor(onLoad) {
     this.modelCount = Object.keys(models).length;
     this.animatedModelCount = Object.keys(animatedModels).length;
+    this.gltfModelCount = Object.keys(gltfModels).length;
+    this.fbxModelCount = Object.keys(fbxModels).length;
     this.loadedModelCount = 0;
     this.loadedAnimatedModelCount = 0;
+    this.loadedGltfModelCount = 0;
+    this.loadedFbxModelCount = 0;
 
     for (const [name, meta] of Object.entries(models)) {
       this.loadModel(name, meta);
@@ -35,6 +42,14 @@ export class AssetManager {
 
     for (const [name, meta] of Object.entries(animatedModels)) {
       this.loadAnimatedModel(name, meta);
+    }
+
+    for (const [name, meta] of Object.entries(gltfModels)) {
+      this.loadGltfModel(name, meta);
+    }
+
+    for (const [name, meta] of Object.entries(fbxModels)) {
+      this.loadFbxModel(name, meta);
     }
 
     this.onLoad = onLoad;
@@ -73,10 +88,10 @@ export class AssetManager {
         return this.createAnimatedVisitorMesh(tile, "visitor-adult");
 
       case "ride":
-        return this.CreateRideMesh(tile,"ride");
+        return this.CreateRideMesh(tile, "ride");
 
       case "stand":
-        return this.CreateStandMesh(tile, "stand")
+        return this.CreateStandMesh(tile, "stand");
 
       default:
         console.warn(`Mesh type ${tile.building?.type} is not recognized.`);
@@ -185,12 +200,19 @@ export class AssetManager {
   CreateRideMesh(tile, filterType) {
     const zone = tile.building;
 
-    const targetModels = Object.entries(models).filter(
-      (x) => x[1].type === filterType)
+    const targetModels = Object.entries(models)
+      .filter((x) => x[1].type === filterType)
       .map((x) => x[0]);
 
-    const i = Math.floor(targetModels.length * Math.random());
-    const mesh = this.cloneMesh(targetModels[i]);
+    const targetGltfModels = Object.entries(gltfModels)
+      .filter((x) => x[1].type === filterType)
+      .map((x) => x[0]);
+
+    const combinedModels = targetModels.concat(targetGltfModels);
+    console.log(combinedModels);
+
+    const i = Math.floor(combinedModels.length * Math.random());
+    const mesh = this.cloneMesh(combinedModels[i]);
     mesh.userData = tile;
     mesh.rotation.set(0, zone.rotation * DEG2RAD, 0);
     mesh.position.set(zone.x, 0, zone.y);
@@ -198,25 +220,30 @@ export class AssetManager {
     return mesh;
   }
 
-    /**
+  /**
    * Create random stand mesh (WIP, pending change to choose stands from list)
    */
-    CreateStandMesh(tile, filterType) {
-      const zone = tile.building;
-  
-      const targetModels = Object.entries(models).filter(
-        (x) => x[1].type === filterType)
-        .map((x) => x[0]);
-  
-      const i = Math.floor(targetModels.length * Math.random());
-      const mesh = this.cloneMesh(targetModels[i]);
-      mesh.userData = tile;
-      mesh.rotation.set(0, zone.rotation * DEG2RAD, 0);
-      mesh.position.set(zone.x, 0, zone.y);
-  
-      return mesh;
-    }
+  CreateStandMesh(tile, filterType) {
+    const zone = tile.building;
 
+    const targetModels = Object.entries(models)
+      .filter((x) => x[1].type === filterType)
+      .map((x) => x[0]);
+
+    const targetGltfModels = Object.entries(gltfModels)
+      .filter((x) => x[1].type === filterType)
+      .map((x) => x[0]);
+
+    const combinedModels = targetModels.concat(targetGltfModels);
+
+    const i = Math.floor(combinedModels.length * Math.random());
+    const mesh = this.cloneMesh(combinedModels[i]);
+    mesh.userData = tile;
+    mesh.rotation.set(0, zone.rotation * DEG2RAD, 0);
+    mesh.position.set(zone.x, 0, zone.y);
+
+    return mesh;
+  }
 
   /**
    * Returns a cloned copy of a mesh
@@ -354,7 +381,89 @@ export class AssetManager {
         this.loadedAnimatedModelCount++;
         if (this.loadedAnimatedModelCount == this.animatedModelCount) {
           this.onLoad();
-          console.log("Done with Animated Model Loading")
+          console.log("Done with Animated Model Loading");
+        }
+      },
+      (xhr) => {
+        //console.log(`${name} ${(xhr.loaded / xhr.total) * 100}% loaded`);
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+  }
+
+  loadGltfModel(
+    name,
+    {
+      foldername,
+      filename,
+      scale = 1,
+      rotation = 0,
+      receiveShadow = true,
+      castShadow = true,
+    }
+  ) {
+    const gltfLoader = new GLTFLoader().setPath(foldername);
+    gltfLoader.load(
+      filename,
+      (gltf) => {
+        let mesh = gltf.scene;
+
+        mesh.position.set(0, 0, 0);
+        mesh.rotation.set(0, THREE.MathUtils.degToRad(rotation), 0);
+        mesh.scale.set(scale / 30, scale / 30, scale / 30);
+        mesh.receiveShadow = receiveShadow;
+        mesh.castShadow = castShadow;
+
+        this.meshes[name] = mesh;
+
+        // Once all models are loaded
+        this.loadedGltfModelCount++;
+        if (this.loadedGltfModelCount == this.gltfModelCount) {
+          this.onLoad();
+          console.log("Done with Gltf Model Loading");
+        }
+      },
+      (xhr) => {
+        //console.log(`${name} ${(xhr.loaded / xhr.total) * 100}% loaded`);
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+  }
+
+  loadFbxModel(
+    name,
+    {
+      foldername,
+      filename,
+      scale = 1,
+      rotation = 0,
+      receiveShadow = true,
+      castShadow = true,
+    }
+  ) {
+    const fbxModelLoader = new FBXLoader().setPath(foldername);
+    fbxModelLoader.load(
+      filename,
+      (fbx) => {
+        let mesh = fbx;
+
+        mesh.position.set(0, 0, 0);
+        mesh.rotation.set(0, THREE.MathUtils.degToRad(rotation), 0);
+        mesh.scale.set(scale / 30, scale / 30, scale / 30);
+        mesh.receiveShadow = receiveShadow;
+        mesh.castShadow = castShadow;
+
+        this.meshes[name] = mesh;
+
+        // Once all models are loaded
+        this.loadedFbxModelCount++;
+        if (this.loadedFbxModelCount == this.fbxModelCount) {
+          this.onLoad();
+          console.log("Done with Fbx Model Loading");
         }
       },
       (xhr) => {
