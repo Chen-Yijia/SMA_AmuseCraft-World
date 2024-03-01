@@ -226,5 +226,4 @@ export default {
     "filename": "building-restuarant-china.glb",
     "scale": 200
   },
-  
 }

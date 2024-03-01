@@ -55,7 +55,13 @@ export default {
     "rotation": 0,
     "type": "ride"
   },
-
+  "park-entrance": {
+    "foldername": "public/models/entrance/",
+    "filename": "scene.gltf",
+    "scale": 0.03,
+    "rotation": 0,
+    "type": "entrance"
+  }
 
 
   // "ride-merry-go-round-thrill": {

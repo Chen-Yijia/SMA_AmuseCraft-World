@@ -68,7 +68,7 @@ export class SceneManager {
     this.root = new THREE.Group();
     this.scene.add(this.root);
 
-    this.vehicleGraph = new VehicleGraph(city.size, this.assetManager);
+    this.vehicleGraph = new VehicleGraph(city.size, this.assetManager, city);
     this.root.add(this.vehicleGraph);
 
     this.buildings = [];

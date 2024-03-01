@@ -93,6 +93,9 @@ export class AssetManager {
       case "stand":
         return this.CreateStandMesh(tile, "stand");
 
+      case "entrance":
+        return this.CreateEntranceMesh(tile);
+
       default:
         console.warn(`Mesh type ${tile.building?.type} is not recognized.`);
         return null;
@@ -246,6 +249,20 @@ export class AssetManager {
   }
 
   /**
+   * Create entrance mesh
+   */
+  CreateEntranceMesh(tile){
+    const zone = tile.building;
+
+    const mesh = this.cloneMesh("park-entrance");
+    mesh.userData = tile;
+    mesh.rotation.set(0, zone.rotation * DEG2RAD, 0);
+    mesh.position.set(zone.x, -0.01, zone.y);
+
+    return mesh;
+  }
+
+  /**
    * Returns a cloned copy of a mesh
    * @param {string} name The name of the mesh to retrieve
    * @param {boolean} transparent True if materials should be transparent. Default is false.
@@ -273,16 +290,6 @@ export class AssetManager {
    */
   cloneFBXMesh(name, transparent = false) {
     const mesh = SkeletonUtils.clone(this.meshes[name]);
-    // try {
-    //   mesh.traverse((obj) => {
-    //     if (obj.material) {
-    //       obj.material = obj.material.clone();
-    //       obj.material.transparent = transparent;
-    //     }
-    //   });
-    // } catch (error) {
-    //   console.log(name, mesh)
-    // }
     mesh.traverse((obj) => {
       if (obj.material) {
         // obj.material = obj.material.clone();

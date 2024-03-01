@@ -1,13 +1,22 @@
-import * as THREE from 'three';
-import { CornerRoadTile, EndRoadTile, FourWayRoadTile, StraightRoadTile, ThreeWayRoadTile, VehicleGraphTile } from './vehicleGraphTile.js';
-import { VehicleGraphHelper } from './vehicleGraphHelper.js';
-import { AssetManager } from '../assetManager.js';
-import config from '../config.js';
-import { Vehicle } from './vehicle.js';
-import { Road } from '../buildings/road.js';
+import * as THREE from "three";
+import {
+  CornerRoadTile,
+  EndRoadTile,
+  FourWayRoadTile,
+  StraightRoadTile,
+  ThreeWayRoadTile,
+  VehicleGraphTile,
+} from "./vehicleGraphTile.js";
+import { VehicleGraphHelper } from "./vehicleGraphHelper.js";
+import { AssetManager } from "../assetManager.js";
+import config from "../config.js";
+import { Vehicle } from "./vehicle.js";
+import { Road } from "../buildings/road.js";
+import { City } from "../city.js";
+import { Tile } from "../tile.js";
 
 export class VehicleGraph extends THREE.Group {
-  constructor(size, assetManager) {
+  constructor(size, assetManager, city) {
     super();
 
     this.size = size;
@@ -18,13 +27,18 @@ export class VehicleGraph extends THREE.Group {
     this.assetManager = assetManager;
 
     /**
+     * @type {City}
+     */
+    this.city = city;
+
+    /**
      * @type {VehicleGraphTile[][]}
      */
     this.tiles = [];
 
     this.vehicles = new THREE.Group();
     this.add(this.vehicles);
-  
+
     /**
      * @type {VehicleGraphHelper}
      */
@@ -52,10 +66,10 @@ export class VehicleGraph extends THREE.Group {
   }
 
   /**
-   * 
+   *
    * @param {number} x
-   * @param {number} y 
-   * @param {Road | null} road 
+   * @param {number} y
+   * @param {Road | null} road
    */
   updateTile(x, y, road) {
     console.log(`updating vehicle graph at (x: ${x}, y: ${y})`);
@@ -72,10 +86,10 @@ export class VehicleGraph extends THREE.Group {
     rightTile?.getWorldLeftSide()?.out?.disconnectAll();
     topTile?.getWorldBottomSide()?.out?.disconnectAll();
     bottomTile?.getWorldTopSide()?.out?.disconnectAll();
-    
+
     if (road) {
       const tile = VehicleGraphTile.create(x, y, road.rotation, road.style);
-      
+
       // Connect tile to adjacent tiles
       if (leftTile) {
         tile.getWorldLeftSide().out?.connect(leftTile.getWorldRightSide().in);
@@ -105,8 +119,8 @@ export class VehicleGraph extends THREE.Group {
   }
 
   /**
-   * @param {number} x 
-   * @param {number} y 
+   * @param {number} x
+   * @param {number} y
    * @returns {VehicleGraphTile}
    */
   getTile(x, y) {
@@ -118,9 +132,9 @@ export class VehicleGraph extends THREE.Group {
   }
 
   spawnVehicle() {
-    console.log('spawning vehicle');
+    console.log("spawning vehicle");
     if (this.vehicles.children.length < config.vehicle.maxVehicleCount) {
-      const startingTile = this.getStartingTile();
+      const startingTile = this.getStartingTile(this.city);
 
       if (startingTile != null) {
         const origin = startingTile.getRandomNode();
@@ -131,30 +145,41 @@ export class VehicleGraph extends THREE.Group {
             origin,
             destination,
             this.assetManager.createRandomVehicleMesh()
-          )
+          );
 
-          console.log('creating new vehicle');
+          console.log("creating new vehicle");
 
           this.vehicles.add(vehicle);
         }
       }
     } else {
-      console.log('maximum number of vehicles met, not spawning a vehicle');
+      console.log("maximum number of vehicles met, not spawning a vehicle");
     }
   }
 
   /**
    * Gets a random tile for a vehicle to spawn at
+   * @param {City} city
    * @returns {VehicleGraphTile | null}
    */
-  getStartingTile() {
+  getStartingTile(city) {
     const tiles = [];
     for (let x = 0; x < this.size; x++) {
       for (let y = 0; y < this.size; y++) {
         let tile = this.getTile(x, y);
-        if (tile) tiles.push(tile);
+        // check through the tiles and let the starting tile being the ones that next to
+        // the entrance.
+        // additionally, the starting tile has to be an end tile
+        if (
+          tile &&
+          this.checkNextToEntrance(x, y, city) &&
+          this.checkIsEndTile(x, y, city)
+        )
+          tiles.push(tile);
       }
     }
+
+    // console.log("valid starting tile", tiles);
 
     if (tiles.length === 0) {
       return null;
@@ -162,5 +187,47 @@ export class VehicleGraph extends THREE.Group {
       const i = Math.floor(tiles.length * Math.random());
       return tiles[i];
     }
+  }
+
+  /**
+   * Check if the tile is next to the entrnce
+   * @param {City} city
+   * @param {number} x
+   * @param {number} y
+   */
+  checkNextToEntrance(x, y, city) {
+    let leftTile = city.getTile(x - 1, y);
+    let rightTile = city.getTile(x + 1, y);
+    let topTile = city.getTile(x, y + 1);
+    let bottomTile = city.getTile(x, y - 1);
+
+    const filter = (tile) => {
+      return tile.building?.type === "entrance";
+    };
+
+    return (
+      filter(leftTile) ||
+      filter(rightTile) ||
+      filter(topTile) ||
+      filter(bottomTile)
+    );
+  }
+
+  /**
+   * Check if the tile is an end tile
+   * @param {City} city
+   * @param {number} x
+   * @param {number} y
+   */
+  checkIsEndTile(x, y, city) {
+    let thisTile = city.getTile(x, y);
+    let isEndTile = false;
+
+    if (thisTile.building?.type === "road") {
+      if (thisTile.building?.style === "end") {
+        isEndTile = true;
+      }
+    }
+    return isEndTile;
   }
 }
