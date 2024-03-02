@@ -203,7 +203,10 @@ export class VehicleGraph extends THREE.Group {
     let bottomTile = city.getTile(x, y - 1);
 
     const filter = (tile) => {
-      return tile.building?.type === "entrance";
+      if (tile.building) {
+        return tile.building?.type === "entrance";
+      }
+      return false;
     };
 
     return (
