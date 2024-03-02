@@ -6,7 +6,6 @@ import { Tile } from "./tile.js";
 import models from "./models.js";
 import animatedModels from "./animatedModels.js";
 import gltfModels from "./gltfModels.js";
-import fbxModels from "./fbxModels.js";
 
 const DEG2RAD = Math.PI / 180.0;
 
@@ -29,11 +28,9 @@ export class AssetManager {
     this.modelCount = Object.keys(models).length;
     this.animatedModelCount = Object.keys(animatedModels).length;
     this.gltfModelCount = Object.keys(gltfModels).length;
-    this.fbxModelCount = Object.keys(fbxModels).length;
     this.loadedModelCount = 0;
     this.loadedAnimatedModelCount = 0;
     this.loadedGltfModelCount = 0;
-    this.loadedFbxModelCount = 0;
 
     for (const [name, meta] of Object.entries(models)) {
       this.loadModel(name, meta);
@@ -45,10 +42,6 @@ export class AssetManager {
 
     for (const [name, meta] of Object.entries(gltfModels)) {
       this.loadGltfModel(name, meta);
-    }
-
-    for (const [name, meta] of Object.entries(fbxModels)) {
-      this.loadFbxModel(name, meta);
     }
 
     this.onLoad = onLoad;
@@ -381,7 +374,11 @@ export class AssetManager {
         // Once all models are loaded
         this.loadedModelCount++;
         if (this.loadedModelCount == this.modelCount) {
-          this.onLoad();
+          // this.onLoad();
+          console.log("Done with Glb Model Loading");
+        }
+        if ((this.loadedModelCount == this.modelCount)&&(this.loadedAnimatedModelCount == this.animatedModelCount)&&(this.loadedGltfModelCount == this.gltfModelCount)) {
+          this.onLoad;
         }
       },
       (xhr) => {
@@ -419,8 +416,11 @@ export class AssetManager {
         // Once all models are loaded
         this.loadedAnimatedModelCount++;
         if (this.loadedAnimatedModelCount == this.animatedModelCount) {
-          this.onLoad();
+          // this.onLoad();
           console.log("Done with Animated Model Loading");
+        }
+        if ((this.loadedModelCount == this.modelCount)&&(this.loadedAnimatedModelCount == this.animatedModelCount)&&(this.loadedGltfModelCount == this.gltfModelCount)) {
+          this.onLoad;
         }
       },
       (xhr) => {
@@ -460,49 +460,11 @@ export class AssetManager {
         // Once all models are loaded
         this.loadedGltfModelCount++;
         if (this.loadedGltfModelCount == this.gltfModelCount) {
-          this.onLoad();
+          // this.onLoad();
           console.log("Done with Gltf Model Loading");
         }
-      },
-      (xhr) => {
-        //console.log(`${name} ${(xhr.loaded / xhr.total) * 100}% loaded`);
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
-  }
-
-  loadFbxModel(
-    name,
-    {
-      foldername,
-      filename,
-      scale = 1,
-      rotation = 0,
-      receiveShadow = true,
-      castShadow = true,
-    }
-  ) {
-    const fbxModelLoader = new FBXLoader().setPath(foldername);
-    fbxModelLoader.load(
-      filename,
-      (fbx) => {
-        let mesh = fbx;
-
-        mesh.position.set(0, 0, 0);
-        mesh.rotation.set(0, THREE.MathUtils.degToRad(rotation), 0);
-        mesh.scale.set(scale / 30, scale / 30, scale / 30);
-        mesh.receiveShadow = receiveShadow;
-        mesh.castShadow = castShadow;
-
-        this.meshes[name] = mesh;
-
-        // Once all models are loaded
-        this.loadedFbxModelCount++;
-        if (this.loadedFbxModelCount == this.fbxModelCount) {
+        if ((this.loadedModelCount == this.modelCount)&&(this.loadedAnimatedModelCount == this.animatedModelCount)&&(this.loadedGltfModelCount == this.gltfModelCount)) {
           this.onLoad();
-          console.log("Done with Fbx Model Loading");
         }
       },
       (xhr) => {

@@ -20,7 +20,7 @@ export class SceneManager {
     this.clock = new THREE.Clock();
     this.gameWindow = document.getElementById('render-target');
     this.assetManager = new AssetManager(() => {
-      console.log('assets loaded');
+      alert("All the assets are loaded! Start to design your amusement park!")
       this.#initialize(city);
       onLoad();
     });
