@@ -2,7 +2,6 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
 import * as SkeletonUtils from "three/addons/utils/SkeletonUtils.js";
-import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 import { Tile } from "./tile.js";
 import models from "./models.js";
 import animatedModels from "./animatedModels.js";
@@ -24,7 +23,7 @@ export class AssetManager {
 
   meshes = {};
 
-  mixers = [];
+  mixers = {};
 
   constructor(onLoad) {
     this.modelCount = Object.keys(models).length;
@@ -151,12 +150,44 @@ export class AssetManager {
       .filter((x) => x[1].type === "vehicle")
       .map((x) => x[0]);
 
-    console.log(types);
-
     const i = Math.floor(types.length * Math.random());
     console.log(types[i]);
     return this.cloneMesh(types[i], true);
   }
+
+  /**
+   * Creates a new random visitor mesh
+   * @returns {THREE.Mesh} A mesh object
+   */
+  createRandomVisitorMesh() {
+    const targetModels = Object.entries(animatedModels).filter(
+      (x) => {return (x[1].type === "visitor-adult" || x[1].type === "visitor-kid")} // WIP: need to generate different visitor profiles
+    );
+
+    const randomTargetModel =
+      targetModels[Math.floor(targetModels.length * Math.random())];
+
+    const modelName = randomTargetModel[0];
+    const modelMeta = randomTargetModel[1];
+
+    let mesh = this.cloneFBXMesh(modelName);
+    const animationLoader = new FBXLoader();
+    animationLoader.load(
+      `public/models/${modelMeta.animationFilename}`,
+      (anim) => {
+        let m = new THREE.AnimationMixer(mesh);
+        this.mixers[mesh.uuid] = m;
+        const animation = anim.animations[0];
+        animation.timeScale = modelMeta.timeScale;
+
+        const walk = m.clipAction(animation);
+        walk.play();
+      }
+    );
+
+    return mesh;
+  }
+
 
   /**
    * Creates a visitor & clip actions mesh (WIP, testing)
@@ -185,7 +216,7 @@ export class AssetManager {
       `public/models/${modelMeta.animationFilename}`,
       (anim) => {
         let m = new THREE.AnimationMixer(mesh);
-        this.mixers.push(m);
+        this.mixers[mesh.uuid] = m;
         const animation = anim.animations[0];
         animation.timeScale = modelMeta.timeScale;
 
@@ -287,6 +318,7 @@ export class AssetManager {
 
   /**
    * Clone FBX mesh
+   * @returns {THREE.Mesh}
    */
   cloneFBXMesh(name, transparent = false) {
     const mesh = SkeletonUtils.clone(this.meshes[name]);

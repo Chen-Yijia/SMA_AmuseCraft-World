@@ -21,6 +21,8 @@ export class Vehicle extends THREE.Group {
      */
     this.destination = destination;
 
+
+
     this.originWorldPosition = new THREE.Vector3();
     this.destinationWorldPosition = new THREE.Vector3();
     this.originToDestination = new THREE.Vector3();
@@ -58,10 +60,11 @@ export class Vehicle extends THREE.Group {
       return;
     }
 
-    if (this.getAge() > config.vehicle.maxLifetime) {
-      this.dispose();
-      return;
-    }
+    // WIP (Temp). For now, do not dispose on max life
+    // if (this.getAge() > config.vehicle.maxLifetime) {
+    //   this.dispose();
+    //   return;
+    // }
 
     const cycleTime = this.getCycleTime();
     if (cycleTime === 1) {
@@ -122,7 +125,11 @@ export class Vehicle extends THREE.Group {
   }
 
   dispose() {
-    this.traverse((obj) => obj.material?.dispose());
-    this.removeFromParent();
+    console.log("to dispose (uuid)", this.children[0].uuid);
+    // this.traverse((obj) => obj.material?.dispose()); // for obj (vehicle)
+    this.removeFromParent(); 
+
+    // remove the mixer (for visitor)
+
   }
 }

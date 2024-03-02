@@ -132,7 +132,7 @@ export class VehicleGraph extends THREE.Group {
   }
 
   spawnVehicle() {
-    console.log("spawning vehicle");
+    console.log("spawning visitor");
     if (this.vehicles.children.length < config.vehicle.maxVehicleCount) {
       const startingTile = this.getStartingTile(this.city);
 
@@ -144,10 +144,11 @@ export class VehicleGraph extends THREE.Group {
           const vehicle = new Vehicle(
             origin,
             destination,
-            this.assetManager.createRandomVehicleMesh()
+            this.assetManager.createRandomVisitorMesh()
+            // this.assetManager.createRandomVehicleMesh()
           );
 
-          console.log("creating new vehicle");
+          console.log("creating new visitor");
 
           this.vehicles.add(vehicle);
         }

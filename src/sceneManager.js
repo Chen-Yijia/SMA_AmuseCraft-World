@@ -189,8 +189,11 @@ export class SceneManager {
     // Update visitor walking animation
     let delta = this.clock.getDelta();
     if (this.assetManager.mixers) {
-      this.assetManager.mixers.map(m => {
-        m.update(delta)});
+      for (const [uuid, mixer] of Object.entries(this.assetManager.mixers)) {
+        mixer.update(delta)
+      }
+      // this.assetManager.mixers.map(m_dict => {
+      //   m_dict.mixer.update(delta)});
     }
 
     this.renderer.render(this.scene, this.cameraManager.camera);
