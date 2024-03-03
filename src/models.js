@@ -191,7 +191,7 @@ export default {
     "filename": "car-baywatch.glb",
     "rotation": 90
   },
-  "ride-circus-tent-performance": {
+  "ride-circus-tent-family": {
     "type": "ride",
     "filename": "tent-circus-big.glb",
     "scale": 200
@@ -211,17 +211,17 @@ export default {
     "filename": "hot-dog-stand.glb",
     "scale": 700
   },
-  "restaurant-burger": {
+  "stand-burger": {
     "type": "stand",
     "filename": "building-burger-joint.glb",
     "scale": 180
   },
-  "restaurant-cafe": {
+  "stand-cafe": {
     "type": "stand",
     "filename": "building-cafe.glb",
     "scale": 200
   },
-  "restaurant-chinese": {
+  "stand-chinese-restaurant": {
     "type": "stand",
     "filename": "building-restuarant-china.glb",
     "scale": 200

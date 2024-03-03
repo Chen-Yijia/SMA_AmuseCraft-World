@@ -22,6 +22,12 @@ export class Building {
     this.type = 'building';
 
     /**
+     * The building subtype
+     * @type {string}
+     */
+    this.subType = '';
+
+    /**
      * True if the mesh is out of date and needs to be regenerated
      * @type {boolean}
      */
@@ -70,6 +76,9 @@ export class Building {
       <br>
       <span class="info-label">Type </span>
       <span class="info-value">${this.type}</span>
+      <br>
+      <span class="info-label">Sub Type </span>
+      <span class="info-value">${this.subType}</span>
       <br>
       <span class="info-label">Rotation </span>
       <span class="info-value">${this.rotation}</span>

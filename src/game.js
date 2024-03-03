@@ -18,6 +18,27 @@ export class Game {
   simulationStarted = false;
   simulationtTime = 0;
 
+  ridesElements = [
+    "circus-tent",
+    "water-ride",
+    "bumper-car",
+    "ferris-wheel",
+    "roundabout",
+    "carousel",
+    "swing-claw",
+    "space-adventure",
+    "rollercoaster",
+    "arcade",
+  ];
+
+  standElements = [
+    "hot-dog",
+    "burger",
+    "cafe",
+    "chinese-restaurant",
+    "ice-cream",
+  ];
+
   constructor() {
     /**
      * The city data model
@@ -67,7 +88,7 @@ export class Game {
   step() {
     if (!this.simulationStarted) {
       return;
-    };
+    }
 
     // Update the city data model first, then update the scene
     this.city.step();
@@ -78,7 +99,7 @@ export class Game {
 
     if (this.simulationStarted) {
       this.simulationtTime++;
-    }    
+    }
   }
 
   /**
@@ -95,6 +116,29 @@ export class Game {
 
     this.activeToolId = this.selectedControl.getAttribute("data-type");
     console.log(this.activeToolId);
+
+    // If the activeTool is "Ride", then show the ride tool kit list
+    if (
+      this.ridesElements.includes(this.activeToolId) ||
+      this.activeToolId === "ride"
+    ) {
+      document.getElementById("ride-tool-kit-list").style.visibility =
+        "visible";
+    } else {
+      document.getElementById("ride-tool-kit-list").style.visibility = "hidden";
+    }
+
+    // If the activeTool is "Stand", then show the stand tool kit list
+    if (
+      this.standElements.includes(this.activeToolId) ||
+      this.activeToolId === "stand"
+    ) {
+      document.getElementById("stand-tool-kit-list").style.visibility =
+        "visible";
+    } else {
+      document.getElementById("stand-tool-kit-list").style.visibility =
+        "hidden";
+    }
   }
 
   /**
@@ -177,11 +221,21 @@ export class Game {
       } else if (this.activeToolId === "bulldoze") {
         this.city.bulldoze(tile.x, tile.y);
         this.sceneManager.applyChanges(this.city);
-      } 
-      else if (!tile.building) {
+      } else if (!tile.building) {
+        console.log("current active tool", this.activeToolId);
         const buildingType = this.activeToolId;
-        this.city.placeBuilding(tile.x, tile.y, buildingType);
-        this.sceneManager.applyChanges(this.city);
+
+        // if selected is "Ride" type
+        if (this.ridesElements.includes(this.activeToolId)) {
+          this.city.placeBuilding(tile.x, tile.y, "ride", buildingType); // WIP (need to change to specific ride)
+          this.sceneManager.applyChanges(this.city);
+        } else if (this.standElements.includes(this.activeToolId)) {
+          this.city.placeBuilding(tile.x, tile.y, "stand", buildingType); // WIP (need to change to specific stand)
+          this.sceneManager.applyChanges(this.city);
+        } else {
+          this.city.placeBuilding(tile.x, tile.y, buildingType, "");
+          this.sceneManager.applyChanges(this.city);
+        }
       }
     }
   }
@@ -198,6 +252,7 @@ export class Game {
   #updateTitleBar() {
     document.getElementById("population-counter").innerHTML =
       this.city.getPopulation();
-    document.getElementById("simulation-time-elapsed").innerHTML = this.simulationtTime;
+    document.getElementById("simulation-time-elapsed").innerHTML =
+      this.simulationtTime;
   }
 }

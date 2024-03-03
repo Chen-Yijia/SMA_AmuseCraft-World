@@ -154,7 +154,9 @@ export class AssetManager {
    */
   createRandomVisitorMesh() {
     const targetModels = Object.entries(animatedModels).filter(
-      (x) => {return (x[1].type === "visitor-adult" || x[1].type === "visitor-kid")} // WIP: need to generate different visitor profiles
+      (x) => {
+        return x[1].type === "visitor-adult" || x[1].type === "visitor-kid";
+      } // WIP: need to generate different visitor profiles
     );
 
     const randomTargetModel =
@@ -180,7 +182,6 @@ export class AssetManager {
 
     return mesh;
   }
-
 
   /**
    * Creates a visitor & clip actions mesh (WIP, testing)
@@ -222,24 +223,32 @@ export class AssetManager {
   }
 
   /**
-   * Create random ride mesh (WIP, pending change to choose rides from list)
+   * Create random ride mesh
    */
   CreateRideMesh(tile, filterType) {
     const zone = tile.building;
+    let mesh;
 
-    const targetModels = Object.entries(models)
-      .filter((x) => x[1].type === filterType)
-      .map((x) => x[0]);
+    if (zone.subType === "") {
+      const targetModels = Object.entries(models)
+        .filter((x) => x[1].type === filterType)
+        .map((x) => x[0]);
 
-    const targetGltfModels = Object.entries(gltfModels)
-      .filter((x) => x[1].type === filterType)
-      .map((x) => x[0]);
+      const targetGltfModels = Object.entries(gltfModels)
+        .filter((x) => x[1].type === filterType)
+        .map((x) => x[0]);
 
-    const combinedModels = targetModels.concat(targetGltfModels);
-    console.log(combinedModels);
+      const combinedModels = targetModels.concat(targetGltfModels);
+      console.log(combinedModels);
 
-    const i = Math.floor(combinedModels.length * Math.random());
-    const mesh = this.cloneMesh(combinedModels[i]);
+      const i = Math.floor(combinedModels.length * Math.random());
+      mesh = this.cloneMesh(combinedModels[i]);
+    }
+    else {
+      let modelName = `ride-${zone.subType}-${zone.thrillLevel}`;
+      mesh = this.cloneMesh(modelName);
+    }
+
     mesh.userData = tile;
     mesh.rotation.set(0, zone.rotation * DEG2RAD, 0);
     mesh.position.set(zone.x, 0, zone.y);
@@ -252,19 +261,28 @@ export class AssetManager {
    */
   CreateStandMesh(tile, filterType) {
     const zone = tile.building;
+    let mesh;
 
-    const targetModels = Object.entries(models)
-      .filter((x) => x[1].type === filterType)
-      .map((x) => x[0]);
+    if (zone.subType === "") {
+      const targetModels = Object.entries(models)
+        .filter((x) => x[1].type === filterType)
+        .map((x) => x[0]);
 
-    const targetGltfModels = Object.entries(gltfModels)
-      .filter((x) => x[1].type === filterType)
-      .map((x) => x[0]);
+      const targetGltfModels = Object.entries(gltfModels)
+        .filter((x) => x[1].type === filterType)
+        .map((x) => x[0]);
 
-    const combinedModels = targetModels.concat(targetGltfModels);
+      const combinedModels = targetModels.concat(targetGltfModels);
+      console.log(combinedModels);
 
-    const i = Math.floor(combinedModels.length * Math.random());
-    const mesh = this.cloneMesh(combinedModels[i]);
+      const i = Math.floor(combinedModels.length * Math.random());
+      mesh = this.cloneMesh(combinedModels[i]);
+    }
+    else {
+      let modelName = `stand-${zone.subType}`;
+      mesh = this.cloneMesh(modelName);
+    }
+
     mesh.userData = tile;
     mesh.rotation.set(0, zone.rotation * DEG2RAD, 0);
     mesh.position.set(zone.x, 0, zone.y);
@@ -275,7 +293,7 @@ export class AssetManager {
   /**
    * Create entrance mesh
    */
-  CreateEntranceMesh(tile){
+  CreateEntranceMesh(tile) {
     const zone = tile.building;
 
     const mesh = this.cloneMesh("park-entrance");
@@ -377,7 +395,11 @@ export class AssetManager {
           // this.onLoad();
           console.log("Done with Glb Model Loading");
         }
-        if ((this.loadedModelCount == this.modelCount)&&(this.loadedAnimatedModelCount == this.animatedModelCount)&&(this.loadedGltfModelCount == this.gltfModelCount)) {
+        if (
+          this.loadedModelCount == this.modelCount &&
+          this.loadedAnimatedModelCount == this.animatedModelCount &&
+          this.loadedGltfModelCount == this.gltfModelCount
+        ) {
           this.onLoad;
         }
       },
@@ -419,7 +441,11 @@ export class AssetManager {
           // this.onLoad();
           console.log("Done with Animated Model Loading");
         }
-        if ((this.loadedModelCount == this.modelCount)&&(this.loadedAnimatedModelCount == this.animatedModelCount)&&(this.loadedGltfModelCount == this.gltfModelCount)) {
+        if (
+          this.loadedModelCount == this.modelCount &&
+          this.loadedAnimatedModelCount == this.animatedModelCount &&
+          this.loadedGltfModelCount == this.gltfModelCount
+        ) {
           this.onLoad;
         }
       },
@@ -463,7 +489,11 @@ export class AssetManager {
           // this.onLoad();
           console.log("Done with Gltf Model Loading");
         }
-        if ((this.loadedModelCount == this.modelCount)&&(this.loadedAnimatedModelCount == this.animatedModelCount)&&(this.loadedGltfModelCount == this.gltfModelCount)) {
+        if (
+          this.loadedModelCount == this.modelCount &&
+          this.loadedAnimatedModelCount == this.animatedModelCount &&
+          this.loadedGltfModelCount == this.gltfModelCount
+        ) {
           this.onLoad();
         }
       },

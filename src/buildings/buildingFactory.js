@@ -12,10 +12,11 @@ import { Entrance } from './entrance.js';
  * Creates a new building object
  * @param {number} x The x-coordinate of the building
  * @param {number} y The y-coordinate of the building
- * @param {string} type The building type
+ * @param {string} type The building type ("ride"/ "stand")
+ * @param {string} subType The specific ride/stand item that the user selected
  * @returns {Building} A new building object
  */
-export function createBuilding(x, y, type) {
+export function createBuilding(x, y, type, subType) {
   switch (type) {
     case 'residential': 
       return new ResidentialZone(x, y);
@@ -28,9 +29,9 @@ export function createBuilding(x, y, type) {
     case 'visitor':
       return new Visitor(x,y);
     case 'ride':
-      return new Ride(x,y);
+      return new Ride(x,y, subType);
     case 'stand':
-      return new Stand(x,y);
+      return new Stand(x,y, subType);
     case "entrance":
       return new Entrance(x,y);
       

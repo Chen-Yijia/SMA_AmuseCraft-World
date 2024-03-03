@@ -56,13 +56,14 @@ export class City {
    * @param {number} x 
    * @param {number} y 
    * @param {string} buildingType 
+   * @param {string} specificBuildingType 
    */
-  placeBuilding(x, y, buildingType) {
+  placeBuilding(x, y, buildingType, specificBuildingType) {
     const tile = this.getTile(x, y);
 
     // If the tile doesnt' already have a building, place one there
     if (tile && !tile.building) {
-      tile.building = createBuilding(x, y, buildingType);
+      tile.building = createBuilding(x, y, buildingType, specificBuildingType);
       tile.building.refresh(this);
 
       // Refresh the adjacent buildings as well

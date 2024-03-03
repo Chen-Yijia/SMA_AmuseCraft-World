@@ -4,11 +4,11 @@ import config from '../config.js';
 import { Zone } from './zone.js';
 
 export class Stand extends Zone {
-  constructor(x, y) {
+  constructor(x, y, subType) {
     super(x, y);
     this.name = "stand";
     this.type = 'stand';
-
+    this.subType = subType;
   }
 
   /**
