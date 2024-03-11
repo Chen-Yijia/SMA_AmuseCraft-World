@@ -195,6 +195,19 @@ h1 {
   align-items: center;
 }
 
+.title-bar-right-items {
+  display: flex !important;
+  justify-content: space-around !important;
+  align-items: center;
+}
+
+.title-bar-right-elements {
+  /* flex: 1 1 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center; */
+}
+
 .title-bar-items {
   flex: 1 1 33%;
   display: flex;
@@ -208,18 +221,27 @@ h1 {
   width: 32px;
   height: 32px;
   top: 1px;
-   filter: brightness(0) invert(1);
+  filter: brightness(0) invert(1);
 }
 
 #simulation-time-elapsed {
   margin-left: 8px;
 }
 
-#population-icon {
+#cost-icon {
   position: relative;
   width: 32px;
   height: 32px;
-  top: -3px;
+  top: 4px;
+  filter: brightness(0) invert(1);
+}
+
+#profit-icon {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  top: 4px;
+  filter: brightness(0) invert(1);
 }
 
 #population-counter {

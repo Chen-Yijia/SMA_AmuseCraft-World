@@ -1,5 +1,6 @@
 import { Building } from './building.js';
 import { City } from '../city.js';
+import config from '../config.js';
 
 export class Road extends Building {
   constructor(x, y) {
@@ -8,6 +9,7 @@ export class Road extends Building {
     this.type = 'road';
     this.style = 'straight';
     this.hideTerrain = true;
+    this.cost = config.road.costPerTile;
   }
 
   /**
@@ -87,6 +89,9 @@ export class Road extends Building {
     html += `
     <span class="info-label">Style </span>
     <span class="info-value">${this.style}</span>
+    <br>
+    <span class="info-label">Cost </span>
+    <span class="info-value">$ ${this.cost}</span>
     <br>
     `;
     return html;

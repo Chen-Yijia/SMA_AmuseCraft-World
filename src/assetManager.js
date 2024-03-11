@@ -6,6 +6,7 @@ import { Tile } from "./tile.js";
 import models from "./models.js";
 import animatedModels from "./animatedModels.js";
 import gltfModels from "./gltfModels.js";
+import config from "./config.js";
 
 const DEG2RAD = Math.PI / 180.0;
 
@@ -150,14 +151,19 @@ export class AssetManager {
 
   /**
    * Creates a new random visitor mesh
+   * @param {string} visitorType 
    * @returns {THREE.Mesh} A mesh object
    */
-  createRandomVisitorMesh() {
-    const targetModels = Object.entries(animatedModels).filter(
-      (x) => {
-        return x[1].type === "visitor-adult" || x[1].type === "visitor-kid";
-      } // WIP: need to generate different visitor profiles
-    );
+  createRandomVisitorMesh(visitorType) {
+    // const targetModels = Object.entries(animatedModels).filter(
+    //   (x) => {
+    //     return x[1].type === "visitor-adult" || x[1].type === "visitor-kid";
+    //   } // WIP: need to generate different visitor profiles
+    // );
+
+    const targetModels = Object.entries(animatedModels).filter((x) => {
+      return x[1].type === visitorType;
+    });
 
     const randomTargetModel =
       targetModels[Math.floor(targetModels.length * Math.random())];
@@ -180,6 +186,7 @@ export class AssetManager {
       }
     );
 
+    console.log(`created ${visitorType} mesh`);
     return mesh;
   }
 
@@ -243,8 +250,7 @@ export class AssetManager {
 
       const i = Math.floor(combinedModels.length * Math.random());
       mesh = this.cloneMesh(combinedModels[i]);
-    }
-    else {
+    } else {
       let modelName = `ride-${zone.subType}-${zone.thrillLevel}`;
       mesh = this.cloneMesh(modelName);
     }
@@ -277,8 +283,7 @@ export class AssetManager {
 
       const i = Math.floor(combinedModels.length * Math.random());
       mesh = this.cloneMesh(combinedModels[i]);
-    }
-    else {
+    } else {
       let modelName = `stand-${zone.subType}`;
       mesh = this.cloneMesh(modelName);
     }

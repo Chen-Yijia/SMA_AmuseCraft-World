@@ -141,10 +141,25 @@ export class VehicleGraph extends THREE.Group {
         const destination = origin?.getRandomNextNode();
 
         if (origin && destination) {
+          // decide which visitor profile to generate
+          const randomNumber = Math.random();
+          let visitorType;
+          if (randomNumber <= config.vehicle.probAdult) {
+            visitorType = "visitor-adult";
+          } else if (
+            randomNumber <=
+            config.vehicle.probAdult + config.vehicle.probKid
+          ) {
+            visitorType = "visitor-kid";
+          } else {
+            visitorType = "visitor-elder";
+          }
+
           const vehicle = new Vehicle(
             origin,
             destination,
-            this.assetManager.createRandomVisitorMesh()
+            visitorType,
+            this.assetManager.createRandomVisitorMesh(visitorType)
             // this.assetManager.createRandomVehicleMesh()
           );
 
@@ -154,7 +169,7 @@ export class VehicleGraph extends THREE.Group {
         }
       }
     } else {
-      console.log("maximum number of vehicles met, not spawning a vehicle");
+      console.log("maximum number of vehicles met, not spawning a visitor");
     }
   }
 

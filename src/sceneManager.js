@@ -192,8 +192,7 @@ export class SceneManager {
       for (const [uuid, mixer] of Object.entries(this.assetManager.mixers)) {
         mixer.update(delta)
       }
-      // this.assetManager.mixers.map(m_dict => {
-      //   m_dict.mixer.update(delta)});
+
     }
 
     this.renderer.render(this.scene, this.cameraManager.camera);

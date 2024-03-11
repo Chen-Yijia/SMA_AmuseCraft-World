@@ -250,8 +250,12 @@ export class Game {
   }
 
   #updateTitleBar() {
-    document.getElementById("population-counter").innerHTML =
-      this.city.getPopulation();
+    document.getElementById("cost-total").innerHTML =
+      "-$ " + this.city.getTotalCost();
+
+    document.getElementById("profit-total").innerHTML =
+      "$ " + this.city.getTotalProfit();
+
     document.getElementById("simulation-time-elapsed").innerHTML =
       this.simulationtTime;
   }

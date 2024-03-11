@@ -15,13 +15,13 @@ export default {
     "timeScale": 1,
     "type": "visitor-adult"
   },
-  "amy-walk": {
-    "filename": "amy.fbx",
-    "animationFilename": "cat-walk-amy.fbx",
+  "female3-walk": {
+    "filename": "female-claire.fbx",
+    "animationFilename": "walk-claire.fbx",
     "scale": 0.2,
     "rotation": 90,
     "timeScale": 1,
-    "type": "visitor-kid"
+    "type": "visitor-adult"
   },
   "male1-walk": {
     "filename": "male-lewis.fbx",
@@ -39,4 +39,38 @@ export default {
     "timeScale": 1,
     "type": "visitor-adult"
   },
+
+  "oldman-walk": {
+    "filename": "male-boss.fbx",
+    "animationFilename": "walk-boss.fbx",
+    "scale": 0.2,
+    "rotation": 90,
+    "timeScale": 1,
+    "type": "visitor-elder"
+  },
+  "granny-walk": {
+    "filename": "female-granny.fbx",
+    "animationFilename": "walk-granny.fbx",
+    "scale": 0.2,
+    "rotation": 90,
+    "timeScale": 1,
+    "type": "visitor-elder"
+  },
+  "aj-walk": {
+    "filename": "kid-aj.fbx",
+    "animationFilename": "walk-aj.fbx",
+    "scale": 0.2,
+    "rotation": 90,
+    "timeScale": 1,
+    "type": "visitor-kid"
+  },
+  "amy-walk": {
+    "filename": "amy.fbx",
+    "animationFilename": "cat-walk-amy.fbx",
+    "scale": 0.2,
+    "rotation": 90,
+    "timeScale": 1,
+    "type": "visitor-kid"
+  },
+  
 }

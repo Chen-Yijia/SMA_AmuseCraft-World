@@ -5,7 +5,7 @@ import config from '../config.js';
 const FORWARD = new THREE.Vector3(1, 0, 0);
 
 export class Vehicle extends THREE.Group {
-  constructor(origin, destination, mesh) {
+  constructor(origin, destination, visitorType, mesh) {
     super();
 
     this.createdTime = Date.now();
@@ -20,6 +20,11 @@ export class Vehicle extends THREE.Group {
      * @type {VehicleGraphNode}
      */
     this.destination = destination;
+
+    /**
+     * @type {string}
+     */
+    this.visitorType = visitorType
 
 
 
