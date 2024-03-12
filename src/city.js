@@ -11,6 +11,8 @@ export class City {
      */
     this.tiles = [];
 
+    this.currentSimulationTime = 0;
+
     // create the city in dimenson size*size
     for (let x = 0; x < this.size; x++) {
       const column = [];
@@ -132,8 +134,12 @@ export class City {
 
   /**
    * Update the state of each tile in the city
+   * @param {number} currentSimulationTime 
    */
-  step() {
+  step(currentSimulationTime) {
+    // Update the current time
+    this.currentSimulationTime = currentSimulationTime;
+
     // Update each building
     for (let x = 0; x < this.size; x++) {
       for (let y = 0; y < this.size; y++) {

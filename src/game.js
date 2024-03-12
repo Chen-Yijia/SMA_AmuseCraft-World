@@ -16,7 +16,7 @@ export class Game {
   lastMove = new Date();
 
   simulationStarted = false;
-  simulationtTime = 0;
+  simulationTime = 0;
 
   ridesElements = [
     "circus-tent",
@@ -91,14 +91,14 @@ export class Game {
     }
 
     // Update the city data model first, then update the scene
-    this.city.step();
+    this.city.step(this.simulationTime);
     this.sceneManager.applyChanges(this.city);
 
     this.#updateTitleBar();
     this.#updateInfoPanel();
 
     if (this.simulationStarted) {
-      this.simulationtTime++;
+      this.simulationTime++;
     }
   }
 
@@ -247,7 +247,6 @@ export class Game {
         this.focusedObject.toHTML();
     } else {
       document.getElementById("info-details").innerHTML = "";
-      console.log("no html for this obj, obj: ", this.focusedObject);
     }
   }
 
@@ -259,6 +258,6 @@ export class Game {
       "$ " + this.city.getTotalRevenue();
 
     document.getElementById("simulation-time-elapsed").innerHTML =
-      this.simulationtTime;
+      this.simulationTime;
   }
 }

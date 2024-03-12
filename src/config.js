@@ -63,7 +63,8 @@ export default {
       "rollercoaster": "thrill",
       "arcade": "family",
     },
-    rideDuration: {
+    rideDuration: { 
+      // The duration should be in seconds
       "circus-tent": 40,
       "water-ride": 10,
       "bumper-car": 3,

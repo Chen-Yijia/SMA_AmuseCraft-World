@@ -37,7 +37,14 @@ export class Ride extends Zone {
      * The visitors in the waiting area
      * @type {Vehicle[]}
      */
-    this.waitingArea = [];
+    this.waitingVisitors = [];
+
+    /**
+     * The visitors currently on the ride
+     * @type {Vehicle[]}
+     */
+    this.loadedVisitors = [];
+
   }
 
   /**
@@ -46,6 +53,40 @@ export class Ride extends Zone {
    */
   step(city) {
     super.step(city);
+
+    // If the ride is idle
+    if (this.state === "idle") {
+      if (this.waitingVisitors.length > 0) {
+        // If the ride is idle and have visitors in the waiting area
+        const numberToLoad = Math.min(this.waitingVisitors.length, this.rideCapacity);
+
+        // Move visitors from waiting area to loaded area
+        const visitorsToLoad = this.waitingVisitors.slice(0,numberToLoad);
+        this.loadedVisitors = visitorsToLoad;
+
+        for (let i = 0; i < numberToLoad; i++) {
+          this.waitingVisitors.shift();
+        }
+
+        // Update the lastRunTime & ride State
+        this.lastRunTime = city.currentSimulationTime;
+        this.state = 'in operation';
+      }
+    }
+
+    // If the ride is in operation
+    if (this.state === 'in operation') {
+      
+      if (city.currentSimulationTime >= this.lastRunTime + this.rideDuration) {
+        // if the last run has done
+
+        // Release the visitors **TODO** (reset the visitor starting and destination)
+        // 1. reset the visitor starting & destination
+        this.#releaseVisitors(this.loadedVisitors);
+        // 2. Update the state
+        this.state = 'idle';
+      }
+    }
   }
 
   /**
@@ -55,13 +96,17 @@ export class Ride extends Zone {
     super.dispose();
   }
 
+
   /**
-   * Get the number of visitors currently in the waiting area
-   * @returns {number}
+   * When the ride run is finished, release the currently loaded visitors.
+   * @param {Vehicle[]} loadedVisitors 
    */
-  getNumerOfWaitingVisitors() {
-    return this.waitingArea.length;
+  #releaseVisitors(loadedVisitors) {
+    // **TODO**: implement (reseting the visitor starting and destination)
+
+    this.loadedVisitors = [];
   }
+  
 
 
   /**
@@ -87,7 +132,10 @@ export class Ride extends Zone {
     <span class="info-value">${this.rideCapacity} pax</span>
     <br>
     <span class="info-label">Number of Waiting Visitors </span>
-    <span class="info-value">${this.waitingArea.length} pax</span>
+    <span class="info-value">${this.waitingVisitors.length} pax</span>
+    <br>
+    <span class="info-label">Number of Loaded Visitors </span>
+    <span class="info-value">${this.loadedVisitors.length} pax</span>
     <br>
     <span class="info-label">Ride Status </span>
     <span class="info-value">${this.state}</span>
