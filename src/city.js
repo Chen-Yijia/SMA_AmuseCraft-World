@@ -266,6 +266,24 @@ export class City {
     return rideTiles;
   }
 
+    /**
+   * Find the list of tiles that has a building of stand type
+   * @param {{x: number, y: number}} start 
+   * @param {number} maxDistance 
+   * @returns {Tile[]}
+   */
+    findStandTileList(start, maxDistance) {
+      const filter = (tile) => {
+        if (tile.building) {
+          return tile.building?.type === "stand";
+        }
+        return false;
+      };
+      const rideTiles = this.findTileList(start, filter, maxDistance)
+  
+      return rideTiles;
+    }
+
   /**
    * Finds and returns the neighbors of this tile
    * @param {number} x The x-coordinate of the tile
