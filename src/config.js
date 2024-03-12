@@ -50,7 +50,45 @@ export default {
       "space-adventure": 3,
       "rollercoaster": 5,
       "arcade": 3,
+    },
+    thrillLevel: {
+      "circus-tent": "family",
+      "water-ride": "thrill",
+      "bumper-car": "thrill",
+      "ferris-wheel": "family",
+      "roundabout": "family",
+      "carousel": "family",
+      "swing-claw": "thrill",
+      "space-adventure": "thrill",
+      "rollercoaster": "thrill",
+      "arcade": "family",
+    },
+    rideDuration: {
+      "circus-tent": 40,
+      "water-ride": 10,
+      "bumper-car": 3,
+      "ferris-wheel": 15,
+      "roundabout": 3,
+      "carousel": 5,
+      "swing-claw": 5,
+      "space-adventure": 5,
+      "rollercoaster": 3,
+      "arcade": 20,
+    },
+    rideCapacity:{
+      "circus-tent": 40,
+      "water-ride": 20,
+      "bumper-car": 24,
+      "ferris-wheel": 20,
+      "roundabout": 10,
+      "carousel": 12,
+      "swing-claw": 16,
+      "space-adventure": 12,
+      "rollercoaster": 10,
+      "arcade": 20,
     }
+
+
   },
   stand: {
     costInstallation: {

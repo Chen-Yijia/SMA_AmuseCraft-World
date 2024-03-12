@@ -169,7 +169,7 @@ export class VehicleGraph extends THREE.Group {
         }
       }
     } else {
-      console.log("maximum number of vehicles met, not spawning a visitor");
+      console.log("maximum number of visitors met, not spawning a visitor");
     }
   }
 

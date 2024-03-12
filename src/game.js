@@ -237,6 +237,7 @@ export class Game {
           this.sceneManager.applyChanges(this.city);
         }
       }
+
     }
   }
 
@@ -246,6 +247,7 @@ export class Game {
         this.focusedObject.toHTML();
     } else {
       document.getElementById("info-details").innerHTML = "";
+      console.log("no html for this obj, obj: ", this.focusedObject);
     }
   }
 
@@ -253,8 +255,8 @@ export class Game {
     document.getElementById("cost-total").innerHTML =
       "-$ " + this.city.getTotalCost();
 
-    document.getElementById("profit-total").innerHTML =
-      "$ " + this.city.getTotalProfit();
+    document.getElementById("revenue-total").innerHTML =
+      "$ " + this.city.getTotalRevenue();
 
     document.getElementById("simulation-time-elapsed").innerHTML =
       this.simulationtTime;

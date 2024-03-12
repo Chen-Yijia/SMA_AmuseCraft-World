@@ -27,7 +27,7 @@ export class Stand extends Zone {
 
     this.installationCost = config.stand.costInstallation[this.subType];
     this.revenuePerCustomer = config.stand.arpc[this.subType];
-    this.accumulatedProfit = 0;
+    this.accumulatedRevenue = 0;
   }
 
   /**

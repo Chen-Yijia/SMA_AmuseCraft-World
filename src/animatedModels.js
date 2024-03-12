@@ -43,7 +43,7 @@ export default {
   "oldman-walk": {
     "filename": "male-boss.fbx",
     "animationFilename": "walk-boss.fbx",
-    "scale": 0.2,
+    "scale": 0.17,
     "rotation": 90,
     "timeScale": 1,
     "type": "visitor-elder"
@@ -59,7 +59,7 @@ export default {
   "aj-walk": {
     "filename": "kid-aj.fbx",
     "animationFilename": "walk-aj.fbx",
-    "scale": 0.2,
+    "scale": 0.15,
     "rotation": 90,
     "timeScale": 1,
     "type": "visitor-kid"

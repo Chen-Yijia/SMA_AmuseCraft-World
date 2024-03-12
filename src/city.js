@@ -69,20 +69,20 @@ export class City {
   }
 
 
-  getTotalProfit() {
-    let profit = 0;
+  getTotalRevenue() {
+    let revenue = 0;
 
     for (let x = 0; x < this.size; x++) {
       for (let y = 0; y < this.size; y++) {
         const tile = this.getTile(x, y);
         if (tile.building) {
           if (tile.building.type === "ride" || tile.building.type === "stand") {
-            profit += tile.building.accumulatedProfit;
+            revenue += tile.building.accumulatedRevenue;
           }
         }
       }
     }
-    return profit;
+    return revenue;
   }
 
   

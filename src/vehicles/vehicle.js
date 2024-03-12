@@ -1,12 +1,14 @@
-import * as THREE from 'three';
-import { VehicleGraphNode } from './vehicleGraphNode.js';
-import config from '../config.js';
+import * as THREE from "three";
+import { VehicleGraphNode } from "./vehicleGraphNode.js";
+import config from "../config.js";
 
 const FORWARD = new THREE.Vector3(1, 0, 0);
 
 export class Vehicle extends THREE.Group {
   constructor(origin, destination, visitorType, mesh) {
     super();
+
+    this.vistorID = crypto.randomUUID();
 
     this.createdTime = Date.now();
     this.cycleStartTime = this.createdTime;
@@ -24,9 +26,12 @@ export class Vehicle extends THREE.Group {
     /**
      * @type {string}
      */
-    this.visitorType = visitorType
+    this.visitorType = visitorType;
 
-
+    /**
+     * @type {string}
+     */
+    this.visitorName = generateRandomName();
 
     this.originWorldPosition = new THREE.Vector3();
     this.destinationWorldPosition = new THREE.Vector3();
@@ -86,16 +91,16 @@ export class Vehicle extends THREE.Group {
     const age = this.getAge();
 
     const setOpacity = (opacity) => {
-      this.traverse(obj => {
+      this.traverse((obj) => {
         if (obj.material) {
-          obj.material.opacity = Math.max(0, Math.min(opacity, 1))
+          obj.material.opacity = Math.max(0, Math.min(opacity, 1));
         }
       });
-    }
+    };
 
     if (age < config.vehicle.fadeTime) {
       setOpacity(age / config.vehicle.fadeTime);
-    } else if ((config.vehicle.maxLifetime - age) < config.vehicle.fadeTime) {
+    } else if (config.vehicle.maxLifetime - age < config.vehicle.fadeTime) {
       setOpacity((config.vehicle.maxLifetime - age) / config.vehicle.fadeTime);
     } else {
       setOpacity(1);
@@ -132,9 +137,135 @@ export class Vehicle extends THREE.Group {
   dispose() {
     console.log("to dispose (uuid)", this.children[0].uuid);
     // this.traverse((obj) => obj.material?.dispose()); // for obj (vehicle)
-    this.removeFromParent(); 
+    this.removeFromParent();
 
     // remove the mixer (for visitor)
-
   }
+
+  toHTML() {
+    return `
+      <li class="info-citizen">
+        <span class="info-citizen-name">${this.visitorName}</span>
+        <br>
+        <span class="info-citizen-details">
+          <span>
+            ${this.visitorType} 
+          </span>
+        </span>
+      </li>
+    `;
+  }
+}
+
+function generateRandomName() {
+  const firstNames = [
+    "Emma",
+    "Mason",
+    "Olivia",
+    "Liam",
+    "Ava",
+    "Noah",
+    "Sophia",
+    "Jackson",
+    "Isabella",
+    "Aiden",
+    "Mia",
+    "Lucas",
+    "Amelia",
+    "Caleb",
+    "Harper",
+    "Benjamin",
+    "Evelyn",
+    "Samuel",
+    "Abigail",
+    "Henry",
+    "Emily",
+    "Wyatt",
+    "Scarlett",
+    "Andrew",
+    "Madison",
+    "Gabriel",
+    "Chloe",
+    "Owen",
+    "Grace",
+    "Levi",
+    "Lily",
+    "James",
+    "Aria",
+    "Isaac",
+    "Riley",
+  ];
+  const lastNames = [
+    "Smith",
+    "Johnson",
+    "Williams",
+    "Jones",
+    "Brown",
+    "Davis",
+    "Miller",
+    "Wilson",
+    "Moore",
+    "Taylor",
+    "Anderson",
+    "Thomas",
+    "Jackson",
+    "White",
+    "Harris",
+    "Martin",
+    "Thompson",
+    "Garcia",
+    "Martinez",
+    "Robinson",
+    "Clark",
+    "Rodriguez",
+    "Lewis",
+    "Lee",
+    "Walker",
+    "Hall",
+    "Allen",
+    "Young",
+    "Hernandez",
+    "King",
+    "Wright",
+    "Lopez",
+    "Hill",
+    "Scott",
+    "Green",
+    "Adams",
+    "Baker",
+    "Gonzalez",
+    "Nelson",
+    "Carter",
+    "Mitchell",
+    "Perez",
+    "Roberts",
+    "Turner",
+    "Phillips",
+    "Campbell",
+    "Parker",
+    "Evans",
+    "Edwards",
+    "Collins",
+    "Stewart",
+    "Sanchez",
+    "Morris",
+    "Rogers",
+    "Reed",
+    "Cook",
+    "Morgan",
+    "Bell",
+    "Murphy",
+    "Bailey",
+    "Rivera",
+    "Cooper",
+    "Richardson",
+    "Cox",
+    "Howard",
+    "Ward",
+  ];
+
+  const randomFirstName = firstNames[Math.floor(Math.random() * firstNames.length)];
+  const randomLastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+  
+  return randomFirstName + ' ' + randomLastName;
 }

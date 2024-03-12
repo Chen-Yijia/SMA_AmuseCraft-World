@@ -1,20 +1,7 @@
-import { Citizen } from "../citizens.js";
+import { Vehicle } from "../vehicles/vehicle.js";
 import { City } from "../city.js";
 import config from "../config.js";
 import { Zone } from "./zone.js";
-
-const thrillLevelMapping = {
-  "circus-tent": "family",
-  "water-ride": "thrill",
-  "bumper-car": "thrill",
-  "ferris-wheel": "family",
-  "roundabout": "family",
-  "carousel": "family",
-  "swing-claw": "thrill",
-  "space-adventure": "thrill",
-  "rollercoaster": "thrill",
-  "arcade": "family",
-};
 
 export class Ride extends Zone {
   constructor(x, y, subType) {
@@ -30,10 +17,27 @@ export class Ride extends Zone {
       this.subType = rideSubTypes[i];
     }
 
-    this.thrillLevel = thrillLevelMapping[this.subType];
+    this.accumulatedRevenue = 0;
+    this.thrillLevel = config.ride.thrillLevel[this.subType];
     this.installationCost = config.ride.costInstallation[this.subType];
     this.ticketPrice = config.ride.ticketPrice[this.subType];
-    this.accumulatedProfit = 0;
+    this.rideDuration = config.ride.rideDuration[this.subType];
+    this.rideCapacity = config.ride.rideCapacity[this.subType];
+
+    this.lastRunTime = 0;
+    
+    /**
+     * The current state of the Ride
+     * @type {'idle' | 'in operation'}
+     */
+    this.state = 'idle';
+    
+
+    /**
+     * The visitors in the waiting area
+     * @type {Vehicle[]}
+     */
+    this.waitingArea = [];
   }
 
   /**
@@ -52,6 +56,15 @@ export class Ride extends Zone {
   }
 
   /**
+   * Get the number of visitors currently in the waiting area
+   * @returns {number}
+   */
+  getNumerOfWaitingVisitors() {
+    return this.waitingArea.length;
+  }
+
+
+  /**
    * Returns an HTML representation of this object
    * @returns {string}
    */
@@ -66,6 +79,18 @@ export class Ride extends Zone {
     <br>
     <span class="info-label">Ticket Price per Visitor </span>
     <span class="info-value">$ ${this.ticketPrice}</span>
+    <br>
+    <span class="info-label">Ride Duration </span>
+    <span class="info-value">${this.rideDuration} mins</span>
+    <br>
+    <span class="info-label">Ride Capacity </span>
+    <span class="info-value">${this.rideCapacity} pax</span>
+    <br>
+    <span class="info-label">Number of Waiting Visitors </span>
+    <span class="info-value">${this.waitingArea.length} pax</span>
+    <br>
+    <span class="info-label">Ride Status </span>
+    <span class="info-value">${this.state}</span>
     <br>
     `;
     return html;
