@@ -80,10 +80,13 @@ export class Ride extends Zone {
       if (city.currentSimulationTime >= this.lastRunTime + this.rideDuration) {
         // if the last run has done
 
+        // 1. Record the revenue
+        this.accumulatedRevenue += this.ticketPrice * this.loadedVisitors;
+
         // Release the visitors **TODO** (reset the visitor starting and destination)
-        // 1. reset the visitor starting & destination
+        // 2. reset the visitor starting & destination
         this.#releaseVisitors(this.loadedVisitors);
-        // 2. Update the state
+        // 3. Update the state
         this.state = 'idle';
       }
     }

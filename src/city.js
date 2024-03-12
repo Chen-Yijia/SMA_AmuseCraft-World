@@ -204,6 +204,69 @@ export class City {
   }
 
   /**
+   * Finds the list of tiles where the criteria are true
+   * @param {{x: number, y: number}} start The starting coordinates of the search
+   * @param {(Tile) => (boolean)} filter This function is called on each
+   * tile in the search field until `filter` returns true, or there are
+   * no more tiles left to search.
+   * @param {number} maxDistance The maximum distance to search from the starting tile
+   * @returns {Tile[]} The first tile matching `criteria`, otherwiser `null`
+   */
+  findTileList(start, filter, maxDistance) {
+    const startTile = this.getTile(start.x, start.y);
+    const visited = new Set();
+    const tilesToSearch = [];
+
+    const targetTiles = [];
+
+    // Initialze our search with the starting tile
+    tilesToSearch.push(startTile);
+
+    while (tilesToSearch.length > 0) {
+      const tile = tilesToSearch.shift();
+
+      // Has this tile been visited? If so, ignore it and move on
+      if (visited.has(tile.id)) {
+        continue;
+      } else {
+        visited.add(tile.id);
+      }
+
+      // Check if tile is outside the search bounds
+      const distance = startTile.distanceTo(tile);
+      if (distance > maxDistance) continue;
+
+      // Add this tiles neighbor's to the search list
+      tilesToSearch.push(...this.getTileNeighbors(tile.x, tile.y));
+
+      // If this tile passes the criteria 
+      if (filter(tile)) {
+        targetTiles.push(tile);
+      }
+    }
+
+    return targetTiles;
+  }
+
+  /**
+   * Find the list of tiles that has a building of ride type
+   * @param {{x: number, y: number}} start 
+   * @param {number} maxDistance 
+   * @returns {Tile[]}
+   */
+  findRideTileList(start, maxDistance) {
+    const filter = (tile) => {
+      if (tile.building) {
+        return tile.building?.type === "ride";
+      }
+      return false;
+    };
+    const rideTiles = this.findTileList(start, filter, maxDistance)
+
+    return rideTiles;
+  }
+
+  /**
    * Finds and returns the neighbors of this tile
    * @param {number} x The x-coordinate of the tile
    * @param {number} y The y-coordinate of the tile

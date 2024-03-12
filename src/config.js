@@ -27,6 +27,7 @@ export default {
     costPerTile: 500,     // The construction cost to build a road tile
   },
   ride: {
+    maxRideSearchDistance: 32, // Max distance a visitor will search for a ride
     costInstallation: {
       "circus-tent": 2000,
       "water-ride": 3000,
