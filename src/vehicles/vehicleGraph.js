@@ -132,6 +132,9 @@ export class VehicleGraph extends THREE.Group {
   }
 
   spawnVehicle() {
+    if (this.city.currentSimulationTime === 0) {
+      return;
+    }
     console.log("spawning visitor");
     if (this.vehicles.children.length < config.vehicle.maxVehicleCount) {
       const startingTile = this.getStartingTile(this.city);
