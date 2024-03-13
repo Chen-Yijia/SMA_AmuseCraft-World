@@ -137,13 +137,13 @@ export class EndRoadTile extends VehicleGraphTile {
     this.name = `EndRoadTile (${this.position})`
 
     this.bottom = {
-      in: new VehicleGraphNode(roadOffset, tileOffset),
-      out: new VehicleGraphNode(-roadOffset, tileOffset)
+      in: new VehicleGraphNode(roadOffset, tileOffset, {x: x, y: y}),
+      out: new VehicleGraphNode(-roadOffset, tileOffset, {x: x, y: y})
     };
 
     const midpoint = {
-      in: new VehicleGraphNode(roadOffset, 0),
-      out: new VehicleGraphNode(-roadOffset, 0)
+      in: new VehicleGraphNode(roadOffset, 0, {x: x, y: y}),
+      out: new VehicleGraphNode(-roadOffset, 0, {x: x, y: y})
     };
 
     this.add(this.bottom.in);
@@ -167,13 +167,13 @@ export class StraightRoadTile extends VehicleGraphTile {
 
     // Create nodes
     this.top = {
-      in: new VehicleGraphNode(-roadOffset, -tileOffset),
-      out: new VehicleGraphNode(roadOffset, -tileOffset)
+      in: new VehicleGraphNode(-roadOffset, -tileOffset, {x: x, y: y}),
+      out: new VehicleGraphNode(roadOffset, -tileOffset, {x: x, y: y})
     };
 
     this.bottom = {
-      in: new VehicleGraphNode(roadOffset, tileOffset),
-      out: new VehicleGraphNode(-roadOffset, tileOffset)
+      in: new VehicleGraphNode(roadOffset, tileOffset, {x: x, y: y}),
+      out: new VehicleGraphNode(-roadOffset, tileOffset, {x: x, y: y})
     };
 
     // Add to tile
@@ -198,22 +198,24 @@ export class CornerRoadTile extends VehicleGraphTile {
     this.name = `CornerRoadTile (${this.position})`
 
     this.bottom = {
-      in: new VehicleGraphNode(roadOffset, tileOffset + 0.1),
-      out: new VehicleGraphNode(-roadOffset, tileOffset + 0.1)
+      in: new VehicleGraphNode(roadOffset, tileOffset + 0.1, {x: x, y: y}),
+      out: new VehicleGraphNode(-roadOffset, tileOffset + 0.1, {x: x, y: y})
     };
 
     this.right = {
-      in: new VehicleGraphNode(tileOffset + 0.1, -roadOffset),
-      out: new VehicleGraphNode(tileOffset + 0.1, roadOffset)
+      in: new VehicleGraphNode(tileOffset + 0.1, -roadOffset, {x: x, y: y}),
+      out: new VehicleGraphNode(tileOffset + 0.1, roadOffset, {x: x, y: y})
     };
 
     const midpointBottomRight = new VehicleGraphNode(
       tileOffset - 1.5 * roadOffset, 
-      tileOffset - 1.5 * roadOffset);
+      tileOffset - 1.5 * roadOffset,
+      {x: x, y: y});
 
     const midpointTopLeft = new VehicleGraphNode(
       tileOffset - 3 * roadOffset,
-      tileOffset - 3 * roadOffset);
+      tileOffset - 3 * roadOffset,
+      {x: x, y: y});
 
     this.add(midpointBottomRight);
     this.add(midpointTopLeft);
@@ -241,24 +243,24 @@ export class ThreeWayRoadTile extends VehicleGraphTile {
 
     // Create nodes
     this.left = {
-      in: new VehicleGraphNode(-tileOffset, roadOffset),
-      out: new VehicleGraphNode(-tileOffset, -roadOffset)
+      in: new VehicleGraphNode(-tileOffset, roadOffset,{x: x, y: y}),
+      out: new VehicleGraphNode(-tileOffset, -roadOffset, {x: x, y: y})
     };
 
     this.right = {
-      in: new VehicleGraphNode(tileOffset, -roadOffset),
-      out: new VehicleGraphNode(tileOffset, roadOffset)
+      in: new VehicleGraphNode(tileOffset, -roadOffset, {x: x, y: y}),
+      out: new VehicleGraphNode(tileOffset, roadOffset, {x: x, y: y})
     };
 
     this.bottom = {
-      in: new VehicleGraphNode(roadOffset, tileOffset),
-      out: new VehicleGraphNode(-roadOffset, tileOffset)
+      in: new VehicleGraphNode(roadOffset, tileOffset, {x: x, y: y}),
+      out: new VehicleGraphNode(-roadOffset, tileOffset, {x: x, y: y})
     };
 
-    const midpointBottomLeft =  new VehicleGraphNode(-roadOffset, roadOffset);
-    const midpointBottomRight = new VehicleGraphNode(roadOffset, roadOffset);
-    const midpointTopLeft =  new VehicleGraphNode(-roadOffset, -roadOffset);
-    const midpointTopRight =  new VehicleGraphNode(roadOffset, -roadOffset);
+    const midpointBottomLeft =  new VehicleGraphNode(-roadOffset, roadOffset, {x: x, y: y});
+    const midpointBottomRight = new VehicleGraphNode(roadOffset, roadOffset, {x: x, y: y});
+    const midpointTopLeft =  new VehicleGraphNode(-roadOffset, -roadOffset, {x: x, y: y});
+    const midpointTopRight =  new VehicleGraphNode(roadOffset, -roadOffset, {x: x, y: y});
 
     // Add to tile
     this.add(this.left.in);
@@ -298,29 +300,29 @@ export class FourWayRoadTile extends VehicleGraphTile {
 
     // Create nodes
     this.left = {
-      in: new VehicleGraphNode(-tileOffset, roadOffset),
-      out: new VehicleGraphNode(-tileOffset, -roadOffset)
+      in: new VehicleGraphNode(-tileOffset, roadOffset, {x: x, y: y}),
+      out: new VehicleGraphNode(-tileOffset, -roadOffset, {x: x, y: y})
     };
 
     this.right = {
-      in: new VehicleGraphNode(tileOffset, -roadOffset),
-      out: new VehicleGraphNode(tileOffset, roadOffset)
+      in: new VehicleGraphNode(tileOffset, -roadOffset, {x: x, y: y}),
+      out: new VehicleGraphNode(tileOffset, roadOffset, {x: x, y: y})
     };
 
     this.bottom = {
-      in: new VehicleGraphNode(roadOffset, tileOffset),
-      out: new VehicleGraphNode(-roadOffset, tileOffset)
+      in: new VehicleGraphNode(roadOffset, tileOffset, {x: x, y: y}),
+      out: new VehicleGraphNode(-roadOffset, tileOffset, {x: x, y: y})
     };
 
     this.top = {
-      in: new VehicleGraphNode(-roadOffset, -tileOffset),
-      out: new VehicleGraphNode(roadOffset, -tileOffset)
+      in: new VehicleGraphNode(-roadOffset, -tileOffset, {x: x, y: y}),
+      out: new VehicleGraphNode(roadOffset, -tileOffset, {x: x, y: y})
     };
 
-    const midpointBottomLeft =  new VehicleGraphNode(-roadOffset, roadOffset);
-    const midpointBottomRight = new VehicleGraphNode(roadOffset, roadOffset);
-    const midpointTopLeft =  new VehicleGraphNode(-roadOffset, -roadOffset);
-    const midpointTopRight =  new VehicleGraphNode(roadOffset, -roadOffset);
+    const midpointBottomLeft =  new VehicleGraphNode(-roadOffset, roadOffset, {x: x, y: y});
+    const midpointBottomRight = new VehicleGraphNode(roadOffset, roadOffset, {x: x, y: y});
+    const midpointTopLeft =  new VehicleGraphNode(-roadOffset, -roadOffset, {x: x, y: y});
+    const midpointTopRight =  new VehicleGraphNode(roadOffset, -roadOffset, {x: x, y: y});
 
     // Add to tile
     this.add(this.left.in);

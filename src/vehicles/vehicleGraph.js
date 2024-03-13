@@ -238,6 +238,18 @@ export class VehicleGraph extends THREE.Group {
   }
 
   /**
+   * Conver city tile to vehicle graph tile
+   * @param {Tile[]} cityTiles 
+   */
+  convertCityTileToGraphTile(cityTiles){
+    const graphTiles = [];
+    cityTiles.forEach(cityTile => {
+      graphTiles.push(this.getTile(cityTile.x, cityTile.y));
+    });
+    return graphTiles;
+  }
+
+  /**
    * Get the Vehicle Graph Tiles that corresponding to rides
    * @param {City} city 
    * @param {string} thrillLevel 
@@ -252,6 +264,16 @@ export class VehicleGraph extends THREE.Group {
     });
 
     return graphTiles;
+  }
+
+  /**
+   * Check if a node is next to a Ride
+   * @param {number} x 
+   * @param {number} y 
+   * @param {City} city 
+   */
+  checkNextToRide(x, y, city){
+
   }
 
   /**

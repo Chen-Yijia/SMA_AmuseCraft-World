@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { VehicleGraphNode } from "./vehicleGraphNode.js";
 import config from "../config.js";
 import { AssetManager } from "../assetManager.js";
+import { Tile } from "../tile.js";
 
 const FORWARD = new THREE.Vector3(1, 0, 0);
 
@@ -37,7 +38,12 @@ export class Vehicle extends THREE.Group {
     /**
      * @type {boolean}
      */
-    this.isPaused = false;
+    this.isPaused = false; // if the visitor enters a ride, pause its mixer and pause updating its position. 
+
+    /**
+     * @type {boolean}
+     */
+    this.isLeaving = false; // if the next destination of the visitor is the entrance and leave the space. 
 
     this.pauseStartTime = this.createdTime;
 
@@ -92,6 +98,14 @@ export class Vehicle extends THREE.Group {
 
     const cycleTime = this.getCycleTime();
     if (cycleTime === 1) {
+
+      // if the visitor is leaving and reached the destination
+      if (this.isLeaving) {
+        this.dispose(assetManager);
+        return;
+      }
+
+      // otherwise, choose a new destination
       this.pickNewDestination();
 
       // TEMP for testing purpose
@@ -177,6 +191,8 @@ export class Vehicle extends THREE.Group {
     this.destination = this.origin?.getRandomNextNode();
     this.updateWorldPositions();
     this.cycleStartTime = Date.now();
+
+    console.log("new destination tile: ", this.destination.tilePosition)
   }
 
   /**
@@ -218,6 +234,18 @@ export class Vehicle extends THREE.Group {
       }, {});
 
     this.removeFromParent();
+  }
+
+  /**
+   * Conver city tile to vehicle graph tile
+   * @param {Tile[]} cityTiles
+   */
+  convertCityTileToGraphTile(cityTiles) {
+    const graphTiles = [];
+    cityTiles.forEach((cityTile) => {
+      graphTiles.push(this.getTile(cityTile.x, cityTile.y));
+    });
+    return graphTiles;
   }
 
   toHTML() {
