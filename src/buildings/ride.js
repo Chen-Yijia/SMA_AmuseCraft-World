@@ -71,6 +71,10 @@ export class Ride extends Zone {
         // Update the lastRunTime & ride State
         this.lastRunTime = city.currentSimulationTime;
         this.state = 'in operation';
+
+        // Update mesh status
+        // TODO: in asset manager, set the material color to indicate it's busy
+        this.isMeshOutOfDate = true;
       }
     }
 
@@ -88,6 +92,9 @@ export class Ride extends Zone {
         this.#releaseVisitors(this.loadedVisitors);
         // 3. Update the state
         this.state = 'idle';
+
+        //Update mesh status
+        this.isMeshOutOfDate = true;
       }
     }
   }

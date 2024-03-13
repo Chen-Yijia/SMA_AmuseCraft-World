@@ -268,6 +268,27 @@ export class City {
     return rideTiles;
   }
 
+  /**
+   * Find the list of tiles that belong to a specified thrill level
+   * @param {{x: number, y: number}} start 
+   * @param {string} thrillLevel 
+   * @param {number} maxDistance 
+   * @returns {Tile[]}
+   */
+  findRideTileListThrillLevel(start, thrillLevel,maxDistance) {
+    const filter = (tile) => {
+      if (tile.building) {
+        if (tile.building?.type === "ride") {
+          return tile.building?.thrillLevel === thrillLevel;
+        } ;
+      }
+      return false;
+    };
+    const rideTiles = this.findTileList(start, filter, maxDistance)
+
+    return rideTiles;
+  }
+
     /**
    * Find the list of tiles that has a building of stand type
    * @param {{x: number, y: number}} start 

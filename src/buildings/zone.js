@@ -12,7 +12,7 @@ export class Zone extends Building {
     /**
      * The mesh style to use when rendering
      */
-    this.style = String.fromCharCode(Math.floor(3 * Math.random()) + 65);
+    this.style = '';
 
     /**
      * True if this zone is abandoned
@@ -50,27 +50,29 @@ export class Zone extends Building {
   step(city) {
     super.step(city);
 
-    // Check to see if this zone's development criteria are met. If they
-    // are, the zone has a non-zero chance of developing a building
-    if (this.checkDevelopmentCriteria(city)) {
-      this.abandonmentCounter = 0;
-      if (Math.random() < config.zone.developmentChance) {
-        this.abandoned = false;
-        this.developed = true;
-        this.isMeshOutOfDate = true;
-      }
+    this.checkDevelopmentCriteria(city);
 
-    // If the zone has failed to meet its basic requirements
-    // for enough time, there is a chance of the zone becoming abandoned
-    } else {
-      this.abandonmentCounter++;
-      if (this.abandonmentCounter >= config.zone.abandonmentThreshold) {
-        if (Math.random() < config.zone.abandonmentChance) {
-          this.abandoned = true;
-          this.isMeshOutOfDate = true;
-        }
-      }
-    }
+    // // Check to see if this zone's development criteria are met. If they
+    // // are, the zone has a non-zero chance of developing a building
+    // if (this.checkDevelopmentCriteria(city)) {
+    //   this.abandonmentCounter = 0;
+    //   if (Math.random() < config.zone.developmentChance) {
+    //     this.abandoned = false;
+    //     this.developed = true;
+    //     this.isMeshOutOfDate = true;
+    //   }
+
+    // // If the zone has failed to meet its basic requirements
+    // // for enough time, there is a chance of the zone becoming abandoned
+    // } else {
+    //   this.abandonmentCounter++;
+    //   if (this.abandonmentCounter >= config.zone.abandonmentThreshold) {
+    //     if (Math.random() < config.zone.abandonmentChance) {
+    //       this.abandoned = true;
+    //       this.isMeshOutOfDate = true;
+    //     }
+    //   }
+    // }
   }
 
   /**
@@ -108,19 +110,27 @@ export class Zone extends Building {
     <span class="info-label">Style </span>
     <span class="info-value">${this.style}</span>
     <br>
-    <span class="info-label">Abandoned </span>
-    <span class="info-value">${this.abandoned} (${this.abandonmentCounter}/${config.zone.abandonmentThreshold})</span>
-    <br>
     <span class="info-label">Road Access </span>
     <span class="info-value">${this.hasRoadAccess}</span>
     <br>
-    <span class="info-label">Developed </span>
-    <span class="info-value">${this.developed}</span>
-    <br>
-    <span class="info-label">Level </span>
-    <span class="info-value">${this.level}</span>
-    <br>
     `;
+    // html += `
+    // <span class="info-label">Style </span>
+    // <span class="info-value">${this.style}</span>
+    // <br>
+    // <span class="info-label">Abandoned </span>
+    // <span class="info-value">${this.abandoned} (${this.abandonmentCounter}/${config.zone.abandonmentThreshold})</span>
+    // <br>
+    // <span class="info-label">Road Access </span>
+    // <span class="info-value">${this.hasRoadAccess}</span>
+    // <br>
+    // <span class="info-label">Developed </span>
+    // <span class="info-value">${this.developed}</span>
+    // <br>
+    // <span class="info-label">Level </span>
+    // <span class="info-value">${this.level}</span>
+    // <br>
+    // `;
     return html;
   }
 }
