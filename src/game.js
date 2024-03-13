@@ -91,7 +91,7 @@ export class Game {
     }
 
     // Update the city data model first, then update the scene
-    this.city.step(this.simulationTime, this.simulationStarted);
+    this.city.step(this.simulationTime);
     this.sceneManager.applyChanges(this.city);
 
     this.#updateTitleBar();
@@ -161,6 +161,7 @@ export class Game {
    */
   togglePlay() {
     this.simulationStarted = !this.simulationStarted;
+    this.city.simulatedStarted = this.simulationStarted;
     console.log(`Simulation is started: ${this.simulationStarted}`);
     if (this.simulationStarted) {
       document.getElementById("play-button-icon").src =

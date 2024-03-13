@@ -137,12 +137,10 @@ export class City {
   /**
    * Update the state of each tile in the city
    * @param {number} currentSimulationTime 
-   * @param {boolean} simulatedStarted 
    */
-  step(currentSimulationTime, simulatedStarted) {
+  step(currentSimulationTime) {
     // Update the current time
     this.currentSimulationTime = currentSimulationTime;
-    this.simulatedStarted = simulatedStarted;
 
     // Update each building
     for (let x = 0; x < this.size; x++) {

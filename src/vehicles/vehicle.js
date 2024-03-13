@@ -80,22 +80,22 @@ export class Vehicle extends THREE.Group {
     }
 
     if (!this.origin || !this.destination) {
-      this.dispose();
+      this.dispose(assetManager);
       return;
     }
 
     // WIP (Temp). For now, do not dispose on max life
     // if (this.getAge() > config.vehicle.maxLifetime) {
-    //   this.dispose();
+    //   this.dispose(assetManager);
     //   return;
     // }
 
     const cycleTime = this.getCycleTime();
     if (cycleTime === 1) {
-      // this.pickNewDestination();
+      this.pickNewDestination();
 
       // TEMP for testing purpose
-      this.handleReachRideOrStand(assetManager);
+      // this.handleReachRideOrStand(assetManager);
     } else {
       this.position.copy(this.originWorldPosition);
       this.position.lerp(this.destinationWorldPosition, cycleTime);
@@ -199,12 +199,25 @@ export class Vehicle extends THREE.Group {
     this.quaternion.setFromUnitVectors(FORWARD, this.orientation);
   }
 
-  dispose() {
+  /**
+   *
+   * @param {AssetManager} assetManager
+   */
+  dispose(assetManager) {
     console.log("to dispose (uuid)", this.children[0].uuid);
     // this.traverse((obj) => obj.material?.dispose()); // for obj (vehicle)
-    this.removeFromParent();
 
     // remove the mixer (for visitor)
+    // update mixer to remove the mesh
+    const thisMesh = this.children[0];
+    assetManager.mixers = Object.keys(assetManager.mixers)
+      .filter((objKey) => objKey !== thisMesh.uuid)
+      .reduce((newObj, key) => {
+        newObj[key] = assetManager.mixers[key];
+        return newObj;
+      }, {});
+
+    this.removeFromParent();
   }
 
   toHTML() {
