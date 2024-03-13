@@ -61,7 +61,7 @@ export class VehicleGraph extends THREE.Group {
 
   updateVehicles() {
     for (const vehicle of this.vehicles.children) {
-      vehicle.update();
+      vehicle.update(this.assetManager);
     }
   }
 
@@ -132,7 +132,7 @@ export class VehicleGraph extends THREE.Group {
   }
 
   spawnVehicle() {
-    if (this.city.currentSimulationTime === 0) {
+    if (this.city.currentSimulationTime === 0 || !this.city.simulatedStarted) {
       return;
     }
     console.log("spawning visitor");

@@ -91,7 +91,7 @@ export class Game {
     }
 
     // Update the city data model first, then update the scene
-    this.city.step(this.simulationTime);
+    this.city.step(this.simulationTime, this.simulationStarted);
     this.sceneManager.applyChanges(this.city);
 
     this.#updateTitleBar();

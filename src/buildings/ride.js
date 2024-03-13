@@ -81,7 +81,7 @@ export class Ride extends Zone {
         // if the last run has done
 
         // 1. Record the revenue
-        this.accumulatedRevenue += this.ticketPrice * this.loadedVisitors;
+        this.accumulatedRevenue += this.ticketPrice * this.loadedVisitors.length;
 
         // Release the visitors **TODO** (reset the visitor starting and destination)
         // 2. reset the visitor starting & destination
@@ -142,6 +142,9 @@ export class Ride extends Zone {
     <br>
     <span class="info-label">Ride Status </span>
     <span class="info-value">${this.state}</span>
+    <br>
+    <span class="info-label">Revenue </span>
+    <span class="info-value">$ ${this.accumulatedRevenue}</span>
     <br>
     `;
     return html;

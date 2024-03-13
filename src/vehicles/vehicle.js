@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { VehicleGraphNode } from "./vehicleGraphNode.js";
 import config from "../config.js";
+import { AssetManager } from "../assetManager.js";
 
 const FORWARD = new THREE.Vector3(1, 0, 0);
 
@@ -33,6 +34,13 @@ export class Vehicle extends THREE.Group {
      */
     this.visitorName = generateRandomName();
 
+    /**
+     * @type {boolean}
+     */
+    this.isPaused = false;
+
+    this.pauseStartTime = this.createdTime;
+
     this.originWorldPosition = new THREE.Vector3();
     this.destinationWorldPosition = new THREE.Vector3();
     this.originToDestination = new THREE.Vector3();
@@ -63,8 +71,14 @@ export class Vehicle extends THREE.Group {
 
   /**
    * Updates the vehicle position each render frame
+   * @param {AssetManager} assetManager
    */
-  update() {
+  update(assetManager) {
+    // If the visitor is paused, skip updating.
+    if (this.isPaused) {
+      return;
+    }
+
     if (!this.origin || !this.destination) {
       this.dispose();
       return;
@@ -78,7 +92,10 @@ export class Vehicle extends THREE.Group {
 
     const cycleTime = this.getCycleTime();
     if (cycleTime === 1) {
-      this.pickNewDestination();
+      // this.pickNewDestination();
+
+      // TEMP for testing purpose
+      this.handleReachRideOrStand(assetManager);
     } else {
       this.position.copy(this.originWorldPosition);
       this.position.lerp(this.destinationWorldPosition, cycleTime);
@@ -105,6 +122,54 @@ export class Vehicle extends THREE.Group {
     } else {
       setOpacity(1);
     }
+  }
+
+  /**
+   * handle the visitor behaviour when it reaches its destination of a ride or a stand
+   * @param {AssetManager} assetManager
+   */
+  handleReachRideOrStand(assetManager) {
+    const setOpacity = (opacity) => {
+      this.traverse((obj) => {
+        if (obj.material) {
+          obj.material.opacity = Math.max(0, Math.min(opacity, 1));
+        }
+      });
+    };
+
+    const setFbxOpacity = (opacity) => {
+      this.traverse((child) => {
+        if (child.isMesh) {
+          child.material.opacity = Math.max(0, Math.min(opacity, 1));
+          child.material.transparent = true;
+        }
+      });
+    };
+
+    // update origin & destination
+    this.origin = this.destination;
+    this.destination = this.destination;
+    this.updateWorldPositions();
+
+    // set the vehicle pause
+    this.isPaused = true;
+    this.pauseStartTime = Date.now();
+
+    // update mixer to remove the mesh
+    const thisMesh = this.children[0];
+    console.log(thisMesh);
+    assetManager.mixers = Object.keys(assetManager.mixers)
+      .filter((objKey) => objKey !== thisMesh.uuid)
+      .reduce((newObj, key) => {
+        newObj[key] = assetManager.mixers[key];
+        return newObj;
+      }, {});
+
+    // update opacity (not working)
+    setFbxOpacity(0.5);
+
+    // hide the visitor
+    // this.children[0].visible = false;
   }
 
   pickNewDestination() {
@@ -264,8 +329,10 @@ function generateRandomName() {
     "Ward",
   ];
 
-  const randomFirstName = firstNames[Math.floor(Math.random() * firstNames.length)];
-  const randomLastName = lastNames[Math.floor(Math.random() * lastNames.length)];
-  
-  return randomFirstName + ' ' + randomLastName;
+  const randomFirstName =
+    firstNames[Math.floor(Math.random() * firstNames.length)];
+  const randomLastName =
+    lastNames[Math.floor(Math.random() * lastNames.length)];
+
+  return randomFirstName + " " + randomLastName;
 }
