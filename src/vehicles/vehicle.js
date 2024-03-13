@@ -3,8 +3,15 @@ import { VehicleGraphNode } from "./vehicleGraphNode.js";
 import config from "../config.js";
 import { AssetManager } from "../assetManager.js";
 import { Tile } from "../tile.js";
+import { Ride } from "../buildings/ride.js";
 
 const FORWARD = new THREE.Vector3(1, 0, 0);
+
+const visitorThrillLevelMap = {
+  "visitor-kid": "family",
+  "visitor-elder": "family",
+  "visitor-adult": "thrill"
+}
 
 export class Vehicle extends THREE.Group {
   constructor(origin, destination, visitorType, mesh) {
@@ -38,12 +45,17 @@ export class Vehicle extends THREE.Group {
     /**
      * @type {boolean}
      */
-    this.isPaused = false; // if the visitor enters a ride, pause its mixer and pause updating its position. 
+    this.isPaused = false; // if the visitor enters a ride, pause its mixer and pause updating its position.
 
     /**
      * @type {boolean}
      */
-    this.isLeaving = false; // if the next destination of the visitor is the entrance and leave the space. 
+    this.isLeaving = false; // if the next destination of the visitor is the entrance and leave the space.
+
+    /**
+     * @type {Ride[]}
+     */
+    this.visitedRides = [];
 
     this.pauseStartTime = this.createdTime;
 
@@ -98,7 +110,6 @@ export class Vehicle extends THREE.Group {
 
     const cycleTime = this.getCycleTime();
     if (cycleTime === 1) {
-
       // if the visitor is leaving and reached the destination
       if (this.isLeaving) {
         this.dispose(assetManager);
@@ -191,8 +202,55 @@ export class Vehicle extends THREE.Group {
     this.destination = this.origin?.getRandomNextNode();
     this.updateWorldPositions();
     this.cycleStartTime = Date.now();
+  }
 
-    console.log("new destination tile: ", this.destination.tilePosition)
+  /**
+   * Find the path from the origin to its next destination
+   * The next destination (graghNode) has to fulfill the following conditions
+   * 1. the node is next to a Ride tile
+   * 2. the ride thrill level matches the visitor profile
+   * 3. the ride has not be visited before
+   * Optional (4. the ride is within the max_search_distance)
+   * 
+   * @param {VehicleGraphNode} origin
+   * @param {Tile[]} rideTiles
+   * @returns {{nextRide: Ride, destinationNode: VehicleGraphNode, pathToDestination: VehicleGraphNode[]} | null}
+   */
+  findNextRidePath(origin, rideTiles) {
+    if (!rideTiles) {
+      console.log(`early return find next ride for ${this.name} -- no eligible ride tiles.`)
+      return null;
+    }
+
+    // filter for non-vistied ride tiles
+    const notVisitedRideTiles = rideTiles.filter((ride_tile) => !this.getVisitedRideSubTypes().includes(ride_tile.building.subType));
+    if (!notVisitedRideTiles) {
+      console.log(`early return find next ride for ${this.name} -- all visited.`)
+      return null;
+    }
+
+    // filter for matching thrill levels
+    const targetThrillLevel = visitorThrillLevelMap[this.visitorType];
+    const targetRideTiles = notVisitedRideTiles.filter((ride_tile) => ride_tile.thrillLevel === targetThrillLevel);
+    if (!targetRideTiles) {
+      console.log(`early return find next ride for ${this.name} -- no target thrill level rides.`)
+      return null;
+    }
+
+    // randomly select a Ride with all the above conditions satisfied. 
+    const i = Math.floor(targetRideTiles.length * Math.random());
+    const targetRide = targetRideTiles[i];
+
+    // run BFS to get the path to targetRide
+  }
+
+  /**
+   * Get the ride subtypes that the visitor has visited
+   * @returns {string[]}
+   */
+  getVisitedRideSubTypes() {
+    const visitedRideSubTypes = this.visitedRides.map((ride) => ride.subType);
+    return visitedRideSubTypes;
   }
 
   /**

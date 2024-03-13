@@ -113,6 +113,11 @@ export class Ride extends Zone {
    */
   #releaseVisitors(loadedVisitors) {
     // **TODO**: implement (reseting the visitor starting and destination)
+    // updated the visited Rides for loadedvisitors
+    loadedVisitors.forEach(visitor => {
+      visitor.visitedRides.push(this);
+      console.log("updated visitor rides, ", visitor.visitedRides);
+    });
 
     this.loadedVisitors = [];
   }

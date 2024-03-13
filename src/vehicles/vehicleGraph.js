@@ -222,22 +222,6 @@ export class VehicleGraph extends THREE.Group {
   }
 
   /**
-   * Get the Vehicle Graph Tiles that corresponding to rides
-   * @param {City} city 
-   * @returns {VehicleGraphTile[]}
-   */
-  getRideGraphTiles(city) {
-    const cityRideTiles = city.findRideTileList({x: Math.floor(this.size/2), y: Math.floor(this.size/2)}, 100); // to find all such tiles
-    const graphTiles = [];
-
-    cityRideTiles.forEach(cityTile => {
-      graphTiles.push(this.getTile(cityTile.x, cityTile.y));
-    });
-
-    return graphTiles;
-  }
-
-  /**
    * Conver city tile to vehicle graph tile
    * @param {Tile[]} cityTiles 
    */
@@ -249,32 +233,6 @@ export class VehicleGraph extends THREE.Group {
     return graphTiles;
   }
 
-  /**
-   * Get the Vehicle Graph Tiles that corresponding to rides
-   * @param {City} city 
-   * @param {string} thrillLevel 
-   * @returns {VehicleGraphTile[]}
-   */
-  getRideGraphTilesThrillLevel(city, thrillLevel) {
-    const cityRideTiles = city.findRideTileListThrillLevel({x: Math.floor(this.size/2), y: Math.floor(this.size/2)}, thrillLevel, 100); // to find all such tiles
-    const graphTiles = [];
-
-    cityRideTiles.forEach(cityTile => {
-      graphTiles.push(this.getTile(cityTile.x, cityTile.y));
-    });
-
-    return graphTiles;
-  }
-
-  /**
-   * Check if a node is next to a Ride
-   * @param {number} x 
-   * @param {number} y 
-   * @param {City} city 
-   */
-  checkNextToRide(x, y, city){
-
-  }
 
   /**
    * Check if the tile is next to the entrnce
