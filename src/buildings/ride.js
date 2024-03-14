@@ -116,7 +116,6 @@ export class Ride extends Zone {
     // updated the visited Rides for loadedvisitors
     loadedVisitors.forEach(visitor => {
       visitor.visitedRides.push(this);
-      console.log("updated visitor rides, ", visitor.visitedRides);
     });
 
     this.loadedVisitors = [];
@@ -159,6 +158,11 @@ export class Ride extends Zone {
     <span class="info-value">$ ${this.accumulatedRevenue}</span>
     <br>
     `;
+    html += '<ul class="info-citizen-list">';
+    for (const waitingVisitor of this.waitingVisitors) {
+      html += waitingVisitor.toHTML();
+    }
+    html += '</ul>';
     return html;
   }
 }

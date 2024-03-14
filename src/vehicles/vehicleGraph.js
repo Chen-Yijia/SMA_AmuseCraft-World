@@ -60,8 +60,14 @@ export class VehicleGraph extends THREE.Group {
   }
 
   updateVehicles() {
+    // fetch the most updated RideTiles
+    const rideTiles = this.city.findRideTileList(
+      { x: this.size / 2, y: this.size / 2 },
+      100
+    ); // to find all ride tiles
+
     for (const vehicle of this.vehicles.children) {
-      vehicle.update(this.assetManager);
+      vehicle.update(this.assetManager, rideTiles);
     }
   }
 
@@ -141,9 +147,10 @@ export class VehicleGraph extends THREE.Group {
 
       if (startingTile != null) {
         const origin = startingTile.getRandomNode();
-        const destination = origin?.getRandomNextNode();
+        // const destination = origin?.getRandomNextNode();
 
-        if (origin && destination) {
+        // if (origin && destination) {
+        if (origin) {
           // decide which visitor profile to generate
           const randomNumber = Math.random();
           let visitorType;
@@ -158,19 +165,27 @@ export class VehicleGraph extends THREE.Group {
             visitorType = "visitor-elder";
           }
 
+          // fetch the most updated RideTiles
+          const rideTiles = this.city.findRideTileList(
+            { x: this.size / 2, y: this.size / 2 },
+            100
+          ); // to find all ride tiles
+          console.log("inside visitorgraph, ride tiles", rideTiles);
+
           const vehicle = new Vehicle(
             origin,
-            destination,
+            // destination,
             visitorType,
-            this.assetManager.createRandomVisitorMesh(visitorType)
+            this.assetManager.createRandomVisitorMesh(visitorType),
             // this.assetManager.createRandomVehicleMesh()
+            rideTiles,
           );
 
           console.log("creating new visitor");
 
           this.vehicles.add(vehicle);
 
-          // TEMP: for testing ride step purpose. 
+          // TEMP: for testing ride step purpose.
           for (let x = 0; x < this.size; x++) {
             for (let y = 0; y < this.size; y++) {
               let tile = this.city.getTile(x, y);
@@ -181,7 +196,6 @@ export class VehicleGraph extends THREE.Group {
               }
             }
           }
-
         }
       }
     } else {
@@ -223,16 +237,15 @@ export class VehicleGraph extends THREE.Group {
 
   /**
    * Conver city tile to vehicle graph tile
-   * @param {Tile[]} cityTiles 
+   * @param {Tile[]} cityTiles
    */
-  convertCityTileToGraphTile(cityTiles){
+  convertCityTileToGraphTile(cityTiles) {
     const graphTiles = [];
-    cityTiles.forEach(cityTile => {
+    cityTiles.forEach((cityTile) => {
       graphTiles.push(this.getTile(cityTile.x, cityTile.y));
     });
     return graphTiles;
   }
-
 
   /**
    * Check if the tile is next to the entrnce
