@@ -205,6 +205,7 @@ export class City {
     return null;
   }
 
+
   /**
    * Finds the list of tiles where the criteria are true
    * @param {{x: number, y: number}} start The starting coordinates of the search
@@ -248,6 +249,23 @@ export class City {
     }
 
     return targetTiles;
+  }
+
+
+  /**
+   * Find the entrance tile
+   * @param {{x: number, y: number}} start 
+   * @param {number} maxDistance 
+   * @returns {Tile}
+   */
+  findEntranceTile(start, maxDistance) {
+    const filter = (tile) => {
+      if (tile.building) {
+        return tile.building?.type === "entrance"
+      }
+      return false;
+    }
+    const entranceTile = this.findTile(start, filter, maxDistance);
   }
 
   /**

@@ -15,7 +15,7 @@ const visitorThrillLevelMap = {
 };
 
 export class Vehicle extends THREE.Group {
-  constructor(origin, visitorType, mesh, rideTiles) {
+  constructor(origin, visitorType, mesh, rideTiles, entranceTile) {
     super();
 
     this.vistorID = crypto.randomUUID();
@@ -66,6 +66,11 @@ export class Vehicle extends THREE.Group {
      * @type {Tile[]}
      */
     this.rideTiles = rideTiles; // useful when gets released from the ride.
+
+    /**
+     * @type {Tile}
+     */
+    this.entranceTile = entranceTile; // useful when the visitor is going to leave the park
 
     /**
      * @type {boolean}
@@ -130,9 +135,11 @@ export class Vehicle extends THREE.Group {
    * Updates the vehicle position each render frame
    * @param {AssetManager} assetManager
    * @param {Tile[]} rideTiles
+   * @param {Tile} entranceTile 
    */
-  update(assetManager, rideTiles) {
+  update(assetManager, rideTiles, entranceTile) {
     this.rideTiles = rideTiles;
+    this.entranceTile = entranceTile;
 
     // If the visitor is paused, skip updating.
     if (this.isPaused) {
@@ -153,7 +160,7 @@ export class Vehicle extends THREE.Group {
     const cycleTime = this.getCycleTime();
     if (cycleTime === 1) {
       // if the visitor is leaving and reached the destination
-      if (this.isLeaving) {
+      if (this.isLeaving && this.pathToDestinationRideNode.length === 0) {
         this.dispose(assetManager);
         return;
       }

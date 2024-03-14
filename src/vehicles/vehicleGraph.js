@@ -66,8 +66,14 @@ export class VehicleGraph extends THREE.Group {
       100
     ); // to find all ride tiles
 
+    // fetch the most updated entrance
+    const entranceTile = this.city.findEntranceTile(
+      { x: this.size / 2, y: this.size / 2 },
+      100
+    ); // to guarantee find the entrance tile
+
     for (const vehicle of this.vehicles.children) {
-      vehicle.update(this.assetManager, rideTiles);
+      vehicle.update(this.assetManager, rideTiles, entranceTile);
     }
   }
 
@@ -170,7 +176,11 @@ export class VehicleGraph extends THREE.Group {
             { x: this.size / 2, y: this.size / 2 },
             100
           ); // to find all ride tiles
-          console.log("inside visitorgraph, ride tiles", rideTiles);
+          // fetch the most updated entrance
+          const entranceTile = this.city.findEntranceTile(
+            { x: this.size / 2, y: this.size / 2 },
+            100
+          ); // to guarantee find the entrance tile
 
           const vehicle = new Vehicle(
             origin,
@@ -179,6 +189,7 @@ export class VehicleGraph extends THREE.Group {
             this.assetManager.createRandomVisitorMesh(visitorType),
             // this.assetManager.createRandomVehicleMesh()
             rideTiles,
+            entranceTile,
           );
 
           console.log("creating new visitor");
