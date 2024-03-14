@@ -21,6 +21,7 @@ export class Vehicle extends THREE.Group {
 
     this.createdTime = Date.now();
     this.cycleStartTime = this.createdTime;
+    this.leaveTime = Date.now();
 
     /**
      * @type {VehicleGraphNode}
@@ -212,6 +213,7 @@ export class Vehicle extends THREE.Group {
    * 3. the ride has not be visited before
    * Optional (4. the ride is within the max_search_distance)
    * 
+   * The function returns the details for visitor's next destination. Or Null, suggesting the visitor is leaving
    * @param {VehicleGraphNode} origin
    * @param {Tile[]} rideTiles
    * @returns {{nextRide: Ride, destinationNode: VehicleGraphNode, pathToDestination: VehicleGraphNode[]} | null}
@@ -231,7 +233,7 @@ export class Vehicle extends THREE.Group {
 
     // filter for matching thrill levels
     const targetThrillLevel = visitorThrillLevelMap[this.visitorType];
-    const targetRideTiles = notVisitedRideTiles.filter((ride_tile) => ride_tile.thrillLevel === targetThrillLevel);
+    const targetRideTiles = notVisitedRideTiles.filter((ride_tile) => ride_tile.building.thrillLevel === targetThrillLevel);
     if (!targetRideTiles) {
       console.log(`early return find next ride for ${this.name} -- no target thrill level rides.`)
       return null;
@@ -239,9 +241,42 @@ export class Vehicle extends THREE.Group {
 
     // randomly select a Ride with all the above conditions satisfied. 
     const i = Math.floor(targetRideTiles.length * Math.random());
-    const targetRide = targetRideTiles[i];
+    const targetRideTile = targetRideTiles[i];
 
     // run BFS to get the path to targetRide
+    const {destinationNode, pathToDestination} = this.searchBFS(origin, targetRideTile);
+    if (pathToDestination === null) {
+      console.log(`early return find next ride for ${this.name} -- could not find path to target ride ${targetRide.building.subType}`)
+      return null;
+    }
+
+    // return the result
+    return {nextRide: targetRideTile.building, destinationNode: destinationNode, pathToDestination: pathToDestination}
+  }
+
+  /**
+   * Run BFS search from origin to targetRideTile
+   * @param {VehicleGraphNode} origin 
+   * @param {Tile} targetRideTile 
+   * @returns {{destinationNode: VehicleGraphNode|null, pathToDestination: VehicleGraphNode[]|null}}
+   */
+  searchBFS(origin, targetRideTile){
+    let nodesToSearch = [[origin, []]]; // initialise the queue to include the origin
+    let exploredNodes = new Set;
+
+    while (nodesToSearch.length > 0) {
+      let [currentNode, [...path]] = nodesToSearch.shift();
+      path.push(currentNode);
+      if ((currentNode.tilePosition.x === targetRideTile.x) && (currentNode.tilePosition.y === targetRideTile.y)) {
+        return {destinationNode: currentNode, pathToDestination: path};
+      } 
+      if ((!exploredNodes.has(currentNode)) && (currentNode.next.length > 0)) {
+        nodesToSearch.push(currentNode.next.map((node) => [node, path]));
+      }
+      exploredNodes.add(currentNode);
+    }
+
+    return {destinationNode: null, pathToDestination: null};
   }
 
   /**
