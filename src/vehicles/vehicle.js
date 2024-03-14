@@ -89,14 +89,17 @@ export class Vehicle extends THREE.Group {
 
     this.pauseStartTime = this.createdTime;
 
-    // // run BFS to find the final destination and the path.
+    // run BFS to find the final destination and the path.
     const nextRideTarget = this.findNextRidePath(origin, this.rideTiles);
     if (nextRideTarget == null) {
       // meaning the visitor has no where to go
       this.isLeaving = true;
       this.destination = null; // setting it to null will remove the visitor in the next update cycle.
     } else {
-      console.log("next ride target", nextRideTarget);
+      console.log(
+        "next ride target",
+        nextRideTarget.nextRideTile.building.subType
+      );
       this.finalDestinationRideNode = nextRideTarget.destinationNode;
       this.finalDestinationRideTile = nextRideTarget.nextRideTile;
       this.pathToDestinationRideNode = nextRideTarget.pathToDestination;
@@ -135,7 +138,7 @@ export class Vehicle extends THREE.Group {
    * Updates the vehicle position each render frame
    * @param {AssetManager} assetManager
    * @param {Tile[]} rideTiles
-   * @param {Tile} entranceTile 
+   * @param {Tile} entranceTile
    */
   update(assetManager, rideTiles, entranceTile) {
     this.rideTiles = rideTiles;
@@ -160,16 +163,18 @@ export class Vehicle extends THREE.Group {
     const cycleTime = this.getCycleTime();
     if (cycleTime === 1) {
       // if the visitor is leaving and reached the destination
-      if (this.isLeaving && this.pathToDestinationRideNode.length === 0) {
-        this.dispose(assetManager);
-        return;
+      if (this.isLeaving) {
+        if (this.pathToDestinationRideNode.length === 0) {
+          this.leaveTime = Date.now();
+          this.dispose(assetManager);
+          return;
+        } else {
+          this.pickNextExitDestination();
+        }
+      } else {
+        // otherwise, choose a new destination
+        this.pickNewDestination();
       }
-
-      // otherwise, choose a new destination
-      this.pickNewDestination();
-
-      // TEMP for testing purpose
-      // this.handleReachRideOrStand(assetManager);
     } else {
       this.position.copy(this.originWorldPosition);
       this.position.lerp(this.destinationWorldPosition, cycleTime);
@@ -242,6 +247,16 @@ export class Vehicle extends THREE.Group {
   }
 
   /**
+   * function to be called for picking the next destination for visitors with isLeaving=true
+   */
+  pickNextExitDestination() {
+    this.origin = this.destination;
+    this.destination = this.pathToDestinationRideNode.shift();
+    this.updateWorldPositions();
+    this.cycleStartTime = Date.now();
+  }
+
+  /**
    * Move to next node in the path OR handle reached ride destination
    */
   pickNewDestination() {
@@ -258,13 +273,13 @@ export class Vehicle extends THREE.Group {
 
     // Case 2: if has reached the final destination ride, handle reached Ride
     else {
-      // double check the destination is the finalRideDestinationNode
-      console.log(
-        "double check is next to ride node",
-        this.destination.tilePosition,
-        this.finalDestinationRideTile.x,
-        this.finalDestinationRideTile.y
-      );
+      // // double check the destination is the finalRideDestinationNode
+      // console.log(
+      //   "double check is next to ride node",
+      //   this.destination.tilePosition,
+      //   this.finalDestinationRideTile.x,
+      //   this.finalDestinationRideTile.y
+      // );
 
       // handle reach the ride node
       this.handleReachRideOrStand();
@@ -341,6 +356,34 @@ export class Vehicle extends THREE.Group {
     // return the result
     return {
       nextRideTile: targetRideTile,
+      destinationNode: destinationNode,
+      pathToDestination: pathToDestination,
+    };
+  }
+
+  /**
+   * Find the entrance tile & the path from origin to a node next to the entrance tile
+   * @param {VehicleGraphNode} origin
+   * @param {Tile} entranceTile
+   * @returns {{entranceTile: Tile, destinationNode: VehicleGraphNode, pathToDestination: VehicleGraphNode[]} | null}
+   */
+  findExitPath(origin, entranceTile) {
+    const { destinationNode, pathToDestination } = this.searchBFS(
+      origin,
+      entranceTile
+    );
+
+    // if by correct setup, there must exist a path to the entrance,
+    // but here we also do the check in case of wrong setup.
+    if (pathToDestination == null) {
+      console.log(
+        `early dispose visitor ${this.name} since did not find a path to entrance`
+      );
+      return null;
+    }
+
+    return {
+      entranceTile: entranceTile,
       destinationNode: destinationNode,
       pathToDestination: pathToDestination,
     };

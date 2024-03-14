@@ -266,6 +266,7 @@ export class City {
       return false;
     }
     const entranceTile = this.findTile(start, filter, maxDistance);
+    return entranceTile;
   }
 
   /**

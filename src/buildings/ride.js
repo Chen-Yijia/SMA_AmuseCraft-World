@@ -111,13 +111,52 @@ export class Ride extends Zone {
    * When the ride run is finished, release the currently loaded visitors.
    * @param {Vehicle[]} loadedVisitors 
    */
-  #releaseVisitors(loadedVisitors) {
-    // **TODO**: implement (reseting the visitor starting and destination)
-    // updated the visited Rides for loadedvisitors
+  #releaseVisitors(loadedVisitors) {    
+    // set a new destination for visitor when released.
     loadedVisitors.forEach(visitor => {
-      visitor.visitedRides.push(this);
-    });
 
+      // update the rides
+      visitor.visitedRides.push(this);
+
+      // try finding the next ride destination for the visitor
+      const nextRideTarget = visitor.findNextRidePath(visitor.origin, visitor.rideTiles);
+
+      if (nextRideTarget == null) {
+      // set the destination to entrance (exit) if no such rides & change the isLeaving state
+        visitor.isLeaving = true;
+        // find the path to exit
+        const exitTarget = visitor.findExitPath(visitor.origin, visitor.entranceTile);
+        if (exitTarget == null) {
+          console.log("could not find path to exit, exit tile: ", visitor.entranceTile);
+          visitor.destination = null; // it will get disposed during the next update cycle
+        }
+        else {
+          console.log(`Sending ${visitor.name} to exit`, exitTarget);
+          visitor.finalDestinationRideNode = exitTarget.destinationNode;
+          visitor.finalDestinationRidceTile = exitTarget.entranceTile;
+          visitor.pathToDestinationRideNode = exitTarget.pathToDestination;
+          visitor.destination = visitor.pathToDestinationRideNode[1];
+        }
+      } else {
+        // set the new destination 
+        console.log("next ride target", nextRideTarget.nextRideTile.building.subType);
+        visitor.finalDestinationRideNode = nextRideTarget.destinationNode;
+        visitor.finalDestinationRideTile = nextRideTarget.nextRideTile;
+        visitor.pathToDestinationRideNode = nextRideTarget.pathToDestination;
+        visitor.destination = visitor.pathToDestinationRideNode[1];
+      }
+
+      // update the position and cycle time & reset isPaused
+      visitor.updateWorldPositions();
+      visitor.cycleStartTime = Date.now();
+      visitor.isPaused = false;
+
+      // revert the mesh style (opacity = 1, visibility = true )
+      visitor.children[0].visible = true;
+    })
+
+
+    // set the loadedVisitors to empty. 
     this.loadedVisitors = [];
   }
   
@@ -161,6 +200,11 @@ export class Ride extends Zone {
     html += '<ul class="info-citizen-list">';
     for (const waitingVisitor of this.waitingVisitors) {
       html += waitingVisitor.toHTML();
+    }
+    html += '</ul>';
+    html += '<ul class="info-citizen-list">';
+    for (const loadedVisitor of this.loadedVisitors) {
+      html += loadedVisitor.toHTML();
     }
     html += '</ul>';
     return html;

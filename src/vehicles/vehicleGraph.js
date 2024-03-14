@@ -195,18 +195,6 @@ export class VehicleGraph extends THREE.Group {
           console.log("creating new visitor");
 
           this.vehicles.add(vehicle);
-
-          // TEMP: for testing ride step purpose.
-          for (let x = 0; x < this.size; x++) {
-            for (let y = 0; y < this.size; y++) {
-              let tile = this.city.getTile(x, y);
-              if (tile.building) {
-                if (tile.building?.type === "ride") {
-                  tile.building.waitingVisitors.push(vehicle);
-                }
-              }
-            }
-          }
         }
       }
     } else {
