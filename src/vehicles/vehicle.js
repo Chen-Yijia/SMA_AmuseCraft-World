@@ -25,6 +25,11 @@ export class Vehicle extends THREE.Group {
     this.leaveTime = Date.now();
 
     /**
+     * @type {number}
+     */
+    this.moneySpent = 0;
+
+    /**
      * @type {string}
      */
     this.visitorType = visitorType;
@@ -546,6 +551,11 @@ export class Vehicle extends THREE.Group {
           <span>
             <img class="info-citizen-icon" src="/public/icons/amusement-park.png">
             ${this.visitedRides.map((ride) => ride.subType).join(", ")} 
+          </span>
+
+          <span>
+            <img class="info-citizen-icon" src="/public/icons/dollar.png">
+            $ ${this.moneySpent} 
           </span>
           
         </span>

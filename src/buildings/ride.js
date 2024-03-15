@@ -118,6 +118,9 @@ export class Ride extends Zone {
       // update the rides
       visitor.visitedRides.push(this);
 
+      // record the money spent
+      visitor.moneySpent += this.ticketPrice;
+
       // try finding the next ride destination for the visitor
       const nextRideTarget = visitor.findNextRidePath(visitor.origin, visitor.rideTiles);
 
