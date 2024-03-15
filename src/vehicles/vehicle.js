@@ -589,29 +589,29 @@ export class Vehicle extends THREE.Group {
       <li class="info-citizen">
         <span class="info-citizen-name">${this.visitorName}</span>
         <br>
-        <span class="info-citizen-details">
-          <span>
+        <div class="info-citizen-details">
+          <div class="info-citizen-details-item">
             <img class="info-citizen-icon" src="/public/icons/age-group.png">
             ${this.visitorType} 
-          </span>
+          </div>
 
-          <span>
+          <div class="info-citizen-details-item">
             <img class="info-citizen-icon" src="/public/icons/dollar.png">
             $ ${this.moneySpent.toFixed(1)} 
-          </span>
-        </span>
+          </div>
+        </div>
 
-        <span class="info-citizen-details">
-          <span>
+        <div class="info-citizen-details">
+          <div class="info-citizen-details-item">
             <img class="info-citizen-icon" src="/public/icons/amusement-park.png">
             ${this.visitedRides.map((ride) => ride.subType).join(", ")} 
-          </span>
+          </div>
 
-          <span>
+          <div class="info-citizen-details-item">
             <img class="info-citizen-icon" src="/public/icons/cutlery.png">
             ${this.visitedStand.map((stand) => stand.subType).join(", ")}
-          </span>
-        </span>
+          </div>
+        </div>
       </li>
     `;
   }

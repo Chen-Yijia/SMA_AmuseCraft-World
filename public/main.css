@@ -318,6 +318,11 @@ h1 {
 .info-citizen-details {
   font-size: 0.9em;
   display: flex;
-  justify-content: flex-start;
-  gap: 16px;
+  flex-flow: row wrap;
+  /* justify-content: flex-start; */
+  /* gap: 16px; */
+}
+
+.info-citizen-details-item {
+  flex: 1 1 30%;
 }
