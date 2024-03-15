@@ -253,10 +253,10 @@ export class Game {
 
   #updateTitleBar() {
     document.getElementById("cost-total").innerHTML =
-      "-$ " + this.city.getTotalCost();
+      "-$ " + this.city.getTotalCost().toFixed(1);
 
     document.getElementById("revenue-total").innerHTML =
-      "$ " + this.city.getTotalRevenue();
+      "$ " + this.city.getTotalRevenue().toFixed(1);
 
     document.getElementById("simulation-time-elapsed").innerHTML =
       this.simulationTime;

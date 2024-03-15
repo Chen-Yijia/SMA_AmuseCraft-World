@@ -270,7 +270,7 @@ export class City {
   }
 
   /**
-   * Find the list of tiles that has a building of ride type
+   * Find the list of tiles that have a building of ride type
    * @param {{x: number, y: number}} start 
    * @param {number} maxDistance 
    * @returns {Tile[]}
@@ -285,6 +285,23 @@ export class City {
     const rideTiles = this.findTileList(start, filter, maxDistance)
 
     return rideTiles;
+  }
+
+  /**
+   * Find the list of tiles that have a building of stand type
+   * @param {{x: number, y: number}}} start 
+   * @param {number} maxDistance 
+   */
+  findStandTileList(start, maxDistance) {
+    const filter = (tile) => {
+      if (tile.building) {
+        return tile.building?.type === "stand";
+      }
+      return false;
+    };
+    const standTiles = this.findTileList(start, filter, maxDistance);
+
+    return standTiles;
   }
 
   /**

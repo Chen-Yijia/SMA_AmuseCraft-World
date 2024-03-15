@@ -11,12 +11,13 @@ export class Ride extends Zone {
 
     this.subType = subType;
 
-    if (this.subType === '') {
+    if (this.subType === "") {
       const rideSubTypes = Object.keys(thrillLevelMapping);
       const i = Math.floor(rideSubTypes.length * Math.random());
       this.subType = rideSubTypes[i];
     }
 
+    this.totalRidership = 0;
     this.accumulatedRevenue = 0;
     this.thrillLevel = config.ride.thrillLevel[this.subType];
     this.installationCost = config.ride.costInstallation[this.subType];
@@ -25,13 +26,12 @@ export class Ride extends Zone {
     this.rideCapacity = config.ride.rideCapacity[this.subType];
 
     this.lastRunTime = 0;
-    
+
     /**
      * The current state of the Ride
      * @type {'idle' | 'in operation'}
      */
-    this.state = 'idle';
-    
+    this.state = "idle";
 
     /**
      * The visitors in the waiting area
@@ -44,7 +44,6 @@ export class Ride extends Zone {
      * @type {Vehicle[]}
      */
     this.loadedVisitors = [];
-
   }
 
   /**
@@ -58,10 +57,13 @@ export class Ride extends Zone {
     if (this.state === "idle") {
       if (this.waitingVisitors.length > 0) {
         // If the ride is idle and have visitors in the waiting area
-        const numberToLoad = Math.min(this.waitingVisitors.length, this.rideCapacity);
+        const numberToLoad = Math.min(
+          this.waitingVisitors.length,
+          this.rideCapacity
+        );
 
         // Move visitors from waiting area to loaded area
-        const visitorsToLoad = this.waitingVisitors.slice(0,numberToLoad);
+        const visitorsToLoad = this.waitingVisitors.slice(0, numberToLoad);
         this.loadedVisitors = visitorsToLoad;
 
         for (let i = 0; i < numberToLoad; i++) {
@@ -70,7 +72,7 @@ export class Ride extends Zone {
 
         // Update the lastRunTime & ride State
         this.lastRunTime = city.currentSimulationTime;
-        this.state = 'in operation';
+        this.state = "in operation";
 
         // Update mesh status
         // TODO: in asset manager, set the material color to indicate it's busy
@@ -79,19 +81,20 @@ export class Ride extends Zone {
     }
 
     // If the ride is in operation
-    if (this.state === 'in operation') {
-      
+    if (this.state === "in operation") {
       if (city.currentSimulationTime >= this.lastRunTime + this.rideDuration) {
         // if the last run has done
 
-        // 1. Record the revenue
-        this.accumulatedRevenue += this.ticketPrice * this.loadedVisitors.length;
+        // 1. Record the revenue & ridership
+        this.accumulatedRevenue +=
+          this.ticketPrice * this.loadedVisitors.length;
+        this.totalRidership += this.loadedVisitors.length;
 
         // Release the visitors **TODO** (reset the visitor starting and destination)
         // 2. reset the visitor starting & destination
-        this.#releaseVisitors(this.loadedVisitors);
+        this.#releaseVisitors();
         // 3. Update the state
-        this.state = 'idle';
+        this.state = "idle";
 
         //Update mesh status
         this.isMeshOutOfDate = true;
@@ -103,46 +106,56 @@ export class Ride extends Zone {
    * Handles any clean up needed before a building is removed
    */
   dispose() {
+    this.#releaseVisitors();
+    this.waitingVisitors = [];
+    this.loadedVisitors = [];
     super.dispose();
   }
 
-
   /**
    * When the ride run is finished, release the currently loaded visitors.
-   * @param {Vehicle[]} loadedVisitors 
    */
-  #releaseVisitors(loadedVisitors) {    
+  #releaseVisitors() {
     // set a new destination for visitor when released.
-    loadedVisitors.forEach(visitor => {
-
-      // update the rides
+    this.loadedVisitors.forEach((visitor) => {
+      // update the visited rides
       visitor.visitedRides.push(this);
 
       // record the money spent
       visitor.moneySpent += this.ticketPrice;
 
       // try finding the next ride destination for the visitor
-      const nextRideTarget = visitor.findNextRidePath(visitor.origin, visitor.rideTiles);
+      const nextRideTarget = visitor.findNextRidePath(
+        visitor.origin,
+        visitor.rideTiles
+      );
 
       if (nextRideTarget == null) {
-      // set the destination to entrance (exit) if no such rides & change the isLeaving state
+        // set the destination to entrance (exit) if no such rides & change the isLeaving state
         visitor.isLeaving = true;
         // find the path to exit
-        const exitTarget = visitor.findExitPath(visitor.origin, visitor.entranceTile);
+        const exitTarget = visitor.findExitPath(
+          visitor.origin,
+          visitor.entranceTile
+        );
         if (exitTarget == null) {
-          console.log("could not find path to exit, exit tile: ", visitor.entranceTile);
+          console.log(
+            "could not find path to exit, exit tile: ",
+            visitor.entranceTile
+          );
           visitor.destination = null; // it will get disposed during the next update cycle
-        }
-        else {
-          console.log(`Sending ${visitor.name} to exit`, exitTarget);
+        } else {
           visitor.finalDestinationRideNode = exitTarget.destinationNode;
           visitor.finalDestinationRidceTile = exitTarget.entranceTile;
           visitor.pathToDestinationRideNode = exitTarget.pathToDestination;
           visitor.destination = visitor.pathToDestinationRideNode[1];
         }
       } else {
-        // set the new destination 
-        console.log("next ride target", nextRideTarget.nextRideTile.building.subType);
+        // set the new destination
+        console.log(
+          "next ride target",
+          nextRideTarget.nextRideTile.building.subType
+        );
         visitor.finalDestinationRideNode = nextRideTarget.destinationNode;
         visitor.finalDestinationRideTile = nextRideTarget.nextRideTile;
         visitor.pathToDestinationRideNode = nextRideTarget.pathToDestination;
@@ -156,14 +169,11 @@ export class Ride extends Zone {
 
       // revert the mesh style (opacity = 1, visibility = true )
       visitor.children[0].visible = true;
-    })
+    });
 
-
-    // set the loadedVisitors to empty. 
+    // set the loadedVisitors to empty.
     this.loadedVisitors = [];
   }
-  
-
 
   /**
    * Returns an HTML representation of this object
@@ -197,19 +207,22 @@ export class Ride extends Zone {
     <span class="info-value">${this.state}</span>
     <br>
     <span class="info-label">Revenue </span>
-    <span class="info-value">$ ${this.accumulatedRevenue}</span>
+    <span class="info-value">$ ${this.accumulatedRevenue.toFixed(1)}</span>
+    <br>
+    <span class="info-label">Total Ridership </span>
+    <span class="info-value">${this.totalRidership} pax</span>
     <br>
     `;
     html += '<ul class="info-citizen-list">';
     for (const waitingVisitor of this.waitingVisitors) {
       html += waitingVisitor.toHTML();
     }
-    html += '</ul>';
+    html += "</ul>";
     html += '<ul class="info-citizen-list">';
     for (const loadedVisitor of this.loadedVisitors) {
       html += loadedVisitor.toHTML();
     }
-    html += '</ul>';
+    html += "</ul>";
     return html;
   }
 }

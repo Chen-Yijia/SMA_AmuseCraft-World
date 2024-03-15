@@ -4,8 +4,6 @@ import config from "../config.js";
 import { AssetManager } from "../assetManager.js";
 import { Tile } from "../tile.js";
 import { Ride } from "../buildings/ride.js";
-import { City } from "../city.js";
-
 const FORWARD = new THREE.Vector3(1, 0, 0);
 
 const visitorThrillLevelMap = {
@@ -15,7 +13,7 @@ const visitorThrillLevelMap = {
 };
 
 export class Vehicle extends THREE.Group {
-  constructor(origin, visitorType, mesh, rideTiles, entranceTile) {
+  constructor(origin, visitorType, mesh, rideTiles, entranceTile, standTiles) {
     super();
 
     this.vistorID = crypto.randomUUID();
@@ -78,6 +76,11 @@ export class Vehicle extends THREE.Group {
     this.entranceTile = entranceTile; // useful when the visitor is going to leave the park
 
     /**
+     * @type {Tile[]}
+     */
+    this.standTiles = standTiles; // useful when walking along the way and deciding if to make a stop at the stand.
+
+    /**
      * @type {boolean}
      */
     this.isPaused = false; // if the visitor enters a ride, pause its mixer and pause updating its position.
@@ -91,6 +94,11 @@ export class Vehicle extends THREE.Group {
      * @type {Ride[]}
      */
     this.visitedRides = [];
+
+    /**
+     * @type {Stand[]}
+     */
+    this.visitedStand = [];
 
     this.pauseStartTime = this.createdTime;
 
@@ -144,10 +152,12 @@ export class Vehicle extends THREE.Group {
    * @param {AssetManager} assetManager
    * @param {Tile[]} rideTiles
    * @param {Tile} entranceTile
+   * @param {Tile[]} standTiles
    */
-  update(assetManager, rideTiles, entranceTile) {
+  update(assetManager, rideTiles, entranceTile, standTiles) {
     this.rideTiles = rideTiles;
     this.entranceTile = entranceTile;
+    this.standTiles = standTiles;
 
     // If the visitor is paused, skip updating.
     if (this.isPaused) {
@@ -209,9 +219,9 @@ export class Vehicle extends THREE.Group {
   }
 
   /**
-   * handle the visitor behaviour when it reaches its destination of a ride or a stand
+   * handle the visitor behaviour when it reaches its destination of a ride
    */
-  handleReachRideOrStand() {
+  handleReachRide() {
     const setFbxOpacity = (opacity) => {
       this.traverse((child) => {
         if (child.isMesh) {
@@ -230,16 +240,6 @@ export class Vehicle extends THREE.Group {
     this.isPaused = true;
     this.pauseStartTime = Date.now();
 
-    // update mixer to remove the mesh -- UPDATE: do not remove the mixer, hide/give opacity to the visitor instead
-    // const thisMesh = this.children[0];
-    // // console.log(thisMesh);
-    // assetManager.mixers = Object.keys(assetManager.mixers)
-    //   .filter((objKey) => objKey !== thisMesh.uuid)
-    //   .reduce((newObj, key) => {
-    //     newObj[key] = assetManager.mixers[key];
-    //     return newObj;
-    //   }, {});
-
     // 3. Apply mesh modifications
     // update opacity (not working)
     setFbxOpacity(0.5);
@@ -249,6 +249,34 @@ export class Vehicle extends THREE.Group {
     // 4. Append the visitor into the Ride
     let targetRideTile = this.finalDestinationRideTile;
     targetRideTile.building.waitingVisitors.push(this);
+  }
+
+  /**
+   * handle the visitor behaviour when it enters a stand
+   * @param {Tile} standTile
+   */
+  handleEnterStand(standTile) {
+    const setFbxOpacity = (opacity) => {
+      this.traverse((child) => {
+        if (child.isMesh) {
+          child.material.opacity = Math.max(0, Math.min(opacity, 1));
+          child.material.transparent = true;
+        }
+      });
+    };
+
+    // 1. set the vehicle pause
+    this.isPaused = true;
+    this.pauseStartTime = Date.now();
+
+    // 2. Apply mesh modifications
+    // update opacity (not working)
+    setFbxOpacity(0.5);
+    // hide the visitor
+    // this.children[0].visible = false;
+
+    // 3. Append the visitor into the Stand
+    standTile.building.loadVisitor(this);
   }
 
   /**
@@ -262,18 +290,83 @@ export class Vehicle extends THREE.Group {
   }
 
   /**
+   * Check if a test node is next to the target tile
+   * @param {VehicleGraphNode} testNode
+   * @param {Tile} targetTile
+   */
+  checkNextToTile(testNode, targetTile) {
+    let testNode_x = testNode.tilePosition.x;
+    let testNode_y = testNode.tilePosition.y;
+    // check left
+    if (testNode_x - 1 === targetTile.x && testNode_y === targetTile.y) {
+      return true;
+    }
+    // check right
+    if (testNode_x + 1 === targetTile.x && testNode_y === targetTile.y) {
+      return true;
+    }
+    // check up
+    if (testNode_x === targetTile.x && testNode_y + 1 === targetTile.y) {
+      return true;
+    }
+    // check bottom
+    if (testNode_x === targetTile.x && testNode_y - 1 === targetTile.y) {
+      return true;
+    }
+    return false;
+  }
+
+  /**
    * Move to next node in the path OR handle reached ride destination
    */
   pickNewDestination() {
+    /**
+     * Check if a node is next to any of standTiles
+     * Return the eligible standTile is has, or return null
+     * @param {VehicleGraphNode} testNode
+     * @returns {{standTile: Tile} | null}
+     */
+    const checkNextToStand = (testNode) => {
+      for (let i = 0; i < this.standTiles.length; i++) {
+        const stand_tile = this.standTiles[i];
+        if (this.checkNextToTile(testNode, stand_tile)) {
+          return { standTile: stand_tile };
+        }
+      }
+
+      return null;
+    };
+
     // Case 1: if there is still node in the pathToDestination
     if (this.pathToDestinationRideNode.length > 0) {
       // Assign destination to origin
       this.origin = this.destination;
       // Shift the pathToDestination
       this.destination = this.pathToDestinationRideNode.shift();
-      // Update position and cycle time
+
+      // Check if this current origin is next to any stand
+      const standTileNextToOrigin = checkNextToStand(this.origin);
+      if (standTileNextToOrigin === null) {
+        // Update position and cycle time
+        this.cycleStartTime = Date.now();
+      } else {
+        const targetStandTile = standTileNextToOrigin.standTile;
+        // Decide if to make a stop
+        // 1. If the visitor has reached the maxStandCount
+        // 2. Random from the "purchase opportunity"
+        if (
+          this.visitedStand.length < config.vehicle.maxStandVisitCount &&
+          Math.random() <= targetStandTile.building.purchaseOpportunity
+        ) {
+          // handle enter stand
+          this.handleEnterStand(targetStandTile);
+        } else {
+          // ignore the stand and continue travelling.
+          this.cycleStartTime = Date.now();
+        }
+      }
+      // Update position
       this.updateWorldPositions();
-      this.cycleStartTime = Date.now();
     }
 
     // Case 2: if has reached the final destination ride, handle reached Ride
@@ -287,14 +380,8 @@ export class Vehicle extends THREE.Group {
       // );
 
       // handle reach the ride node
-      this.handleReachRideOrStand();
+      this.handleReachRide();
     }
-
-    // --------- OUTDATED ---------
-    // this.origin = this.destination;
-    // this.destination = this.origin?.getRandomNextNode();
-    // this.updateWorldPositions();
-    // this.cycleStartTime = Date.now();
   }
 
   /**
@@ -402,46 +489,6 @@ export class Vehicle extends THREE.Group {
    */
   searchBFS(origin, targetRideTile) {
     /**
-     * Check if a test node is next to the target ride tile
-     * @param {VehicleGraphNode} testNode
-     * @param {Tile} targetRideTile
-     * @type {boolean}
-     */
-    const checkNextToRide = (testNode, targetRideTile) => {
-      let testNode_x = testNode.tilePosition.x;
-      let testNode_y = testNode.tilePosition.y;
-      // check left
-      if (
-        testNode_x - 1 === targetRideTile.x &&
-        testNode_y === targetRideTile.y
-      ) {
-        return true;
-      }
-      // check right
-      if (
-        testNode_x + 1 === targetRideTile.x &&
-        testNode_y === targetRideTile.y
-      ) {
-        return true;
-      }
-      // check up
-      if (
-        testNode_x === targetRideTile.x &&
-        testNode_y + 1 === targetRideTile.y
-      ) {
-        return true;
-      }
-      // check bottom
-      if (
-        testNode_x === targetRideTile.x &&
-        testNode_y - 1 === targetRideTile.y
-      ) {
-        return true;
-      }
-      return false;
-    };
-
-    /**
      * @type {{current: VehicleGraphNode, path: VehicleGraphNode[]}}
      */
     let bfsSearchNode = { current: origin, path: [] };
@@ -455,7 +502,7 @@ export class Vehicle extends THREE.Group {
       let path = [...shiftedItem.path];
 
       path.push(currentNode);
-      if (checkNextToRide(currentNode, targetRideTile)) {
+      if (this.checkNextToTile(currentNode, targetRideTile)) {
         return { destinationNode: currentNode, pathToDestination: path };
       }
       if (!exploredNodes.has(currentNode) && currentNode.next.length > 0) {
@@ -549,15 +596,21 @@ export class Vehicle extends THREE.Group {
           </span>
 
           <span>
+            <img class="info-citizen-icon" src="/public/icons/dollar.png">
+            $ ${this.moneySpent.toFixed(1)} 
+          </span>
+        </span>
+
+        <span class="info-citizen-details">
+          <span>
             <img class="info-citizen-icon" src="/public/icons/amusement-park.png">
             ${this.visitedRides.map((ride) => ride.subType).join(", ")} 
           </span>
 
           <span>
-            <img class="info-citizen-icon" src="/public/icons/dollar.png">
-            $ ${this.moneySpent} 
+            <img class="info-citizen-icon" src="/public/icons/cutlery.png">
+            ${this.visitedStand.map((stand) => stand.subType).join(", ")}
           </span>
-          
         </span>
       </li>
     `;

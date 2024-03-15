@@ -12,7 +12,8 @@ export default {
     spawnInterval: 10000,       // How often vehicles are spawned in milliseconds
     probAdult: 0.6,           // probability that the visitor is adult
     probKid: 0.2,             // probability that the visitor is kid
-    probElder: 0.2            // probability that the visitor is elder
+    probElder: 0.2,            // probability that the visitor is elder
+    maxStandVisitCount: 3, // set the max number of stands a visitor can go
   },
   zone: {
     abandonmentThreshold: 10, // Number of days before abandonment
@@ -100,12 +101,40 @@ export default {
       "chinese-restaurant": 600,
       "ice-cream": 200,
     },
-    arpc: { // Average Revenue Per Customer 
+    arpcMean: { // Average Revenue Per Customer 
       "hot-dog": 2,
       "burger": 7,
       "cafe": 8,
-      "chinese-restaurant": 10,
+      "chinese-restaurant": 15,
       "ice-cream": 1,
+    },
+    arpcSd: { // Average Revenue Per Customer 
+      "hot-dog": 0.5,
+      "burger": 1,
+      "cafe": 2,
+      "chinese-restaurant": 4,
+      "ice-cream": 0.2,
+    },
+    purchaseOpportunity: {
+      "hot-dog": 0.3,
+      "burger": 0.2,
+      "cafe": 0.1,
+      "chinese-restaurant": 0.1,
+      "ice-cream": 0.3,
+    },
+    timeToSpendMean: { // in milliseconds
+      "hot-dog": 1,
+      "burger": 5,
+      "cafe": 20,
+      "chinese-restaurant": 30,
+      "ice-cream": 1,
+    },
+    timeToSpendSd: { // in milliseconds
+      "hot-dog": 0.5,
+      "burger": 2,
+      "cafe": 8,
+      "chinese-restaurant": 10,
+      "ice-cream": 0.5,
     }
   }
 }

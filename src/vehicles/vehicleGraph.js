@@ -72,8 +72,14 @@ export class VehicleGraph extends THREE.Group {
       100
     ); // to guarantee find the entrance tile
 
+    // fetch the most updated standTiles
+    const standTiles = this.city.findStandTileList(
+      { x: this.size / 2, y: this.size / 2 },
+      100
+    ); // to find all stand tiles
+
     for (const vehicle of this.vehicles.children) {
-      vehicle.update(this.assetManager, rideTiles, entranceTile);
+      vehicle.update(this.assetManager, rideTiles, entranceTile, standTiles);
     }
   }
 
@@ -181,6 +187,11 @@ export class VehicleGraph extends THREE.Group {
             { x: this.size / 2, y: this.size / 2 },
             100
           ); // to guarantee find the entrance tile
+          // fetch the most updated standTiles
+          const standTiles = this.city.findStandTileList(
+            { x: this.size / 2, y: this.size / 2 },
+            100
+          ); // to find all stand tiles
 
           const vehicle = new Vehicle(
             origin,
@@ -190,6 +201,7 @@ export class VehicleGraph extends THREE.Group {
             // this.assetManager.createRandomVehicleMesh()
             rideTiles,
             entranceTile,
+            standTiles,
           );
 
           console.log("creating new visitor");
