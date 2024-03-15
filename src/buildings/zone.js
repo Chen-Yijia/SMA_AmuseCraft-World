@@ -1,5 +1,5 @@
-import config from '../config.js';
-import { Building } from './building.js';
+import config from "../config.js";
+import { Building } from "./building.js";
 
 /**
  * Represents a zoned building such as residential, commercial or industrial
@@ -8,11 +8,11 @@ export class Zone extends Building {
   constructor(x, y) {
     super(x, y);
     this.rotation = 90 * Math.floor(4 * Math.random());
-    
+
     /**
      * The mesh style to use when rendering
      */
-    this.style = '';
+    this.style = "";
 
     /**
      * True if this zone is abandoned
@@ -45,7 +45,7 @@ export class Zone extends Building {
 
   /**
    * Updates the state of this building by one simulation step
-   * @param {City} city 
+   * @param {City} city
    */
   step(city) {
     super.step(city);
@@ -86,12 +86,16 @@ export class Zone extends Building {
   /**
    * Checks nearby tiles to see if a road is available. This check
    * is only triggered when `refresh()` is called.
-   * @param {City} city 
+   * @param {City} city
    */
   checkRoadAccess(city) {
-    const road = city.findTile(this, (tile) => {
-      return tile.building?.type === 'road'
-    }, config.zone.maxRoadSearchDistance);
+    const road = city.findTile(
+      this,
+      (tile) => {
+        return tile.building?.type === "road";
+      },
+      config.zone.maxRoadSearchDistance
+    );
 
     if (road) {
       this.hasRoadAccess = true;
@@ -107,12 +111,6 @@ export class Zone extends Building {
   toHTML() {
     let html = super.toHTML();
     html += `
-    <span class="info-label">Style </span>
-    <span class="info-value">${this.style}</span>
-    <br>
-    <span class="info-label">Road Access </span>
-    <span class="info-value">${this.hasRoadAccess}</span>
-    <br>
     `;
     // html += `
     // <span class="info-label">Style </span>

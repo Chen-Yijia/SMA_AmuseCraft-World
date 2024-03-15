@@ -286,8 +286,11 @@ h1 {
 }
 
 .info-citizen-list {
+  margin-top: -4px;
   list-style-type: none;
   padding: 0;
+  max-height: 150px;
+  overflow-y: auto;
 }
 
 .info-citizen {
@@ -300,7 +303,7 @@ h1 {
 }
 
 .info-citizen-name {
-  font-size: 1.1em;
+  font-size: 0.8em;
 }
 
 .info-citizen-icon {
@@ -313,7 +316,7 @@ h1 {
 }
 
 .info-citizen-details {
-  font-size: 1em;
+  font-size: 0.9em;
   display: flex;
   justify-content: flex-start;
   gap: 16px;

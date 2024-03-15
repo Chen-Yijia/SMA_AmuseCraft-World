@@ -13,19 +13,19 @@ export class Building {
      * Name of the building
      * @type {string}
      */
-    this.name = 'Untitled';
+    this.name = "Untitled";
 
     /**
      * The building type
      * @type {string}
      */
-    this.type = 'building';
+    this.type = "building";
 
     /**
      * The building subtype
      * @type {string}
      */
-    this.subType = '';
+    this.subType = "";
 
     /**
      * True if the mesh is out of date and needs to be regenerated
@@ -46,23 +46,20 @@ export class Building {
 
   /**
    * Performs a full refresh of the building state
-   * @param {City} city 
+   * @param {City} city
    */
-  refresh(city) {
-  }
+  refresh(city) {}
 
   /**
    * Updates the state of this building by one simulation step
-   * @param {City} city 
+   * @param {City} city
    */
-  step(city) {
-  }
+  step(city) {}
 
   /**
    * Handles any clean up needed before a building is removed
    */
-  dispose() {
-  }
+  dispose() {}
 
   /**
    * Returns an HTML representation of this object
@@ -71,9 +68,6 @@ export class Building {
   toHTML() {
     let html = `
       <div class="info-heading">Building</div>
-      <span class="info-label">Name </span>
-      <span class="info-value">${this.name}</span>
-      <br>
       <span class="info-label">Type </span>
       <span class="info-value">${this.type}</span>
       <br>

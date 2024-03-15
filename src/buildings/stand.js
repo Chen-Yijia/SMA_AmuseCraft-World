@@ -1,9 +1,9 @@
-import { Citizen } from '../citizens.js';
-import { City } from '../city.js';
-import config from '../config.js';
-import { Vehicle } from '../vehicles/vehicle.js';
-import { Zone } from './zone.js';
-import { gaussianRandom } from '../utils.js';
+import { Citizen } from "../citizens.js";
+import { City } from "../city.js";
+import config from "../config.js";
+import { Vehicle } from "../vehicles/vehicle.js";
+import { Zone } from "./zone.js";
+import { gaussianRandom } from "../utils.js";
 
 const standElements = [
   "hot-dog",
@@ -17,10 +17,10 @@ export class Stand extends Zone {
   constructor(x, y, subType) {
     super(x, y);
     this.name = "stand";
-    this.type = 'stand';
+    this.type = "stand";
     this.subType = subType;
 
-    if (this.subType === '') {
+    if (this.subType === "") {
       const standSubTypes = Object.entries(standElements).map((x) => x[1]);
       const i = Math.floor(standSubTypes.length * Math.random());
       this.subType = standSubTypes[i];
@@ -51,13 +51,13 @@ export class Stand extends Zone {
 
   /**
    * Steps the state of the zone forward in time by one simulation step
-   * @param {City} city 
+   * @param {City} city
    */
   step(city) {
     super.step(city);
 
     // load the waiting visitors
-    this.waitingVisitors.forEach(waiting_visitor => {
+    this.waitingVisitors.forEach((waiting_visitor) => {
       waiting_visitor.enterTime = city.currentSimulationTime;
       this.loadedVisitors.push(waiting_visitor);
     });
@@ -67,25 +67,39 @@ export class Stand extends Zone {
     var i = this.loadedVisitors.length;
     while (i--) {
       let currentVisitor = this.loadedVisitors[i];
-      if (city.currentSimulationTime >= currentVisitor.enterTime + currentVisitor.stayDuration) {
+      if (
+        city.currentSimulationTime >=
+        currentVisitor.enterTime + currentVisitor.stayDuration
+      ) {
         // record the money spent
         this.accumulatedRevenue += currentVisitor.mealCost;
         this.customerTraffic += 1;
         // release current visitor
         this.#releaseVisitor(currentVisitor);
-        this.loadedVisitors.splice(i, 1); 
+        this.loadedVisitors.splice(i, 1);
       }
     }
   }
 
   /**
    * Add visitor to loadedVisitors
-   * @param {Vehicle} visitor 
+   * @param {Vehicle} visitor
    */
   loadVisitor(visitor) {
-    const randomStayDuration = gaussianRandom(this.timeToSpendMean, this.timetoSpendSd);
-    const mealCost = gaussianRandom(this.revenuePerCustomerMean, this.revenuePerCustomerSd);
-    this.waitingVisitors.push({visitor: visitor, enterTime: 0, stayDuration: randomStayDuration, mealCost: mealCost});
+    const randomStayDuration = gaussianRandom(
+      this.timeToSpendMean,
+      this.timetoSpendSd
+    );
+    const mealCost = gaussianRandom(
+      this.revenuePerCustomerMean,
+      this.revenuePerCustomerSd
+    );
+    this.waitingVisitors.push({
+      visitor: visitor,
+      enterTime: 0,
+      stayDuration: randomStayDuration,
+      mealCost: mealCost,
+    });
   }
 
   /**
@@ -96,21 +110,20 @@ export class Stand extends Zone {
     super.dispose();
   }
 
-
   #releaseAllVisitors() {
-    this.loadedVisitors.forEach(loaded_visitor => {
+    this.loadedVisitors.forEach((loaded_visitor) => {
       this.#releaseVisitor(loaded_visitor);
     });
-    this.waitingVisitors.forEach(waiting_visitor => {
+    this.waitingVisitors.forEach((waiting_visitor) => {
       this.#releaseVisitor(waiting_visitor);
     });
     this.loadedVisitors = [];
-    this.waitingVisitors = []
+    this.waitingVisitors = [];
   }
 
   /**
    * Release the visitor who has finished the meal
-   * @param {{visitor: Vehicle, stayDuration: number, mealCost: number}} loadedVisitor 
+   * @param {{visitor: Vehicle, stayDuration: number, mealCost: number}} loadedVisitor
    */
   #releaseVisitor(loadedVisitor) {
     // update the visited stands
@@ -139,13 +152,14 @@ export class Stand extends Zone {
     <span class="info-value">$ ${this.installationCost}</span>
     <br>
     <span class="info-label">Average / SD of Revenue per Visitor </span>
-    <span class="info-value">$ ${this.revenuePerCustomerMean}  /  $ ${this.revenuePerCustomerSd}</span>
+    <span class="info-value">$ ${this.revenuePerCustomerMean}  /  $ ${
+      this.revenuePerCustomerSd
+    }</span>
     <br>
     <span class="info-label">Average / SD of Time to Spend </span>
-    <span class="info-value">${this.timeToSpendMean}  /  ${this.timetoSpendSd} mins</span>
-    <br>
-    <span class="info-label">Number of Loaded Visitors </span>
-    <span class="info-value">${this.loadedVisitors.length} pax</span>
+    <span class="info-value">${this.timeToSpendMean}  /  ${
+      this.timetoSpendSd
+    } mins</span>
     <br>
     <span class="info-label">Stop By opportunity </span>
     <span class="info-value">${this.purchaseOpportunity * 100} %</span>
@@ -156,17 +170,27 @@ export class Stand extends Zone {
     <span class="info-label">Total Customer Traffic </span>
     <span class="info-value">${this.customerTraffic} pax</span>
     <br>
-    `
-    html += '<ul class="info-citizen-list">';
-    for (const loadedVisitor of this.loadedVisitors) {
-      html += loadedVisitor.visitor.toHTML();
+    `;
+    if (this.loadedVisitors.length > 0) {
+      html += `
+      <div class="info-heading">Visitors Loaded ( ${this.loadedVisitors.length} pax )</div>`;
+      html += '<ul class="info-citizen-list">';
+      for (const loadedVisitor of this.loadedVisitors) {
+        html += loadedVisitor.visitor.toHTML();
+      }
+      html += "</ul>";
     }
-    html += '</ul>';
-    html += '<ul class="info-citizen-list">';
-    for (const waitingVisitor of this.waitingVisitors) {
-      html += waitingVisitor.visitor.toHTML();
+
+    if (this.waitingVisitors.length > 0) {
+      html += `
+      <div class="info-heading">Visitors Waiting ( ${this.waitingVisitors.length} pax )</div>`;
+      html += '<ul class="info-citizen-list">';
+      for (const waitingVisitor of this.waitingVisitors) {
+        html += waitingVisitor.visitor.toHTML();
+      }
+      html += "</ul>";
     }
-    html += '</ul>';
+
     return html;
   }
 }
