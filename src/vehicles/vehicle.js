@@ -91,6 +91,11 @@ export class Vehicle extends THREE.Group {
     this.isLeaving = false; // if the next destination of the visitor is the entrance and leave the space.
 
     /**
+     * @type {boolean}
+     */
+    this.exitWithNoTolerance = false; // if the visitor leaves due to lack of tolerance for waiting time
+
+    /**
      * @type {Ride[]}
      */
     this.visitedRides = [];
@@ -419,12 +424,27 @@ export class Vehicle extends THREE.Group {
 
     // filter for matching thrill levels
     const targetThrillLevels = visitorThrillLevelMap[this.visitorType];
-    const targetRideTiles = notVisitedRideTiles.filter((ride_tile) =>
+    const profileRideTiles = notVisitedRideTiles.filter((ride_tile) =>
       targetThrillLevels.includes(ride_tile.building.thrillLevel)
     );
-    if (targetRideTiles.length == 0) {
+    if (profileRideTiles.length == 0) {
       console.log(
         `early return find next ride for ${this.name} -- no target thrill level rides.`
+      );
+      return null;
+    }
+
+    console.log(profileRideTiles);
+    // filter for within wait time tolerance
+    const targetRideTiles = profileRideTiles.filter(
+      (ride_tile) =>
+        ride_tile.building.waitTime < config.vehicle.maxWaitTolerance
+    );
+    console.log(targetRideTiles);
+    if (targetRideTiles.length == 0) {
+      this.exitWithNoTolerance = true;
+      console.log(
+        `early return find next ride for ${this.name} -- all rides exceed waiting tolerance.`
       );
       return null;
     }

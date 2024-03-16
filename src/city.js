@@ -1,5 +1,5 @@
-import { createBuilding } from './buildings/buildingFactory.js';
-import { Tile } from './tile.js';
+import { createBuilding } from "./buildings/buildingFactory.js";
+import { Tile } from "./tile.js";
 
 export class City {
   constructor(size) {
@@ -23,9 +23,9 @@ export class City {
         column.push(tile);
       }
       this.tiles.push(column);
-    }  
+    }
   }
- 
+
   /** Returns the tile at the coordinates. If the coordinates
    * are out of bounds, then `null` is returned.
    * @param {number} x The x-coordinate of the tile
@@ -33,9 +33,14 @@ export class City {
    * @returns {Tile | null}
    */
   getTile(x, y) {
-    if (x === undefined || y === undefined ||
-        x < 0 ||  y < 0 ||  
-        x >= this.size ||  y >= this.size) {
+    if (
+      x === undefined ||
+      y === undefined ||
+      x < 0 ||
+      y < 0 ||
+      x >= this.size ||
+      y >= this.size
+    ) {
       return null;
     } else {
       return this.tiles[x][y];
@@ -62,8 +67,10 @@ export class City {
         if (tile.building) {
           if (tile.building.type === "road") {
             cost += tile.building.cost;
-          }
-          else if (tile.building.type === "ride" || tile.building.type === "stand") {
+          } else if (
+            tile.building.type === "ride" ||
+            tile.building.type === "stand"
+          ) {
             cost += tile.building.installationCost;
           }
         }
@@ -71,7 +78,6 @@ export class City {
     }
     return cost;
   }
-
 
   getTotalRevenue() {
     let revenue = 0;
@@ -89,14 +95,13 @@ export class City {
     return revenue;
   }
 
-  
   /**
    * Places a building at the specified coordinates if the
    * tile does not already have a building on it
-   * @param {number} x 
-   * @param {number} y 
-   * @param {string} buildingType 
-   * @param {string} specificBuildingType 
+   * @param {number} x
+   * @param {number} y
+   * @param {string} buildingType
+   * @param {string} specificBuildingType
    */
   placeBuilding(x, y, buildingType, specificBuildingType) {
     const tile = this.getTile(x, y);
@@ -116,7 +121,7 @@ export class City {
 
   /**
    * Bulldozes the building at the specified coordinates
-   * @param {number} x 
+   * @param {number} x
    * @param {number} y
    */
   bulldoze(x, y) {
@@ -136,7 +141,7 @@ export class City {
 
   /**
    * Update the state of each tile in the city
-   * @param {number} currentSimulationTime 
+   * @param {number} currentSimulationTime
    */
   step(currentSimulationTime) {
     // Update the current time
@@ -156,7 +161,7 @@ export class City {
         const tile = this.getTile(x, y);
         const residents = tile.building?.residents;
         if (residents) {
-          residents.forEach(resident => resident.step(this));
+          residents.forEach((resident) => resident.step(this));
         }
       }
     }
@@ -196,7 +201,7 @@ export class City {
       // Add this tiles neighbor's to the search list
       tilesToSearch.push(...this.getTileNeighbors(tile.x, tile.y));
 
-      // If this tile passes the criteria 
+      // If this tile passes the criteria
       if (filter(tile)) {
         return tile;
       }
@@ -204,7 +209,6 @@ export class City {
 
     return null;
   }
-
 
   /**
    * Finds the list of tiles where the criteria are true
@@ -242,7 +246,7 @@ export class City {
       // Add this tiles neighbor's to the search list
       tilesToSearch.push(...this.getTileNeighbors(tile.x, tile.y));
 
-      // If this tile passes the criteria 
+      // If this tile passes the criteria
       if (filter(tile)) {
         targetTiles.push(tile);
       }
@@ -251,28 +255,27 @@ export class City {
     return targetTiles;
   }
 
-
   /**
    * Find the entrance tile
-   * @param {{x: number, y: number}} start 
-   * @param {number} maxDistance 
+   * @param {{x: number, y: number}} start
+   * @param {number} maxDistance
    * @returns {Tile}
    */
   findEntranceTile(start, maxDistance) {
     const filter = (tile) => {
       if (tile.building) {
-        return tile.building?.type === "entrance"
+        return tile.building?.type === "entrance";
       }
       return false;
-    }
+    };
     const entranceTile = this.findTile(start, filter, maxDistance);
     return entranceTile;
   }
 
   /**
    * Find the list of tiles that have a building of ride type
-   * @param {{x: number, y: number}} start 
-   * @param {number} maxDistance 
+   * @param {{x: number, y: number}} start
+   * @param {number} maxDistance
    * @returns {Tile[]}
    */
   findRideTileList(start, maxDistance) {
@@ -282,15 +285,20 @@ export class City {
       }
       return false;
     };
-    const rideTiles = this.findTileList(start, filter, maxDistance)
+    const rideTiles = this.findTileList(start, filter, maxDistance);
+
+    // update the waiting time of the rideTiles
+    rideTiles.forEach((ride_tile) => {
+      ride_tile.building.updateWaitingTime(this);
+    });
 
     return rideTiles;
   }
 
   /**
    * Find the list of tiles that have a building of stand type
-   * @param {{x: number, y: number}}} start 
-   * @param {number} maxDistance 
+   * @param {{x: number, y: number}}} start
+   * @param {number} maxDistance
    */
   findStandTileList(start, maxDistance) {
     const filter = (tile) => {
@@ -306,42 +314,42 @@ export class City {
 
   /**
    * Find the list of tiles that belong to a specified thrill level
-   * @param {{x: number, y: number}} start 
-   * @param {string} thrillLevel 
-   * @param {number} maxDistance 
+   * @param {{x: number, y: number}} start
+   * @param {string} thrillLevel
+   * @param {number} maxDistance
    * @returns {Tile[]}
    */
-  findRideTileListThrillLevel(start, thrillLevel,maxDistance) {
+  findRideTileListThrillLevel(start, thrillLevel, maxDistance) {
     const filter = (tile) => {
       if (tile.building) {
         if (tile.building?.type === "ride") {
           return tile.building?.thrillLevel === thrillLevel;
-        } ;
+        }
       }
       return false;
     };
-    const rideTiles = this.findTileList(start, filter, maxDistance)
+    const rideTiles = this.findTileList(start, filter, maxDistance);
 
     return rideTiles;
   }
 
-    /**
+  /**
    * Find the list of tiles that has a building of stand type
-   * @param {{x: number, y: number}} start 
-   * @param {number} maxDistance 
+   * @param {{x: number, y: number}} start
+   * @param {number} maxDistance
    * @returns {Tile[]}
    */
-    findStandTileList(start, maxDistance) {
-      const filter = (tile) => {
-        if (tile.building) {
-          return tile.building?.type === "stand";
-        }
-        return false;
-      };
-      const rideTiles = this.findTileList(start, filter, maxDistance)
-  
-      return rideTiles;
-    }
+  findStandTileList(start, maxDistance) {
+    const filter = (tile) => {
+      if (tile.building) {
+        return tile.building?.type === "stand";
+      }
+      return false;
+    };
+    const rideTiles = this.findTileList(start, filter, maxDistance);
+
+    return rideTiles;
+  }
 
   /**
    * Finds and returns the neighbors of this tile

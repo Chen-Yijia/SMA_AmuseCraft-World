@@ -12,7 +12,7 @@ export class Ride extends Zone {
     this.subType = subType;
 
     if (this.subType === "") {
-      const rideSubTypes = Object.keys(thrillLevelMapping);
+      const rideSubTypes = Object.keys(config.ride.thrillLevel);
       const i = Math.floor(rideSubTypes.length * Math.random());
       this.subType = rideSubTypes[i];
     }
@@ -26,6 +26,12 @@ export class Ride extends Zone {
     this.rideCapacity = config.ride.rideCapacity[this.subType];
 
     this.lastRunTime = 0;
+
+    /**
+     * The expected waiting time if a visitor joins the queue now.
+     * @type {number}
+     */
+    this.waitTime = 0;
 
     /**
      * The current state of the Ride
@@ -44,6 +50,27 @@ export class Ride extends Zone {
      * @type {Vehicle[]}
      */
     this.loadedVisitors = [];
+  }
+
+  /**
+   * Get the waiting time of the ride for a visitor to join the waiting queue.
+   * @param {City} city
+   */
+  updateWaitingTime(city) {
+    var waitingTime = 0;
+    // waiting time results from remaining operation time (if "in_operation")
+    if (this.state === "in operation") {
+      let remainingTime =
+        this.rideDuration - (city.currentSimulationTime - this.lastRunTime);
+      waitingTime += remainingTime;
+    }
+
+    // waiting time results from the people in front of you waiting
+    let numRunsBefore = Math.floor(
+      this.waitingVisitors.length / this.rideCapacity
+    );
+    waitingTime += numRunsBefore * this.rideDuration;
+    this.waitTime = waitingTime;
   }
 
   /**
@@ -262,6 +289,9 @@ export class Ride extends Zone {
     <br>
     <span class="info-label">Ride Status </span>
     <span class="info-value">${this.state}</span>
+    <br>
+    <span class="info-label">Expected Waiting Time </span>
+    <span class="info-value">${this.waitTime} mins</span>
     <br>
     <span class="info-label">Revenue </span>
     <span class="info-value">$ ${this.accumulatedRevenue.toFixed(1)}</span>
