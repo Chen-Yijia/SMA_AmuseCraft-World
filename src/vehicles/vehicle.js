@@ -4,6 +4,7 @@ import config from "../config.js";
 import { AssetManager } from "../assetManager.js";
 import { Tile } from "../tile.js";
 import { Ride } from "../buildings/ride.js";
+import { VehicleGraph } from "./vehicleGraph.js";
 const FORWARD = new THREE.Vector3(1, 0, 0);
 
 const visitorThrillLevelMap = {
@@ -158,8 +159,9 @@ export class Vehicle extends THREE.Group {
    * @param {Tile[]} rideTiles
    * @param {Tile} entranceTile
    * @param {Tile[]} standTiles
+   * @param {VehicleGraph} vehicleGraph
    */
-  update(assetManager, rideTiles, entranceTile, standTiles) {
+  update(assetManager, rideTiles, entranceTile, standTiles, vehicleGraph) {
     this.rideTiles = rideTiles;
     this.entranceTile = entranceTile;
     this.standTiles = standTiles;
@@ -170,6 +172,9 @@ export class Vehicle extends THREE.Group {
     }
 
     if (!this.origin || !this.destination) {
+      if (this.exitWithNoTolerance) {
+        vehicleGraph.totalAngryVisitors += 1;
+      }
       this.dispose(assetManager);
       return;
     }
@@ -186,6 +191,9 @@ export class Vehicle extends THREE.Group {
       if (this.isLeaving) {
         if (this.pathToDestinationRideNode.length === 0) {
           this.leaveTime = Date.now();
+          if (this.exitWithNoTolerance) {
+            vehicleGraph.totalAngryVisitors += 1;
+          }
           this.dispose(assetManager);
           return;
         } else {

@@ -232,6 +232,14 @@ h1 {
   filter: brightness(0) invert(1);
 }
 
+#person-angry-icon {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  top: 4px;
+  filter: brightness(0) invert(1);
+}
+
 #simulation-time-elapsed {
   margin-left: 8px;
 }

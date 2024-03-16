@@ -262,5 +262,8 @@ export class Game {
 
     document.getElementById("visitor-created-total").innerHTML =
       this.sceneManager.vehicleGraph.totalVisitorCreated;
+
+    document.getElementById("visitor-angry-exit-total").innerHTML =
+      this.sceneManager.vehicleGraph.totalAngryVisitors;
   }
 }

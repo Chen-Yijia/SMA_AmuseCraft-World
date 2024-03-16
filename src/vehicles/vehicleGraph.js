@@ -46,6 +46,12 @@ export class VehicleGraph extends THREE.Group {
     this.totalVisitorCreated = 0;
 
     /**
+     * Total number of visitors exit with no tolerance
+     * @type {number}
+     */
+    this.totalAngryVisitors = 0;
+
+    /**
      * @type {VehicleGraphHelper}
      */
     this.helper = new VehicleGraphHelper(); // to visualise the nodes/direction
@@ -86,7 +92,13 @@ export class VehicleGraph extends THREE.Group {
     ); // to find all stand tiles
 
     for (const vehicle of this.vehicles.children) {
-      vehicle.update(this.assetManager, rideTiles, entranceTile, standTiles);
+      vehicle.update(
+        this.assetManager,
+        rideTiles,
+        entranceTile,
+        standTiles,
+        this
+      );
     }
   }
 
