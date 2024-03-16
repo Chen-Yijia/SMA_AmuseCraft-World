@@ -238,7 +238,6 @@ export class Game {
           this.sceneManager.applyChanges(this.city);
         }
       }
-
     }
   }
 
@@ -260,5 +259,8 @@ export class Game {
 
     document.getElementById("simulation-time-elapsed").innerHTML =
       this.simulationTime;
+
+    document.getElementById("visitor-created-total").innerHTML =
+      this.sceneManager.vehicleGraph.totalVisitorCreated;
   }
 }

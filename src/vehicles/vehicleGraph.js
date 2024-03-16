@@ -40,6 +40,12 @@ export class VehicleGraph extends THREE.Group {
     this.add(this.vehicles);
 
     /**
+     * Total number of visitors created.
+     * @type {number}
+     */
+    this.totalVisitorCreated = 0;
+
+    /**
      * @type {VehicleGraphHelper}
      */
     this.helper = new VehicleGraphHelper(); // to visualise the nodes/direction
@@ -218,6 +224,7 @@ export class VehicleGraph extends THREE.Group {
           console.log("creating new visitor");
 
           this.vehicles.add(vehicle);
+          this.totalVisitorCreated += 1;
         }
       }
     } else {

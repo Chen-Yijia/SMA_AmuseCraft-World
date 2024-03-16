@@ -434,13 +434,11 @@ export class Vehicle extends THREE.Group {
       return null;
     }
 
-    console.log(profileRideTiles);
     // filter for within wait time tolerance
     const targetRideTiles = profileRideTiles.filter(
       (ride_tile) =>
         ride_tile.building.waitTime < config.vehicle.maxWaitTolerance
     );
-    console.log(targetRideTiles);
     if (targetRideTiles.length == 0) {
       this.exitWithNoTolerance = true;
       console.log(
