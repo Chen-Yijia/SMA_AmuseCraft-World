@@ -37,6 +37,8 @@ h1 {
   box-shadow: 0 2px 0 0px #023a71;
 }
 
+
+
 .extended-container {
   position: absolute;
   background-color: #00000048;
@@ -341,4 +343,64 @@ h1 {
 
 .info-citizen-details-item {
   flex: 1 1 30%;
+}
+
+
+.setting-input-container {
+  position: absolute;
+  background-color: #00000048;
+  padding: 8px;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  margin-right: 16px;
+  margin-left: 0px;
+  border-radius: 16px;
+  height: 600px !important;
+  width: 500px;
+  overflow-y: scroll;
+
+  box-shadow: 0 2px 0 0px #023a71;
+
+  /* justify-content: flex-start; */
+  /* visibility: hidden; */
+}
+
+.setting-label {
+  color: white;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
+}
+
+.setting-input {
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
+
+  border: 3px solid #000;
+  border-radius: 5px;
+  /* height: 50px; */
+  line-height: normal;
+  color: #282828;
+  /* display: block; */
+  margin-left: 3px;
+  /* width: 100%; */
+  box-sizing: border-box;
+  user-select: auto;
+  font-size: 15px;
+  padding: 0 6px;
+  padding-left: 12px;
+  :focus{
+      border: 3px solid #5551ff;
+  }
+  
+}
+
+.setting-item {
+  display: flex;
+  flex-flow: row wrap;
+  margin-bottom: 3px;
+}
+
+.setting-item-elements {
+  flex: 1 1 30%;
+  margin: auto;
 }

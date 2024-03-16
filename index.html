@@ -83,40 +83,91 @@
             <img class="toolbar-icon" src="public/icons/stand.png" />
           </button>
 
-          <button id="button-visitor" class="ui-button" data-type="visitor" onclick="game.onToolSelected(event)">
-            <img class="toolbar-icon" src="public/icons/woman.png" />
+          <button id="button-setting" class="ui-button" data-type="setting" onclick="game.onToolSelected(event)">
+            <img class="toolbar-icon" src="public/icons/gear.png" />
           </button>
 
+          <!-- <button id="button-visitor" class="ui-button" data-type="visitor" onclick="game.onToolSelected(event)">
+            <img class="toolbar-icon" src="public/icons/woman.png" />
+          </button> -->
+
          
-
           
-
-          <!-- <button
-              id="button-residential"
-              class="ui-button"
-              data-type="residential"
-              onclick="game.onToolSelected(event)"
-            >
-              <img class="toolbar-icon" src="public/icons/house.png" />
-            </button>
-            <button
-              id="button-commercial"
-              class="ui-button"
-              data-type="commercial"
-              onclick="game.onToolSelected(event)"
-            >
-              <img class="toolbar-icon" src="public/icons/office.png" />
-            </button>
-            <button
-              id="button-industrial"
-              class="ui-button"
-              data-type="industrial"
-              onclick="game.onToolSelected(event)"
-            >
-              <img class="toolbar-icon" src="public/icons/factory.png" />
-            </button> -->
         </div>
         <div style="position: relative;">
+
+          <div class="setting-input-container">
+          <!-- nammaxVehicleCount -->
+           <div class="setting-item">
+            <div class="setting-item-elements">
+              <label for="maxVehicleCount" class="setting-label">Max number of visitors in the scene</label>
+            </div>
+            <div class="setting-item-elements">
+              <input class="setting-input" type="number" id="nammaxVehicleCount" name="maxVehicleCount" required value=20 />
+            </div>
+           </div>
+
+          <!-- maxStandVisitCount -->
+          <div class="setting-item">
+            <div class="setting-item-elements">
+              <label for="maxStandVisitCount" class="setting-label">Max number of stands to visit</label>
+            </div>
+            <div class="setting-item-elements">
+              <input class="setting-input" type="number" id="maxStandVisitCount" name="maxStandVisitCount" required value=3 />
+            </div>
+          </div>
+
+          <!-- maxWaitTolerance -->
+          <div class="setting-item">
+            <div class="setting-item-elements">
+              <label for="maxWaitTolerance" class="setting-label">Max waiting time tolerance</label>
+            </div>
+            <div class="setting-item-elements">
+              <input class="setting-input" type="number" id="maxWaitTolerance" name="maxWaitTolerance" required value=40 />
+            </div>
+          </div>
+
+          <!-- spawn interval -->
+          <div class="setting-item">
+            <div class="setting-item-elements">
+              <div style="color: white; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">Visitor arrival interval (in milliseconds)</div>
+            </div>
+            <div class="setting-item-elements">
+              <div>
+                <label for="spawnIntervalMin" class="setting-label">Min</label>
+                <input class="setting-input" type="number" id="spawnIntervalMin" name="spawnIntervalMin" required value=6000 />
+              </div>
+              <div>
+                <label for="spawnIntervalMax" class="setting-label">Max</label>
+                <input style="margin-left: 0px;" class="setting-input" type="number" id="spawnIntervalMax" name="spawnIntervalMax" required value=14000 />
+              </div>
+            </div>
+          </div>
+
+          <!-- visitor profile -->
+          <div class="setting-item">
+            <div class="setting-item-elements">
+              <div style="color: white; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">Probability of each visitor profile</div>
+            </div>
+            <div class="setting-item-elements">
+              <div>
+                <label for="probAdult" class="setting-label">Adult</label>
+                <input class="setting-input" type="number" id="probAdult" name="probAdult" required value=0.6 />
+              </div>
+              <div>
+                <label for="probKid" class="setting-label">Kid</label>
+                <input style="margin-left: 17px;" class="setting-input" type="number" id="probKid" name="probKid" required value=0.2 />
+              </div>
+              <div>
+                <label for="probElder" class="setting-label">Elder</label>
+                <input style="margin-left: 5px;" class="setting-input" type="number" id="probElder" name="probElder" required value=0.2 />
+              </div>
+            </div>
+          </div>
+
+
+
+          </div>
 
 
           <div id="ride-tool-kit-list" class="extended-container">
