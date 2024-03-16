@@ -56,7 +56,8 @@ export class VehicleGraph extends THREE.Group {
 
     this.helper.update(this);
 
-    setInterval(this.spawnVehicle.bind(this), config.vehicle.spawnInterval);
+    this.spawnVehicle();
+    // setInterval(this.spawnVehicle.bind(this), config.vehicle.spawnInterval);
   }
 
   updateVehicles() {
@@ -150,6 +151,16 @@ export class VehicleGraph extends THREE.Group {
   }
 
   spawnVehicle() {
+    // random spawn interval from uniform distribution
+    var randomSpawnInterval = Math.floor(
+      Math.random() *
+        (config.vehicle.spawnIntervalMax -
+          config.vehicle.spawnIntervalMin +
+          1) +
+        config.vehicle.spawnIntervalMin
+    );
+    console.log("Wait for " + randomSpawnInterval / 1000 + " seconds");
+    setTimeout(this.spawnVehicle.bind(this), randomSpawnInterval);
     if (this.city.currentSimulationTime === 0 || !this.city.simulatedStarted) {
       return;
     }
