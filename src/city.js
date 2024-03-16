@@ -273,7 +273,29 @@ export class City {
   }
 
   /**
-   * Find the list of tiles that have a building of ride type
+   * Find the list of tiles that are next to entrance and are end tiles
+   * @param {Tile} entranceTile
+   */
+  findEndTileNextToEntranceList(entranceTile) {
+    const entranceTileNeighbours = this.getTileNeighbors(
+      entranceTile.x,
+      entranceTile.y
+    );
+    var validExitTiles = [];
+    entranceTileNeighbours.forEach((tile) => {
+      if (tile.building) {
+        if (tile.building.type === "road") {
+          if (tile.building.style === "end") {
+            validExitTiles.push(tile);
+          }
+        }
+      }
+    });
+    return validExitTiles;
+  }
+
+  /**
+   * Find the list of tiles that have a building of ride type & has road access
    * @param {{x: number, y: number}} start
    * @param {number} maxDistance
    * @returns {Tile[]}
@@ -281,7 +303,7 @@ export class City {
   findRideTileList(start, maxDistance) {
     const filter = (tile) => {
       if (tile.building) {
-        return tile.building?.type === "ride";
+        return tile.building?.type === "ride" && tile.building.hasRoadAccess;
       }
       return false;
     };
@@ -296,14 +318,14 @@ export class City {
   }
 
   /**
-   * Find the list of tiles that have a building of stand type
+   * Find the list of tiles that have a building of stand type & has road access
    * @param {{x: number, y: number}}} start
    * @param {number} maxDistance
    */
   findStandTileList(start, maxDistance) {
     const filter = (tile) => {
       if (tile.building) {
-        return tile.building?.type === "stand";
+        return tile.building?.type === "stand" && tile.building.hasRoadAccess;
       }
       return false;
     };

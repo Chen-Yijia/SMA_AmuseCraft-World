@@ -162,7 +162,7 @@ export class Ride extends Zone {
         // find the path to exit
         const exitTarget = visitor.findExitPath(
           visitor.origin,
-          visitor.entranceTile
+          visitor.exitTiles
         );
         if (exitTarget == null) {
           console.log(
@@ -172,7 +172,7 @@ export class Ride extends Zone {
           visitor.destination = null; // it will get disposed during the next update cycle
         } else {
           visitor.finalDestinationRideNode = exitTarget.destinationNode;
-          visitor.finalDestinationRidceTile = exitTarget.entranceTile;
+          visitor.finalDestinationRidceTile = exitTarget.exitTile;
           visitor.pathToDestinationRideNode = exitTarget.pathToDestination;
           visitor.destination = visitor.pathToDestinationRideNode[1];
         }
@@ -226,7 +226,7 @@ export class Ride extends Zone {
         // find the path to exit
         const exitTarget = visitor.findExitPath(
           visitor.origin,
-          visitor.entranceTile
+          visitor.exitTiles
         );
         if (exitTarget == null) {
           console.log(
@@ -236,7 +236,7 @@ export class Ride extends Zone {
           visitor.destination = null; // it will get disposed during the next update cycle
         } else {
           visitor.finalDestinationRideNode = exitTarget.destinationNode;
-          visitor.finalDestinationRidceTile = exitTarget.entranceTile;
+          visitor.finalDestinationRidceTile = exitTarget.exitTile;
           visitor.pathToDestinationRideNode = exitTarget.pathToDestination;
           visitor.destination = visitor.pathToDestinationRideNode[1];
         }

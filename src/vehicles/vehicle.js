@@ -14,7 +14,15 @@ const visitorThrillLevelMap = {
 };
 
 export class Vehicle extends THREE.Group {
-  constructor(origin, visitorType, mesh, rideTiles, entranceTile, standTiles) {
+  constructor(
+    origin,
+    visitorType,
+    mesh,
+    rideTiles,
+    entranceTile,
+    standTiles,
+    exitTiles
+  ) {
     super();
 
     this.vistorID = crypto.randomUUID();
@@ -75,6 +83,11 @@ export class Vehicle extends THREE.Group {
      * @type {Tile}
      */
     this.entranceTile = entranceTile; // useful when the visitor is going to leave the park
+
+    /**
+     * @type {Tile[]}
+     */
+    this.exitTiles = exitTiles; // useful when the visitor is going to leave the park
 
     /**
      * @type {Tile[]}
@@ -159,12 +172,21 @@ export class Vehicle extends THREE.Group {
    * @param {Tile[]} rideTiles
    * @param {Tile} entranceTile
    * @param {Tile[]} standTiles
+   * @param {Tile[]} exitTiles
    * @param {VehicleGraph} vehicleGraph
    */
-  update(assetManager, rideTiles, entranceTile, standTiles, vehicleGraph) {
+  update(
+    assetManager,
+    rideTiles,
+    entranceTile,
+    standTiles,
+    exitTiles,
+    vehicleGraph
+  ) {
     this.rideTiles = rideTiles;
     this.entranceTile = entranceTile;
     this.standTiles = standTiles;
+    this.exitTiles = exitTiles;
 
     // If the visitor is paused, skip updating.
     if (this.isPaused) {
@@ -330,6 +352,19 @@ export class Vehicle extends THREE.Group {
   }
 
   /**
+   * check if the tile that the testNode is on is indeed the targetTile
+   * @param {VehicleGraphNode} testNode
+   * @param {Tile} targetTile
+   * @returns {boolean}
+   */
+  checkIsTile(testNode, targetTile) {
+    return (
+      testNode.tilePosition.x === targetTile.x &&
+      testNode.tilePosition.y === targetTile.y
+    );
+  }
+
+  /**
    * Move to next node in the path OR handle reached ride destination
    */
   pickNewDestination() {
@@ -482,38 +517,43 @@ export class Vehicle extends THREE.Group {
   /**
    * Find the entrance tile & the path from origin to a node next to the entrance tile
    * @param {VehicleGraphNode} origin
-   * @param {Tile} entranceTile
-   * @returns {{entranceTile: Tile, destinationNode: VehicleGraphNode, pathToDestination: VehicleGraphNode[]} | null}
+   * @param {Tile[]} exitTiles
+   * @returns {{exitTile: Tile, destinationNode: VehicleGraphNode, pathToDestination: VehicleGraphNode[]} | null}
    */
-  findExitPath(origin, entranceTile) {
-    const { destinationNode, pathToDestination } = this.searchBFS(
-      origin,
-      entranceTile
-    );
+  findExitPath(origin, exitTiles) {
+    // try to find a possible exit
+    for (let i = 0; i < exitTiles.length; i++) {
+      const exitTile = exitTiles[i];
+      const { destinationNode, pathToDestination } = this.searchBFS(
+        origin,
+        exitTile,
+        true
+      );
+      if (pathToDestination != null) {
+        return {
+          exitTile: exitTile,
+          destinationNode: destinationNode,
+          pathToDestination: pathToDestination,
+        };
+      }
+    }
 
     // if by correct setup, there must exist a path to the entrance,
     // but here we also do the check in case of wrong setup.
-    if (pathToDestination == null) {
-      console.log(
-        `early dispose visitor ${this.name} since did not find a path to entrance`
-      );
-      return null;
-    }
-
-    return {
-      entranceTile: entranceTile,
-      destinationNode: destinationNode,
-      pathToDestination: pathToDestination,
-    };
+    console.log(
+      `early dispose visitor ${this.name} since did not find a path to exit`
+    );
+    return null;
   }
 
   /**
    * Run BFS search from origin to targetRideTile
    * @param {VehicleGraphNode} origin
    * @param {Tile} targetRideTile
+   * @param {boolean} [searchExit=false]
    * @returns {{destinationNode: VehicleGraphNode|null, pathToDestination: VehicleGraphNode[]|null}}
    */
-  searchBFS(origin, targetRideTile) {
+  searchBFS(origin, targetRideTile, searchExit = false) {
     /**
      * @type {{current: VehicleGraphNode, path: VehicleGraphNode[]}}
      */
@@ -528,9 +568,17 @@ export class Vehicle extends THREE.Group {
       let path = [...shiftedItem.path];
 
       path.push(currentNode);
-      if (this.checkNextToTile(currentNode, targetRideTile)) {
-        return { destinationNode: currentNode, pathToDestination: path };
+
+      if (searchExit) {
+        if (this.checkIsTile(currentNode, targetRideTile)) {
+          return { destinationNode: currentNode, pathToDestination: path };
+        }
+      } else {
+        if (this.checkNextToTile(currentNode, targetRideTile)) {
+          return { destinationNode: currentNode, pathToDestination: path };
+        }
       }
+
       if (!exploredNodes.has(currentNode) && currentNode.next.length > 0) {
         nodesToSearch.push(
           ...currentNode.next.map((node) => {
