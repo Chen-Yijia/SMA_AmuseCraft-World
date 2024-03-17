@@ -139,6 +139,12 @@ export class Game {
       document.getElementById("stand-tool-kit-list").style.visibility =
         "hidden";
     }
+
+    if (this.activeToolId === "setting") {
+      document.getElementById("setting-kit-list").style.visibility = "visible";
+    } else {
+      document.getElementById("setting-kit-list").style.visibility = "hidden";
+    }
   }
 
   /**

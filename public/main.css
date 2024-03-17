@@ -362,7 +362,7 @@ h1 {
   box-shadow: 0 2px 0 0px #023a71;
 
   /* justify-content: flex-start; */
-  /* visibility: hidden; */
+  visibility: hidden;
 }
 
 .setting-label {
