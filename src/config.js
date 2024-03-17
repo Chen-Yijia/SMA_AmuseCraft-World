@@ -92,7 +92,7 @@ export default {
       "swing-claw": 2,
       "space-adventure": 1,
       rollercoaster: 2,
-      arcade: 2,
+      arcade: 3,
     },
   },
   stand: {

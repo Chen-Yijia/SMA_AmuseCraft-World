@@ -84,7 +84,7 @@
           </button>
 
           <button id="button-setting" class="ui-button" data-type="setting" onclick="game.onToolSelected(event)">
-            <img class="toolbar-icon" src="public/icons/gear.png" />
+            <img class="toolbar-icon" src="public/icons/settings.png" />
           </button>
 
           <!-- <button id="button-visitor" class="ui-button" data-type="visitor" onclick="game.onToolSelected(event)">
@@ -97,6 +97,10 @@
         <div style="position: relative;">
 
           <div class="setting-input-container">
+
+          <!-- visitor setting  -->
+          <div style="color: white; font-size: 1.1em; border-bottom: 3px solid white; margin-bottom: 5px;">Visitor setting</div>
+          
           <!-- nammaxVehicleCount -->
            <div class="setting-item">
             <div class="setting-item-elements">
@@ -166,6 +170,529 @@
           </div>
 
 
+          <!-- ride setting  -->
+          <div style="color: white; font-size: 1.1em; border-bottom: 3px solid white; margin-bottom: 5px; margin-top: 8px; ">Ride setting</div>
+          
+          <!-- circus-tent -->
+          <details>
+            <summary style="color: white; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-weight: 600;">
+              Circus tent
+              <div style="padding-left: 8px; padding-top: 3px;">
+                <img src="public/icons/down-arrow.png" class="setting-expand-icon">
+              </div>
+            </summary>
+            <div>
+              <!-- installation cost  -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="costInstallation-circus-tent" class="setting-label">Installation cost</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="costInstallation-circus-tent" name="costInstallation-circus-tent" required value=2000 />
+                </div>
+              </div>
+
+              <!-- ticket price  -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="ticketPrice-circus-tent" class="setting-label">Ticket price</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="ticketPrice-circus-tent" name="ticketPrice-circus-tent" required value=3 />
+                </div>
+              </div>
+
+              <!-- ride duration -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="rideDuration-circus-tent" class="setting-label">Ride duration</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="rideDuration-circus-tent" name="rideDuration-circus-tent" required value=40 />
+                </div>
+              </div>
+
+              <!-- ride capacity -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="rideCapacity-circus-tent" class="setting-label">Ride capacity</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="rideCapacity-circus-tent" name="rideCapacity-circus-tent" required value=4 />
+                </div>
+              </div>
+            </div>
+
+
+            
+          </details>
+          
+          <!-- water-ride -->
+          <details>
+            <summary style="color: white; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-weight: 600;">
+              Water ride
+              <div style="padding-left: 8px; padding-top: 3px;">
+                <img src="public/icons/down-arrow.png" class="setting-expand-icon">
+              </div>
+            </summary>
+            <div>
+              <!-- installation cost  -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="costInstallation-water-ride" class="setting-label">Installation cost</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="costInstallation-water-ride" name="costInstallation-water-ride" required value=3000 />
+                </div>
+              </div>
+
+              <!-- ticket price  -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="ticketPrice-water-ride" class="setting-label">Ticket price</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="ticketPrice-water-ride" name="ticketPrice-water-ride" required value=5 />
+                </div>
+              </div>
+
+              <!-- ride duration -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="rideDuration-water-ride" class="setting-label">Ride duration</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="rideDuration-water-ride" name="rideDuration-water-ride" required value=10 />
+                </div>
+              </div>
+
+              <!-- ride capacity -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="rideCapacity-water-ride" class="setting-label">Ride capacity</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="rideCapacity-water-ride" name="rideCapacity-water-ride" required value=2 />
+                </div>
+              </div>
+            </div>
+
+
+            
+          </details>
+
+          <!-- bumper-car -->
+          <details>
+            <summary style="color: white; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-weight: 600;">
+              Bumper car
+              <div style="padding-left: 8px; padding-top: 3px;">
+                <img src="public/icons/down-arrow.png" class="setting-expand-icon">
+              </div>
+            </summary>
+            <div>
+              <!-- installation cost  -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="costInstallation-bumper-car" class="setting-label">Installation cost</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="costInstallation-bumper-car" name="costInstallation-bumper-car" required value=2000 />
+                </div>
+              </div>
+
+              <!-- ticket price  -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="ticketPrice-bumper-car" class="setting-label">Ticket price</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="ticketPrice-bumper-car" name="ticketPrice-bumper-car" required value=5 />
+                </div>
+              </div>
+
+              <!-- ride duration -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="rideDuration-bumper-car" class="setting-label">Ride duration</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="rideDuration-bumper-car" name="rideDuration-bumper-car" required value=8 />
+                </div>
+              </div>
+
+              <!-- ride capacity -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="rideCapacity-bumper-car" class="setting-label">Ride capacity</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="rideCapacity-bumper-car" name="rideCapacity-bumper-car" required value=2 />
+                </div>
+              </div>
+            </div>
+
+
+            
+          </details>
+
+          <!-- ferris-wheel -->
+          <details>
+            <summary style="color: white; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-weight: 600;">
+              Ferris wheel
+              <div style="padding-left: 8px; padding-top: 3px;">
+                <img src="public/icons/down-arrow.png" class="setting-expand-icon">
+              </div>
+            </summary>
+            <div>
+              <!-- installation cost  -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="costInstallation-ferris-wheel" class="setting-label">Installation cost</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="costInstallation-ferris-wheel" name="costInstallation-ferris-wheel" required value=3500 />
+                </div>
+              </div>
+
+              <!-- ticket price  -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="ticketPrice-ferris-wheel" class="setting-label">Ticket price</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="ticketPrice-ferris-wheel" name="ticketPrice-ferris-wheel" required value=3 />
+                </div>
+              </div>
+
+              <!-- ride duration -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="rideDuration-ferris-wheel" class="setting-label">Ride duration</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="rideDuration-ferris-wheel" name="rideDuration-ferris-wheel" required value=15 />
+                </div>
+              </div>
+
+              <!-- ride capacity -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="rideCapacity-ferris-wheel" class="setting-label">Ride capacity</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="rideCapacity-ferris-wheel" name="rideCapacity-ferris-wheel" required value=2 />
+                </div>
+              </div>
+            </div>
+
+
+            
+          </details>
+
+          <!-- roundabout  -->
+          <details>
+            <summary style="color: white; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-weight: 600;">
+              Roundabout
+              <div style="padding-left: 8px; padding-top: 3px;">
+                <img src="public/icons/down-arrow.png" class="setting-expand-icon">
+              </div>
+            </summary>
+            <div>
+              <!-- installation cost  -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="costInstallation-roundabout" class="setting-label">Installation cost</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="costInstallation-roundabout" name="costInstallation-roundabout" required value=2500 />
+                </div>
+              </div>
+
+              <!-- ticket price  -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="ticketPrice-roundabout" class="setting-label">Ticket price</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="ticketPrice-roundabout" name="ticketPrice-roundabout" required value=3 />
+                </div>
+              </div>
+
+              <!-- ride duration -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="rideDuration-roundabout" class="setting-label">Ride duration</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="rideDuration-roundabout" name="rideDuration-roundabout" required value=8 />
+                </div>
+              </div>
+
+              <!-- ride capacity -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="rideCapacity-roundabout" class="setting-label">Ride capacity</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="rideCapacity-roundabout" name="rideCapacity-roundabout" required value=1 />
+                </div>
+              </div>           
+          </details>
+
+          <!-- carousel -->
+          <details>
+            <summary style="color: white; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-weight: 600;">
+              Carousel
+              <div style="padding-left: 8px; padding-top: 3px;">
+                <img src="public/icons/down-arrow.png" class="setting-expand-icon">
+              </div>
+            </summary>
+            <div>
+              <!-- installation cost  -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="costInstallation-carousel" class="setting-label">Installation cost</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="costInstallation-carousel" name="costInstallation-carousel" required value=2000 />
+                </div>
+              </div>
+
+              <!-- ticket price  -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="ticketPrice-carousel" class="setting-label">Ticket price</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="ticketPrice-carousel" name="ticketPrice-carousel" required value=3 />
+                </div>
+              </div>
+
+              <!-- ride duration -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="rideDuration-carousel" class="setting-label">Ride duration</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="rideDuration-carousel" name="rideDuration-carousel" required value=5 />
+                </div>
+              </div>
+
+              <!-- ride capacity -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="rideCapacity-carousel" class="setting-label">Ride capacity</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="rideCapacity-carousel" name="rideCapacity-carousel" required value=1 />
+                </div>
+              </div>
+        
+          </details>
+
+          <!-- swing-claw -->
+          <details>
+            <summary style="color: white; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-weight: 600;">
+              Swing claw
+              <div style="padding-left: 8px; padding-top: 3px;">
+                <img src="public/icons/down-arrow.png" class="setting-expand-icon">
+              </div>
+            </summary>
+            <div>
+              <!-- installation cost  -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="costInstallation-swing-claw" class="setting-label">Installation cost</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="costInstallation-swing-claw" name="costInstallation-swing-claw" required value=3000 />
+                </div>
+              </div>
+
+              <!-- ticket price  -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="ticketPrice-swing-claw" class="setting-label">Ticket price</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="ticketPrice-swing-claw" name="ticketPrice-swing-claw" required value=5 />
+                </div>
+              </div>
+
+              <!-- ride duration -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="rideDuration-swing-claw" class="setting-label">Ride duration</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="rideDuration-swing-claw" name="rideDuration-swing-claw" required value=8 />
+                </div>
+              </div>
+
+              <!-- ride capacity -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="rideCapacity-swing-claw" class="setting-label">Ride capacity</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="rideCapacity-swing-claw" name="rideCapacity-swing-claw" required value=2 />
+                </div>
+              </div>
+        
+          </details>
+
+          <!-- space-adventure -->
+          <details>
+            <summary style="color: white; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-weight: 600;">
+              Space adventure
+              <div style="padding-left: 8px; padding-top: 3px;">
+                <img src="public/icons/down-arrow.png" class="setting-expand-icon">
+              </div>
+            </summary>
+            <div>
+              <!-- installation cost  -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="costInstallation-space-adventure" class="setting-label">Installation cost</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="costInstallation-space-adventure" name="costInstallation-space-adventure" required value=2500 />
+                </div>
+              </div>
+
+              <!-- ticket price  -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="ticketPrice-space-adventure" class="setting-label">Ticket price</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="ticketPrice-space-adventure" name="ticketPrice-space-adventure" required value=3 />
+                </div>
+              </div>
+
+              <!-- ride duration -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="rideDuration-space-adventure" class="setting-label">Ride duration</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="rideDuration-space-adventure" name="rideDuration-space-adventure" required value=12 />
+                </div>
+              </div>
+
+              <!-- ride capacity -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="rideCapacity-space-adventure" class="setting-label">Ride capacity</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="rideCapacity-space-adventure" name="rideCapacity-space-adventure" required value=1 />
+                </div>
+              </div>
+        
+          </details>
+
+          <!-- rollercoaster -->
+          <details>
+            <summary style="color: white; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-weight: 600;">
+              Rollercoaster
+              <div style="padding-left: 8px; padding-top: 3px;">
+                <img src="public/icons/down-arrow.png" class="setting-expand-icon">
+              </div>
+            </summary>
+            <div>
+              <!-- installation cost  -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="costInstallation-rollercoaster" class="setting-label">Installation cost</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="costInstallation-rollercoaster" name="costInstallation-rollercoaster" required value=3000 />
+                </div>
+              </div>
+
+              <!-- ticket price  -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="ticketPrice-rollercoaster" class="setting-label">Ticket price</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="ticketPrice-rollercoaster" name="ticketPrice-rollercoaster" required value=5 />
+                </div>
+              </div>
+
+              <!-- ride duration -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="rideDuration-rollercoaster" class="setting-label">Ride duration</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="rideDuration-rollercoaster" name="rideDuration-rollercoaster" required value=8 />
+                </div>
+              </div>
+
+              <!-- ride capacity -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="rideCapacity-rollercoaster" class="setting-label">Ride capacity</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="rideCapacity-rollercoaster" name="rideCapacity-rollercoaster" required value=2 />
+                </div>
+              </div>
+        
+          </details>
+
+          <!-- arcade -->
+          <details>
+            <summary style="color: white; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; font-weight: 600;">
+              Arcade
+              <div style="padding-left: 8px; padding-top: 3px;">
+                <img src="public/icons/down-arrow.png" class="setting-expand-icon">
+              </div>
+            </summary>
+            <div>
+              <!-- installation cost  -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="costInstallation-arcade" class="setting-label">Installation cost</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="costInstallation-arcade" name="costInstallation-arcade" required value=2000 />
+                </div>
+              </div>
+
+              <!-- ticket price  -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="ticketPrice-arcade" class="setting-label">Ticket price</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="ticketPrice-arcade" name="ticketPrice-arcade" required value=3 />
+                </div>
+              </div>
+
+              <!-- ride duration -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="rideDuration-arcade" class="setting-label">Ride duration</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="rideDuration-arcade" name="rideDuration-arcade" required value=20 />
+                </div>
+              </div>
+
+              <!-- ride capacity -->
+              <div class="setting-item">
+                <div class="setting-item-elements">
+                  <label for="rideCapacity-arcade" class="setting-label">Ride capacity</label>
+                </div>
+                <div class="setting-item-elements">
+                  <input class="setting-input" type="number" id="rideCapacity-arcade" name="rideCapacity-arcade" required value=3 />
+                </div>
+              </div>
+        
+          </details>
 
           </div>
 

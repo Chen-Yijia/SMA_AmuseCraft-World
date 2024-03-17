@@ -401,6 +401,32 @@ h1 {
 }
 
 .setting-item-elements {
-  flex: 1 1 30%;
+  flex: 1 1 33%;
   margin: auto;
+}
+
+
+details {
+  user-select: none;
+}
+
+details>summary img.setting-expand-icon {
+  width: 16px;
+  height: 16px;
+  transition: all 0.3s;
+  filter: brightness(0) invert(1);
+  /* margin-left: auto; */
+}
+
+details[open] summary img.setting-expand-icon {
+  transform: rotate(180deg);
+}
+
+summary {
+  display: flex;
+  cursor: pointer;
+}
+
+summary::-webkit-details-marker {
+  display: none;
 }
