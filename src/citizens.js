@@ -1,7 +1,9 @@
-import { CommercialZone } from './buildings/commercialZone.js';
-import { IndustrialZone } from './buildings/industrialZone.js';
-import { ResidentialZone } from './buildings/residentialZone.js';
-import config from './config.js';
+import { CommercialZone } from "./buildings/commercialZone.js";
+import { IndustrialZone } from "./buildings/industrialZone.js";
+import { ResidentialZone } from "./buildings/residentialZone.js";
+import { defaultConfig, updateConfig } from "./config.js";
+
+var config = { ...defaultConfig };
 
 export class Citizen {
   constructor(residence) {
@@ -21,13 +23,13 @@ export class Citizen {
      * Age of the citizen in years
      * @type {number}
      */
-    this.age = 1 + Math.floor(100*Math.random());
+    this.age = 1 + Math.floor(100 * Math.random());
 
     /**
      * The current state of the citizen
      * @type {'idle' | 'school' | 'employed' | 'unemployed' | 'retired'}
      */
-    this.state = 'idle';
+    this.state = "idle";
 
     /**
      * Number of simulation steps in the current state
@@ -53,50 +55,53 @@ export class Citizen {
    * Sets the initial state of the citizen
    */
   #initializeState() {
+    config = { ...updateConfig() };
     if (this.age < config.citizen.minWorkingAge) {
-      this.state = 'school';
+      this.state = "school";
     } else if (this.age >= config.citizen.retirementAge) {
-      this.state = 'retired';
+      this.state = "retired";
     } else {
-      this.state = 'unemployed';
+      this.state = "unemployed";
     }
   }
 
   /**
    * Steps the state of the citizen forward in time by one simulation step
-   * @param {object} city 
+   * @param {object} city
    */
   step(city) {
     switch (this.state) {
-      case 'idle':
-      case 'school':
-      case 'retired':
+      case "idle":
+      case "school":
+      case "retired":
         // Action - None
 
         // Transitions - None
 
         break;
-      case 'unemployed':
+      case "unemployed":
         // Action - Look for a job
         this.workplace = this.#findJob(city);
 
         // Transitions
         if (this.workplace) {
-          this.state = 'employed';
+          this.state = "employed";
         }
 
         break;
-      case 'employed':
+      case "employed":
         // Actions - None
 
         // Transitions
         if (!this.workplace) {
-          this.state = 'unemployed';
+          this.state = "unemployed";
         }
 
         break;
       default:
-        console.error(`Citizen ${this.id} is in an unknown state (${this.state})`);
+        console.error(
+          `Citizen ${this.id} is in an unknown state (${this.state})`
+        );
     }
   }
 
@@ -114,21 +119,28 @@ export class Citizen {
 
   /**
    * Search for a job nearby
-   * @param {object} city 
-   * @returns 
+   * @param {object} city
+   * @returns
    */
   #findJob(city) {
-    const tile = city.findTile(this.residence, (tile) => {
-      // Search for an industrial or commercial building with at least one available job
-      if (tile.building?.type === 'industrial' || 
-          tile.building?.type === 'commercial') {
-        if (tile.building.numberOfJobsAvailable() > 0) {
-          return true;
+    config = { ...updateConfig() };
+    const tile = city.findTile(
+      this.residence,
+      (tile) => {
+        // Search for an industrial or commercial building with at least one available job
+        if (
+          tile.building?.type === "industrial" ||
+          tile.building?.type === "commercial"
+        ) {
+          if (tile.building.numberOfJobsAvailable() > 0) {
+            return true;
+          }
         }
-      }
 
-      return false;
-    }, config.citizen.maxJobSearchDistance);
+        return false;
+      },
+      config.citizen.maxJobSearchDistance
+    );
 
     if (tile) {
       // Employ the citizen at the building
@@ -141,7 +153,7 @@ export class Citizen {
 
   /**
    * Sets the workplace for the citizen
-   * @param {CommercialZone | IndustrialZone} workplace 
+   * @param {CommercialZone | IndustrialZone} workplace
    */
   setWorkplace(workplace) {
     this.workplace = workplace;
@@ -173,23 +185,65 @@ export class Citizen {
 
 function generateRandomName() {
   const firstNames = [
-    'Emma', 'Olivia', 'Ava', 'Sophia', 'Isabella',
-    'Liam', 'Noah', 'William', 'James', 'Benjamin',
-    'Elizabeth', 'Margaret', 'Alice', 'Dorothy', 'Eleanor',
-    'John', 'Robert', 'William', 'Charles', 'Henry',
-    'Alex', 'Taylor', 'Jordan', 'Casey', 'Robin'
+    "Emma",
+    "Olivia",
+    "Ava",
+    "Sophia",
+    "Isabella",
+    "Liam",
+    "Noah",
+    "William",
+    "James",
+    "Benjamin",
+    "Elizabeth",
+    "Margaret",
+    "Alice",
+    "Dorothy",
+    "Eleanor",
+    "John",
+    "Robert",
+    "William",
+    "Charles",
+    "Henry",
+    "Alex",
+    "Taylor",
+    "Jordan",
+    "Casey",
+    "Robin",
   ];
 
   const lastNames = [
-    'Smith', 'Johnson', 'Williams', 'Jones', 'Brown',
-    'Davis', 'Miller', 'Wilson', 'Moore', 'Taylor',
-    'Anderson', 'Thomas', 'Jackson', 'White', 'Harris',
-    'Clark', 'Lewis', 'Walker', 'Hall', 'Young',
-    'Lee', 'King', 'Wright', 'Adams', 'Green'
+    "Smith",
+    "Johnson",
+    "Williams",
+    "Jones",
+    "Brown",
+    "Davis",
+    "Miller",
+    "Wilson",
+    "Moore",
+    "Taylor",
+    "Anderson",
+    "Thomas",
+    "Jackson",
+    "White",
+    "Harris",
+    "Clark",
+    "Lewis",
+    "Walker",
+    "Hall",
+    "Young",
+    "Lee",
+    "King",
+    "Wright",
+    "Adams",
+    "Green",
   ];
 
-  const randomFirstName = firstNames[Math.floor(Math.random() * firstNames.length)];
-  const randomLastName = lastNames[Math.floor(Math.random() * lastNames.length)];
-  
-  return randomFirstName + ' ' + randomLastName;
+  const randomFirstName =
+    firstNames[Math.floor(Math.random() * firstNames.length)];
+  const randomLastName =
+    lastNames[Math.floor(Math.random() * lastNames.length)];
+
+  return randomFirstName + " " + randomLastName;
 }

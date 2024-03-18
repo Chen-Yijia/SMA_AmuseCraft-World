@@ -1,9 +1,11 @@
 import { Citizen } from "../citizens.js";
 import { City } from "../city.js";
-import config from "../config.js";
+import { defaultConfig, updateConfig } from "../config.js";
 import { Vehicle } from "../vehicles/vehicle.js";
 import { Zone } from "./zone.js";
 import { gaussianRandom } from "../utils.js";
+
+var config = { ...defaultConfig };
 
 const standElements = [
   "hot-dog",
@@ -16,6 +18,7 @@ const standElements = [
 export class Stand extends Zone {
   constructor(x, y, subType) {
     super(x, y);
+    config = { ...updateConfig() };
     this.name = "stand";
     this.type = "stand";
     this.subType = subType;

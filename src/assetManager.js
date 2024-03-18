@@ -6,7 +6,6 @@ import { Tile } from "./tile.js";
 import models from "./models.js";
 import animatedModels from "./animatedModels.js";
 import gltfModels from "./gltfModels.js";
-import config from "./config.js";
 
 const DEG2RAD = Math.PI / 180.0;
 
@@ -151,7 +150,7 @@ export class AssetManager {
 
   /**
    * Creates a new random visitor mesh
-   * @param {string} visitorType 
+   * @param {string} visitorType
    * @returns {THREE.Mesh} A mesh object
    */
   createRandomVisitorMesh(visitorType) {

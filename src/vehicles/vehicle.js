@@ -1,12 +1,12 @@
 import * as THREE from "three";
 import { VehicleGraphNode } from "./vehicleGraphNode.js";
-import config from "../config.js";
+import { defaultConfig, updateConfig } from "../config.js";
 import { AssetManager } from "../assetManager.js";
 import { Tile } from "../tile.js";
 import { Ride } from "../buildings/ride.js";
 import { VehicleGraph } from "./vehicleGraph.js";
 const FORWARD = new THREE.Vector3(1, 0, 0);
-
+var config = { ...defaultConfig };
 const visitorThrillLevelMap = {
   "visitor-kid": ["family"],
   "visitor-elder": ["family"],
@@ -152,6 +152,7 @@ export class Vehicle extends THREE.Group {
    * @returns {number} Returns cycle time between 0 and 1
    */
   getCycleTime() {
+    config = { ...updateConfig() };
     const distance = this.originToDestination.length();
     const cycleDuration = distance / config.vehicle.speed;
     const cycleTime = (Date.now() - this.cycleStartTime) / cycleDuration;
@@ -187,6 +188,8 @@ export class Vehicle extends THREE.Group {
     this.entranceTile = entranceTile;
     this.standTiles = standTiles;
     this.exitTiles = exitTiles;
+
+    config = { ...updateConfig() };
 
     // If the visitor is paused, skip updating.
     if (this.isPaused) {
@@ -234,6 +237,7 @@ export class Vehicle extends THREE.Group {
   }
 
   updateOpacity() {
+    config = { ...updateConfig() };
     const age = this.getAge();
 
     const setOpacity = (opacity) => {
@@ -368,6 +372,8 @@ export class Vehicle extends THREE.Group {
    * Move to next node in the path OR handle reached ride destination
    */
   pickNewDestination() {
+    config = { ...updateConfig() };
+
     /**
      * Check if a node is next to any of standTiles
      * Return the eligible standTile is has, or return null
@@ -446,6 +452,8 @@ export class Vehicle extends THREE.Group {
    * @returns {{nextRideTile: Tile, destinationNode: VehicleGraphNode, pathToDestination: VehicleGraphNode[]} | null}
    */
   findNextRidePath(origin, rideTiles) {
+    config = { ...updateConfig() };
+
     if (rideTiles.length == 0) {
       console.log(
         `early return find next ride for ${this.name} -- no eligible ride tiles.`

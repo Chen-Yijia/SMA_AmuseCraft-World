@@ -1,11 +1,14 @@
 import { Vehicle } from "../vehicles/vehicle.js";
 import { City } from "../city.js";
-import config from "../config.js";
+import { defaultConfig, updateConfig } from "../config.js";
 import { Zone } from "./zone.js";
+
+var config = { ...defaultConfig };
 
 export class Ride extends Zone {
   constructor(x, y, subType) {
     super(x, y);
+    config = { ...updateConfig() };
     this.name = "ride";
     this.type = "ride";
 

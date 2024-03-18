@@ -1,9 +1,11 @@
-import config from "../config.js";
+import { defaultConfig, updateConfig } from "../config.js";
 import { Building } from "./building.js";
 
 /**
  * Represents a zoned building such as residential, commercial or industrial
  */
+var config = { ...defaultConfig };
+
 export class Zone extends Building {
   constructor(x, y) {
     super(x, y);
@@ -49,6 +51,7 @@ export class Zone extends Building {
    */
   step(city) {
     super.step(city);
+    config = { ...updateConfig() };
 
     this.checkDevelopmentCriteria(city);
 
@@ -89,6 +92,7 @@ export class Zone extends Building {
    * @param {City} city
    */
   checkRoadAccess(city) {
+    config = { ...updateConfig() };
     const road = city.findTile(
       this,
       (tile) => {

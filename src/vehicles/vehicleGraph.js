@@ -9,11 +9,13 @@ import {
 } from "./vehicleGraphTile.js";
 import { VehicleGraphHelper } from "./vehicleGraphHelper.js";
 import { AssetManager } from "../assetManager.js";
-import config from "../config.js";
+import { defaultConfig, updateConfig } from "../config.js";
 import { Vehicle } from "./vehicle.js";
 import { Road } from "../buildings/road.js";
 import { City } from "../city.js";
 import { Tile } from "../tile.js";
+
+var config = { ...defaultConfig };
 
 export class VehicleGraph extends THREE.Group {
   constructor(size, assetManager, city) {
@@ -180,6 +182,7 @@ export class VehicleGraph extends THREE.Group {
   }
 
   spawnVehicle() {
+    config = { ...updateConfig() };
     // random spawn interval from uniform distribution
     var randomSpawnInterval = Math.floor(
       Math.random() *

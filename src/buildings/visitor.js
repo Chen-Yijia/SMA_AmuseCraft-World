@@ -1,19 +1,17 @@
-import { Citizen } from '../citizens.js';
-import { City } from '../city.js';
-import config from '../config.js';
-import { Zone } from './zone.js';
+import { Citizen } from "../citizens.js";
+import { City } from "../city.js";
+import { Zone } from "./zone.js";
 
 export class Visitor extends Zone {
   constructor(x, y) {
     super(x, y);
     this.name = "visitor";
-    this.type = 'visitor';
-
+    this.type = "visitor";
   }
 
   /**
    * Steps the state of the zone forward in time by one simulation step
-   * @param {City} city 
+   * @param {City} city
    */
   step(city) {
     super.step(city);
