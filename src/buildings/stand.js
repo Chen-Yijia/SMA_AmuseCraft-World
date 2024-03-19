@@ -1,4 +1,3 @@
-import { Citizen } from "../citizens.js";
 import { City } from "../city.js";
 import { defaultConfig, updateConfig } from "../config.js";
 import { Vehicle } from "../vehicles/vehicle.js";

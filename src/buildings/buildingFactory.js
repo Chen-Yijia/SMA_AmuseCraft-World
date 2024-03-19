@@ -1,12 +1,9 @@
-import { CommercialZone } from './commercialZone.js';
-import { ResidentialZone } from './residentialZone.js';
-import { IndustrialZone } from './industrialZone.js';
-import { Road } from './road.js';
-import { Building } from './building.js';
-import { Visitor } from './visitor.js';
-import { Ride } from './ride.js';
-import { Stand } from './stand.js';
-import { Entrance } from './entrance.js';
+import { Road } from "./road.js";
+import { Building } from "./building.js";
+import { Visitor } from "./visitor.js";
+import { Ride } from "./ride.js";
+import { Stand } from "./stand.js";
+import { Entrance } from "./entrance.js";
 
 /**
  * Creates a new building object
@@ -18,23 +15,17 @@ import { Entrance } from './entrance.js';
  */
 export function createBuilding(x, y, type, subType) {
   switch (type) {
-    case 'residential': 
-      return new ResidentialZone(x, y);
-    case 'commercial': 
-      return new CommercialZone(x, y);
-    case 'industrial': 
-      return new IndustrialZone(x, y);
-    case 'road': 
+    case "road":
       return new Road(x, y);
-    case 'visitor':
-      return new Visitor(x,y);
-    case 'ride':
-      return new Ride(x,y, subType);
-    case 'stand':
-      return new Stand(x,y, subType);
+    case "visitor":
+      return new Visitor(x, y);
+    case "ride":
+      return new Ride(x, y, subType);
+    case "stand":
+      return new Stand(x, y, subType);
     case "entrance":
-      return new Entrance(x,y);
-      
+      return new Entrance(x, y);
+
     default:
       console.error(`${type} is not a recognized building type.`);
   }

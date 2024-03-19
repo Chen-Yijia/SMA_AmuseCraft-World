@@ -1,9 +1,9 @@
 var defaultConfig = {
-  citizen: {
-    minWorkingAge: 16, // Minimum working age for a citizen
-    retirementAge: 65, // Age when citizens retire
-    maxJobSearchDistance: 4, // Max distance a citizen will search for a job
-  },
+  // citizen: {
+  //   minWorkingAge: 16, // Minimum working age for a citizen
+  //   retirementAge: 65, // Age when citizens retire
+  //   maxJobSearchDistance: 4, // Max distance a citizen will search for a job
+  // },
   vehicle: {
     speed: 0.0005, // The distance travelled per millisecond
     fadeTime: 1000, // The start/end time where the vehicle should fade
@@ -18,13 +18,7 @@ var defaultConfig = {
     maxWaitTolerance: 40, // set the max tolerance for waiting time.
   },
   zone: {
-    abandonmentThreshold: 10, // Number of days before abandonment
-    abandonmentChance: 0.25, // Probability of building abandonment
-    developmentChance: 0.25, // Probability of building development
     maxRoadSearchDistance: 1, // Max distance between buildng and road
-    maxResidents: 2, // Max # of residents in a house
-    maxWorkers: 2, // Max # of workers at a building
-    residentMoveInChance: 0.5, // Chance for a resident to move in
   },
   road: {
     costPerTile: 500, // The construction cost to build a road tile

@@ -1,4 +1,3 @@
-import { Citizen } from "../citizens.js";
 import { City } from "../city.js";
 import { Zone } from "./zone.js";
 

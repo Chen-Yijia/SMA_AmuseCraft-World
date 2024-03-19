@@ -154,17 +154,6 @@ export class City {
         tile.building?.step(this);
       }
     }
-
-    // Update each citizen
-    for (let x = 0; x < this.size; x++) {
-      for (let y = 0; y < this.size; y++) {
-        const tile = this.getTile(x, y);
-        const residents = tile.building?.residents;
-        if (residents) {
-          residents.forEach((resident) => resident.step(this));
-        }
-      }
-    }
   }
 
   /**

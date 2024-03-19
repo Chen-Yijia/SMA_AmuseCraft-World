@@ -68,10 +68,10 @@ export class AssetManager {
     if (!tile?.building) return null;
 
     switch (tile.building?.type) {
-      case "residential":
-      case "commercial":
-      case "industrial":
-        return this.createZoneMesh(tile);
+      // case "residential":
+      // case "commercial":
+      // case "industrial":
+      //   return this.createZoneMesh(tile);
 
       case "road":
         return this.createRoadMesh(tile);
