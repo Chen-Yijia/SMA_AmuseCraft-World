@@ -30,6 +30,7 @@ export class Stand extends Zone {
     }
 
     this.installationCost = config.stand.costInstallation[this.subType];
+    this.operationalCost = config.stand.operationalCost[this.subType];
     this.revenuePerCustomerMean = config.stand.arpcMean[this.subType];
     this.revenuePerCustomerSd = config.stand.arpcSd[this.subType];
     this.purchaseOpportunity = config.stand.purchaseOpportunity[this.subType];
@@ -49,6 +50,7 @@ export class Stand extends Zone {
     this.loadedVisitors = [];
 
     this.accumulatedRevenue = 0;
+    this.accumulatedCost = 0;
     this.customerTraffic = 0;
   }
 
@@ -58,6 +60,10 @@ export class Stand extends Zone {
    */
   step(city) {
     super.step(city);
+
+    // update cost
+    this.accumulatedCost =
+      this.installationCost + city.currentSimulationTime * this.operationalCost;
 
     // load the waiting visitors
     this.waitingVisitors.forEach((waiting_visitor) => {
@@ -151,8 +157,10 @@ export class Stand extends Zone {
   toHTML() {
     let html = super.toHTML();
     html += `
-    <span class="info-label">Installation Cost </span>
-    <span class="info-value">$ ${this.installationCost}</span>
+    <span class="info-label">Installation/ Operational Cost </span>
+    <span class="info-value">$ ${this.installationCost} / $ ${
+      this.operationalCost
+    }</span>
     <br>
     <span class="info-label">Average / SD of Revenue per Visitor </span>
     <span class="info-value">$ ${this.revenuePerCustomerMean}  /  $ ${
@@ -169,6 +177,9 @@ export class Stand extends Zone {
     <br>
     <span class="info-label">Revenue </span>
     <span class="info-value">$ ${this.accumulatedRevenue.toFixed(1)}</span>
+    <br>
+    <span class="info-label">Expense </span>
+    <span class="info-value">$ ${this.accumulatedCost.toFixed(1)}</span>
     <br>
     <span class="info-label">Total Customer Traffic </span>
     <span class="info-value">${this.customerTraffic} pax</span>

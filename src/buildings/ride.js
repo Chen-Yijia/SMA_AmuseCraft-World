@@ -22,8 +22,10 @@ export class Ride extends Zone {
 
     this.totalRidership = 0;
     this.accumulatedRevenue = 0;
+    this.accumulatedCost = 0;
     this.thrillLevel = config.ride.thrillLevel[this.subType];
     this.installationCost = config.ride.costInstallation[this.subType];
+    this.operationalCost = config.ride.operationalCost[this.subType];
     this.ticketPrice = config.ride.ticketPrice[this.subType];
     this.rideDuration = config.ride.rideDuration[this.subType];
     this.rideCapacity = config.ride.rideCapacity[this.subType];
@@ -82,6 +84,10 @@ export class Ride extends Zone {
    */
   step(city) {
     super.step(city);
+
+    // update cost
+    this.accumulatedCost =
+      this.installationCost + city.currentSimulationTime * this.operationalCost;
 
     // If the ride is idle
     if (this.state === "idle") {
@@ -278,8 +284,10 @@ export class Ride extends Zone {
     <span class="info-label">Thrill Level </span>
     <span class="info-value">${this.thrillLevel}</span>
     <br>
-    <span class="info-label">Installation Cost </span>
-    <span class="info-value">$ ${this.installationCost}</span>
+    <span class="info-label">Installation/ Operational Cost </span>
+    <span class="info-value">$ ${this.installationCost} / $ ${
+      this.operationalCost
+    } </span>
     <br>
     <span class="info-label">Ticket Price per Visitor </span>
     <span class="info-value">$ ${this.ticketPrice}</span>
@@ -298,6 +306,9 @@ export class Ride extends Zone {
     <br>
     <span class="info-label">Revenue </span>
     <span class="info-value">$ ${this.accumulatedRevenue.toFixed(1)}</span>
+    <br>
+    <span class="info-label">Expense </span>
+    <span class="info-value">$ ${this.accumulatedCost.toFixed(1)}</span>
     <br>
     <span class="info-label">Total Ridership </span>
     <span class="info-value">${this.totalRidership} pax</span>

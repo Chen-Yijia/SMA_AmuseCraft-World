@@ -32,16 +32,16 @@ var defaultConfig = {
   ride: {
     maxRideSearchDistance: 32, // Max distance a visitor will search for a ride
     costInstallation: {
-      "circus-tent": 2000,
-      "water-ride": 3000,
-      "bumper-car": 2000,
-      "ferris-wheel": 3500,
-      roundabout: 2500,
-      carousel: 2000,
-      "swing-claw": 3000,
-      "space-adventure": 2500,
-      rollercoaster: 3000,
-      arcade: 2000,
+      "circus-tent": 200,
+      "water-ride": 300,
+      "bumper-car": 200,
+      "ferris-wheel": 350,
+      roundabout: 250,
+      carousel: 200,
+      "swing-claw": 300,
+      "space-adventure": 250,
+      rollercoaster: 300,
+      arcade: 200,
     },
     ticketPrice: {
       "circus-tent": 3,
@@ -94,14 +94,34 @@ var defaultConfig = {
       rollercoaster: 2,
       arcade: 3,
     },
+    operationalCost: {
+      // The operational cost per min (per simulation time (1 s))
+      "circus-tent": 0.2,
+      "water-ride": 0.2,
+      "bumper-car": 0.1,
+      "ferris-wheel": 0.2,
+      roundabout: 0.1,
+      carousel: 0.1,
+      "swing-claw": 0.2,
+      "space-adventure": 0.2,
+      rollercoaster: 0.2,
+      arcade: 0.1,
+    },
   },
   stand: {
     costInstallation: {
-      "hot-dog": 200,
-      burger: 300,
-      cafe: 500,
-      "chinese-restaurant": 600,
-      "ice-cream": 200,
+      "hot-dog": 120,
+      burger: 150,
+      cafe: 250,
+      "chinese-restaurant": 350,
+      "ice-cream": 100,
+    },
+    operationalCost: {
+      "hot-dog": 0.1,
+      burger: 0.1,
+      cafe: 0.1,
+      "chinese-restaurant": 0.1,
+      "ice-cream": 0.1,
     },
     arpcMean: {
       // Average Revenue Per Customer
@@ -232,7 +252,7 @@ function updateConfig() {
   updatedConfig.ride.ticketPrice["space-adventure"] = Number(
     document.getElementById("ticketPrice-space-adventure").value
   );
-  updatedConfig.ride.costInstallation.rollercoaster = Number(
+  updatedConfig.ride.ticketPrice.rollercoaster = Number(
     document.getElementById("ticketPrice-rollercoaster").value
   );
   updatedConfig.ride.ticketPrice.arcade = Number(
@@ -264,7 +284,7 @@ function updateConfig() {
   updatedConfig.ride.rideDuration["space-adventure"] = Number(
     document.getElementById("rideDuration-space-adventure").value
   );
-  updatedConfig.ride.costInstallation.rollercoaster = Number(
+  updatedConfig.ride.rideDuration.rollercoaster = Number(
     document.getElementById("rideDuration-rollercoaster").value
   );
   updatedConfig.ride.rideDuration.arcade = Number(
@@ -296,11 +316,43 @@ function updateConfig() {
   updatedConfig.ride.rideCapacity["space-adventure"] = Number(
     document.getElementById("rideCapacity-space-adventure").value
   );
-  updatedConfig.ride.costInstallation.rollercoaster = Number(
+  updatedConfig.ride.rideCapacity.rollercoaster = Number(
     document.getElementById("rideCapacity-rollercoaster").value
   );
   updatedConfig.ride.rideCapacity.arcade = Number(
     document.getElementById("rideCapacity-arcade").value
+  );
+
+  // operational cost
+  updatedConfig.ride.operationalCost["circus-tent"] = Number(
+    document.getElementById("operationalCost-circus-tent").value
+  );
+  updatedConfig.ride.operationalCost["water-ride"] = Number(
+    document.getElementById("operationalCost-water-ride").value
+  );
+  updatedConfig.ride.operationalCost["bumper-car"] = Number(
+    document.getElementById("operationalCost-bumper-car").value
+  );
+  updatedConfig.ride.operationalCost["ferris-wheel"] = Number(
+    document.getElementById("operationalCost-ferris-wheel").value
+  );
+  updatedConfig.ride.operationalCost.roundabout = Number(
+    document.getElementById("operationalCost-roundabout").value
+  );
+  updatedConfig.ride.operationalCost.carousel = Number(
+    document.getElementById("operationalCost-carousel").value
+  );
+  updatedConfig.ride.operationalCost["swing-claw"] = Number(
+    document.getElementById("operationalCost-swing-claw").value
+  );
+  updatedConfig.ride.operationalCost["space-adventure"] = Number(
+    document.getElementById("operationalCost-space-adventure").value
+  );
+  updatedConfig.ride.operationalCost.rollercoaster = Number(
+    document.getElementById("operationalCost-rollercoaster").value
+  );
+  updatedConfig.ride.operationalCost.arcade = Number(
+    document.getElementById("operationalCost-arcade").value
   );
 
   // stand setting
@@ -319,6 +371,23 @@ function updateConfig() {
   );
   updatedConfig.stand.costInstallation["ice-cream"] = Number(
     document.getElementById("costInstallation-ice-cream").value
+  );
+
+  // operational cost
+  updatedConfig.stand.operationalCost["hot-dog"] = Number(
+    document.getElementById("operationalCost-hot-dog").value
+  );
+  updatedConfig.stand.operationalCost.burger = Number(
+    document.getElementById("operationalCost-burger").value
+  );
+  updatedConfig.stand.operationalCost.cafe = Number(
+    document.getElementById("operationalCost-cafe").value
+  );
+  updatedConfig.stand.operationalCost["chinese-restaurant"] = Number(
+    document.getElementById("operationalCost-chinese-restaurant").value
+  );
+  updatedConfig.stand.operationalCost["ice-cream"] = Number(
+    document.getElementById("operationalCost-ice-cream").value
   );
 
   // purchase opportunity

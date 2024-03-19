@@ -69,10 +69,7 @@ export class Building {
     let html = `
       <div class="info-heading">Building</div>
       <span class="info-label">Type </span>
-      <span class="info-value">${this.type}</span>
-      <br>
-      <span class="info-label">Sub Type </span>
-      <span class="info-value">${this.subType}</span>
+      <span class="info-value">${this.type} --- ${this.subType}</span>
       <br>
     `;
     // let html = `

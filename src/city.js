@@ -71,7 +71,7 @@ export class City {
             tile.building.type === "ride" ||
             tile.building.type === "stand"
           ) {
-            cost += tile.building.installationCost;
+            cost += tile.building.accumulatedCost;
           }
         }
       }
