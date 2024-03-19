@@ -1,9 +1,4 @@
 var defaultConfig = {
-  // citizen: {
-  //   minWorkingAge: 16, // Minimum working age for a citizen
-  //   retirementAge: 65, // Age when citizens retire
-  //   maxJobSearchDistance: 4, // Max distance a citizen will search for a job
-  // },
   vehicle: {
     speed: 0.0005, // The distance travelled per millisecond
     fadeTime: 1000, // The start/end time where the vehicle should fade
@@ -21,7 +16,7 @@ var defaultConfig = {
     maxRoadSearchDistance: 1, // Max distance between buildng and road
   },
   road: {
-    costPerTile: 500, // The construction cost to build a road tile
+    costPerTile: 60, // The construction cost to build a road tile
   },
   ride: {
     maxRideSearchDistance: 32, // Max distance a visitor will search for a ride
@@ -163,6 +158,9 @@ function updateConfig() {
   var updatedConfig = { ...defaultConfig }; // based on the default config
 
   // visitor setting
+  updatedConfig.road.costPerTile = Number(
+    document.getElementById("costPerTile").value
+  );
   updatedConfig.vehicle.maxVehicleCount = Number(
     document.getElementById("maxVehicleCount").value
   );
