@@ -1,0 +1,27 @@
+class GraphPlotter {
+  /**
+   * The id of the window to insert graph
+   * @param {string} graphWindowID
+   */
+  constructor(graphWindowID) {
+    this.graphWindowID = graphWindowID;
+  }
+
+  plotTest() {
+    var TESTER = document.getElementById("tester");
+
+    Plotly.newPlot(
+      TESTER,
+      [
+        {
+          x: [1, 2, 3, 4, 5],
+          y: [1, 2, 4, 8, 16],
+        },
+      ],
+      {
+        margin: { t: 0 },
+      },
+      { showSendToCloud: true }
+    );
+  }
+}

@@ -46,6 +46,9 @@ export class Game {
      */
     this.city = new City(16);
 
+    this.graphPlotter = new GraphPlotter("tester");
+    this.graphPlotter.plotTest();
+
     /**
      * The 3D game scene
      */
@@ -144,6 +147,27 @@ export class Game {
       document.getElementById("setting-kit-list").style.visibility = "visible";
     } else {
       document.getElementById("setting-kit-list").style.visibility = "hidden";
+    }
+
+    if (this.activeToolId === "download") {
+      const refinedData = [
+        ["firstName", "lastName"],
+        ["Idorenyin", "Udoh"],
+        ["Loyle", "Carner"],
+        ["Tamunotekena", "Dagogo"],
+      ];
+      let csvContent = "";
+      refinedData.forEach((row) => {
+        csvContent += row.join(",") + "\n";
+      });
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8," });
+      const objUrl = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.setAttribute("href", objUrl);
+      link.setAttribute("download", "File.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
   }
 

@@ -16,10 +16,14 @@
           "three/addons/": "https://unpkg.com/three@v0.153.0/examples/jsm/"
         }
       }
-    </script>
+  </script>
+  <script src="https://cdn.plot.ly/plotly-2.30.0.min.js" charset="utf-8"></script>
+  
 </head>
 
 <body>
+  
+
   <div id="root-window">
     <!-- Three.js adds a `canvas` element to this element-->
     <div id="render-target"></div>
@@ -86,6 +90,11 @@
           <button id="button-setting" class="ui-button" data-type="setting" onclick="game.onToolSelected(event)">
             <img class="toolbar-icon" src="public/icons/settings.png" />
           </button>
+
+          <button id="button-download" class="ui-button" data-type="download" onclick="game.onToolSelected(event)">
+            <img class="toolbar-icon" src="public/icons/folder.png" />
+          </button>
+          
 
           <!-- <button id="button-visitor" class="ui-button" data-type="visitor" onclick="game.onToolSelected(event)">
             <img class="toolbar-icon" src="public/icons/woman.png" />
@@ -1291,7 +1300,14 @@
           <div id="info-details"></div>
         </div>
       </div>
+    
+    
     </div>
+
+    <!-- plot section  -->
+    <div id="tester" style="width:600px;height:250px;"></div>
+
+    <script src="./src/plotGraph.js"></script>
 
     <script type="module">
       import { Game } from "./src/game.js";
