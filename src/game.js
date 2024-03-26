@@ -46,8 +46,9 @@ export class Game {
      */
     this.city = new City(16);
 
-    this.graphPlotter = new GraphPlotter("tester");
-    this.graphPlotter.plotTest();
+    // this.graphPlotter = new GraphPlotter();
+    // this.graphPlotter.plotTest();
+    // this.graphPlotter.plotRoadHeatmap("testHeatmap");
 
     /**
      * The 3D game scene
@@ -168,6 +169,13 @@ export class Game {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+
+      this.graphPlotter = new GraphPlotter();
+      this.graphPlotter.plotTest();
+      this.graphPlotter.plotRoadHeatmap(
+        "testHeatmap",
+        this.city.statistics.roadHeatmap
+      );
     }
   }
 

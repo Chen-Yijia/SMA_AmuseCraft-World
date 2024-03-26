@@ -24,6 +24,11 @@ export class City {
       }
       this.tiles.push(column);
     }
+
+    /**
+     * @type {{roadHeatmap: {x: number[], y: number[]}}}
+     */
+    this.statistics = { roadHeatmap: { x: [], y: [] } };
   }
 
   /** Returns the tile at the coordinates. If the coordinates

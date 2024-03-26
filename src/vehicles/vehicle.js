@@ -213,6 +213,14 @@ export class Vehicle extends THREE.Group {
     const cycleTime = this.getCycleTime();
     if (cycleTime === 1) {
       // if the visitor is leaving and reached the destination
+      // update the statistics for road heatmap
+      vehicleGraph.city.statistics.roadHeatmap.x.push(
+        this.destination.tilePosition.x
+      );
+      vehicleGraph.city.statistics.roadHeatmap.y.push(
+        this.destination.tilePosition.y
+      );
+
       if (this.isLeaving) {
         if (this.pathToDestinationRideNode.length === 0) {
           this.leaveTime = Date.now();
