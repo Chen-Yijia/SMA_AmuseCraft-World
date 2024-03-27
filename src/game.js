@@ -303,5 +303,11 @@ export class Game {
 
     document.getElementById("visitor-angry-exit-total").innerHTML =
       this.sceneManager.vehicleGraph.totalAngryVisitors;
+
+    document.getElementById("fixed-cost-total").innerHTML =
+      "-$ " + this.city.getFixedCost().toFixed(1);
+
+    document.getElementById("variable-cost-total").innerHTML =
+      "-$ " + this.city.getOperationalCost().toFixed(1);
   }
 }

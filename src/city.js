@@ -84,6 +84,44 @@ export class City {
     return cost;
   }
 
+  getFixedCost() {
+    let cost = 0;
+
+    for (let x = 0; x < this.size; x++) {
+      for (let y = 0; y < this.size; y++) {
+        const tile = this.getTile(x, y);
+        if (tile.building) {
+          if (tile.building.type === "road") {
+            cost += tile.building.cost;
+          } else if (
+            tile.building.type === "ride" ||
+            tile.building.type === "stand"
+          ) {
+            cost += tile.building.installationCost;
+          }
+        }
+      }
+    }
+    return cost;
+  }
+
+  getOperationalCost() {
+    let cost = 0;
+
+    for (let x = 0; x < this.size; x++) {
+      for (let y = 0; y < this.size; y++) {
+        const tile = this.getTile(x, y);
+        if (tile.building) {
+          if (tile.building.type === "ride" || tile.building.type === "stand") {
+            cost +=
+              tile.building.accumulatedCost - tile.building.installationCost;
+          }
+        }
+      }
+    }
+    return cost;
+  }
+
   getTotalRevenue() {
     let revenue = 0;
 
