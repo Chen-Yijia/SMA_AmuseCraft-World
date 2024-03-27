@@ -227,6 +227,45 @@ export class Vehicle extends THREE.Group {
           if (this.exitWithNoTolerance) {
             vehicleGraph.totalAngryVisitors += 1;
           }
+
+          // update the statistics for visitor time in park
+          if (this.visitorType == "visitor-kid") {
+            vehicleGraph.city.statistics.visitorTimeInPark.kid.enterTime.push(
+              this.createdTime
+            );
+            vehicleGraph.city.statistics.visitorTimeInPark.kid.leaveTime.push(
+              this.leaveTime
+            );
+            vehicleGraph.city.statistics.visitorTimeInPark.kid.stayDuration.push(
+              (this.leaveTime - this.createdTime) / 1000
+            ); // divide 1000 since Date.now() is in milliseconds
+          } else if (this.visitorType == "visitor-elder") {
+            vehicleGraph.city.statistics.visitorTimeInPark.elder.enterTime.push(
+              this.createdTime
+            );
+            vehicleGraph.city.statistics.visitorTimeInPark.elder.leaveTime.push(
+              this.leaveTime
+            );
+            vehicleGraph.city.statistics.visitorTimeInPark.elder.stayDuration.push(
+              (this.leaveTime - this.createdTime) / 1000
+            );
+          } else {
+            vehicleGraph.city.statistics.visitorTimeInPark.adult.enterTime.push(
+              this.createdTime
+            );
+            vehicleGraph.city.statistics.visitorTimeInPark.adult.leaveTime.push(
+              this.leaveTime
+            );
+            vehicleGraph.city.statistics.visitorTimeInPark.adult.stayDuration.push(
+              (this.leaveTime - this.createdTime) / 1000
+            );
+          }
+
+          console.log(
+            `sending type ${this.visitorType} to leave, new statistics`,
+            vehicleGraph.city.statistics.visitorTimeInPark
+          );
+
           this.dispose(assetManager);
           return;
         } else {

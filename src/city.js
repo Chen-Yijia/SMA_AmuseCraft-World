@@ -26,9 +26,23 @@ export class City {
     }
 
     /**
-     * @type {{roadHeatmap: {x: number[], y: number[]}}}
+     * @type {{
+     * roadHeatmap: {x: number[], y: number[]},
+     * visitorTimeInPark: {
+     * kid: {enterTime: number[], leaveTime: number[], stayDuration: number[]},
+     * elder: {enterTime: number[], leaveTime: number[], stayDuration: number[]},
+     * adult: {enterTime: number[], leaveTime: number[], stayDuration: number[]},
+     * }
+     * }}
      */
-    this.statistics = { roadHeatmap: { x: [], y: [] } };
+    this.statistics = {
+      roadHeatmap: { x: [], y: [] },
+      visitorTimeInPark: {
+        kid: { enterTime: [], leaveTime: [], stayDuration: [] },
+        elder: { enterTime: [], leaveTime: [], stayDuration: [] },
+        adult: { enterTime: [], leaveTime: [], stayDuration: [] },
+      },
+    };
   }
 
   /** Returns the tile at the coordinates. If the coordinates

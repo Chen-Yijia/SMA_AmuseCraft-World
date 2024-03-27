@@ -107,9 +107,16 @@ export class Game {
       this.simulationTime++;
     }
 
+    // road tile heatmap
     this.graphPlotter.plotRoadHeatmap(
       "road-tile-heatmap",
       this.city.statistics.roadHeatmap
+    );
+
+    // visitor time in park histogram
+    this.graphPlotter.plotVisitorTimeInPark(
+      "visitor-time-histogram",
+      this.city.statistics.visitorTimeInPark
     );
   }
 
