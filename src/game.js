@@ -46,6 +46,8 @@ export class Game {
      */
     this.city = new City(16);
 
+    this.graphPlotter = new GraphPlotter();
+
     // this.graphPlotter = new GraphPlotter();
     // this.graphPlotter.plotTest();
     // this.graphPlotter.plotRoadHeatmap("testHeatmap");
@@ -104,6 +106,11 @@ export class Game {
     if (this.simulationStarted) {
       this.simulationTime++;
     }
+
+    this.graphPlotter.plotRoadHeatmap(
+      "road-tile-heatmap",
+      this.city.statistics.roadHeatmap
+    );
   }
 
   /**
@@ -170,12 +177,11 @@ export class Game {
       link.click();
       document.body.removeChild(link);
 
-      this.graphPlotter = new GraphPlotter();
-      this.graphPlotter.plotTest();
-      this.graphPlotter.plotRoadHeatmap(
-        "testHeatmap",
-        this.city.statistics.roadHeatmap
-      );
+      // this.graphPlotter = new GraphPlotter();
+      // this.graphPlotter.plotRoadHeatmap(
+      //   "roat-tile-heatmap",
+      //   this.city.statistics.roadHeatmap
+      // );
     }
   }
 
