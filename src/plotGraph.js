@@ -103,7 +103,26 @@ class GraphPlotter {
       },
     };
 
-    var data = [trace_kid, trace_elder, trace_adult];
+    var trace_all = {
+      x: time_data.kid.stayDuration.concat(
+        time_data.elder.stayDuration,
+        time_data.adult.stayDuration
+      ),
+      type: "histogram",
+      name: "All visitors",
+      // histnorm: 'probability density',
+      histnorm: "count",
+      opacity: 0.5,
+      marker: {
+        color: "rgba(48, 90, 255, 0.7)",
+        line: {
+          color: "rgba(48, 90, 255, 1)",
+          width: 1,
+        },
+      },
+    };
+
+    var data = [trace_kid, trace_elder, trace_adult, trace_all];
 
     var layout = {
       bargap: 0.05,
@@ -111,6 +130,97 @@ class GraphPlotter {
       barmode: "overlay",
       //   title: "Sampled Results",
       xaxis: { title: "Time Spent in Park" },
+      yaxis: { title: "Count" },
+      margin: { t: 20 },
+      plot_bgcolor: "rgba(0,0,0,0)",
+      paper_bgcolor: "rgba(0,0,0,0)",
+    };
+
+    Plotly.newPlot(div_id, data, layout);
+  }
+
+  /**
+   * Histogram on the money spent in park for each visitor profile
+   * @param {string} div_id
+   * @param { {
+   * kid: number[],
+   * elder: number[],
+   * adult: number[]
+   * }} money_data
+   */
+  plotVisitorMoneySpentInPark(div_id, money_data) {
+    var trace_kid = {
+      x: money_data.kid,
+      type: "histogram",
+      name: "Kid",
+      // histnorm: 'probability density',
+      histnorm: "count",
+      opacity: 0.5,
+      marker: {
+        color: "rgba(255, 100, 102, 0.7)",
+        line: {
+          color: "rgba(255, 100, 102, 1)",
+          width: 1,
+        },
+      },
+    };
+
+    var trace_elder = {
+      x: money_data.elder,
+      type: "histogram",
+      name: "Elder",
+      // histnorm: 'probability density',
+      histnorm: "count",
+      opacity: 0.5,
+      marker: {
+        color: "rgba(100, 200, 102, 0.7)",
+        line: {
+          color: "rgba(100, 200, 102, 1)",
+          width: 1,
+        },
+      },
+    };
+
+    var trace_adult = {
+      x: money_data.adult,
+      type: "histogram",
+      name: "Adult",
+      // histnorm: 'probability density',
+      histnorm: "count",
+      opacity: 0.5,
+      marker: {
+        color: "rgba(149, 100, 255, 0.7)",
+        line: {
+          color: "rgba(149, 100, 255, 1)",
+          width: 1,
+        },
+      },
+    };
+
+    var trace_all = {
+      x: money_data.kid.concat(money_data.elder, money_data.adult),
+      type: "histogram",
+      name: "All visitors",
+      // histnorm: 'probability density',
+      histnorm: "count",
+      opacity: 0.5,
+      marker: {
+        color: "rgba(48, 90, 255, 0.7)",
+        line: {
+          color: "rgba(48, 90, 255, 1)",
+          width: 1,
+        },
+      },
+    };
+
+    var data = [trace_kid, trace_elder, trace_adult, trace_all];
+
+    var layout = {
+      bargap: 0.05,
+      bargroupgap: 0.2,
+      barmode: "overlay",
+      //   title: "Sampled Results",
+      xaxis: { title: "Money Spent in Park" },
       yaxis: { title: "Count" },
       margin: { t: 20 },
       plot_bgcolor: "rgba(0,0,0,0)",

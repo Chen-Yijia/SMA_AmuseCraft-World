@@ -32,6 +32,11 @@ export class City {
      * kid: {enterTime: number[], leaveTime: number[], stayDuration: number[]},
      * elder: {enterTime: number[], leaveTime: number[], stayDuration: number[]},
      * adult: {enterTime: number[], leaveTime: number[], stayDuration: number[]},
+     * },
+     * visitorMoneySpent: {
+     * kid: number[],
+     * elder: number[],
+     * adult: number[]
      * }
      * }}
      */
@@ -41,6 +46,11 @@ export class City {
         kid: { enterTime: [], leaveTime: [], stayDuration: [] },
         elder: { enterTime: [], leaveTime: [], stayDuration: [] },
         adult: { enterTime: [], leaveTime: [], stayDuration: [] },
+      },
+      visitorMoneySpent: {
+        kid: [],
+        elder: [],
+        adult: [],
       },
     };
   }

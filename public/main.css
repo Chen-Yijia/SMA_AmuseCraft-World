@@ -470,6 +470,11 @@ summary::-webkit-details-marker {
   align-items: center;
 }
 
+.visitor-all-plots {
+  display: flex;
+  justify-content: flex-start;
+}
+
 .visitor-plot-container {
   width: 300px;
   height: 250px;
@@ -477,4 +482,5 @@ summary::-webkit-details-marker {
   align-items: center;
   text-align: center;
   background-color: #FFF3;
+  margin-left: 40px;
 }

@@ -228,43 +228,8 @@ export class Vehicle extends THREE.Group {
             vehicleGraph.totalAngryVisitors += 1;
           }
 
-          // update the statistics for visitor time in park
-          if (this.visitorType == "visitor-kid") {
-            vehicleGraph.city.statistics.visitorTimeInPark.kid.enterTime.push(
-              this.createdTime
-            );
-            vehicleGraph.city.statistics.visitorTimeInPark.kid.leaveTime.push(
-              this.leaveTime
-            );
-            vehicleGraph.city.statistics.visitorTimeInPark.kid.stayDuration.push(
-              (this.leaveTime - this.createdTime) / 1000
-            ); // divide 1000 since Date.now() is in milliseconds
-          } else if (this.visitorType == "visitor-elder") {
-            vehicleGraph.city.statistics.visitorTimeInPark.elder.enterTime.push(
-              this.createdTime
-            );
-            vehicleGraph.city.statistics.visitorTimeInPark.elder.leaveTime.push(
-              this.leaveTime
-            );
-            vehicleGraph.city.statistics.visitorTimeInPark.elder.stayDuration.push(
-              (this.leaveTime - this.createdTime) / 1000
-            );
-          } else {
-            vehicleGraph.city.statistics.visitorTimeInPark.adult.enterTime.push(
-              this.createdTime
-            );
-            vehicleGraph.city.statistics.visitorTimeInPark.adult.leaveTime.push(
-              this.leaveTime
-            );
-            vehicleGraph.city.statistics.visitorTimeInPark.adult.stayDuration.push(
-              (this.leaveTime - this.createdTime) / 1000
-            );
-          }
-
-          console.log(
-            `sending type ${this.visitorType} to leave, new statistics`,
-            vehicleGraph.city.statistics.visitorTimeInPark
-          );
+          // update the user statistics
+          this.updateUserStatisticsPriorExit(vehicleGraph);
 
           this.dispose(assetManager);
           return;
@@ -281,6 +246,59 @@ export class Vehicle extends THREE.Group {
     }
 
     this.updateOpacity();
+  }
+
+  /**
+   * Update the statistics at visitor exiting the park, prior to disposing
+   * 1. time spent in park
+   * @param {VehicleGraph} vehicleGraph
+   */
+  updateUserStatisticsPriorExit(vehicleGraph) {
+    // update the statistics for visitor time in park
+    if (this.visitorType == "visitor-kid") {
+      vehicleGraph.city.statistics.visitorTimeInPark.kid.enterTime.push(
+        this.createdTime
+      );
+      vehicleGraph.city.statistics.visitorTimeInPark.kid.leaveTime.push(
+        this.leaveTime
+      );
+      vehicleGraph.city.statistics.visitorTimeInPark.kid.stayDuration.push(
+        (this.leaveTime - this.createdTime) / 1000
+      ); // divide 1000 since Date.now() is in milliseconds
+    } else if (this.visitorType == "visitor-elder") {
+      vehicleGraph.city.statistics.visitorTimeInPark.elder.enterTime.push(
+        this.createdTime
+      );
+      vehicleGraph.city.statistics.visitorTimeInPark.elder.leaveTime.push(
+        this.leaveTime
+      );
+      vehicleGraph.city.statistics.visitorTimeInPark.elder.stayDuration.push(
+        (this.leaveTime - this.createdTime) / 1000
+      );
+    } else {
+      vehicleGraph.city.statistics.visitorTimeInPark.adult.enterTime.push(
+        this.createdTime
+      );
+      vehicleGraph.city.statistics.visitorTimeInPark.adult.leaveTime.push(
+        this.leaveTime
+      );
+      vehicleGraph.city.statistics.visitorTimeInPark.adult.stayDuration.push(
+        (this.leaveTime - this.createdTime) / 1000
+      );
+    }
+
+    // update the money spent
+    if (this.visitorType == "visitor-kid") {
+      vehicleGraph.city.statistics.visitorMoneySpent.kid.push(this.moneySpent);
+    } else if (this.visitorType == "visitor-elder") {
+      vehicleGraph.city.statistics.visitorMoneySpent.elder.push(
+        this.moneySpent
+      );
+    } else {
+      vehicleGraph.city.statistics.visitorMoneySpent.adult.push(
+        this.moneySpent
+      );
+    }
   }
 
   updateOpacity() {

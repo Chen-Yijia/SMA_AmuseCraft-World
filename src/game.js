@@ -118,6 +118,12 @@ export class Game {
       "visitor-time-histogram",
       this.city.statistics.visitorTimeInPark
     );
+
+    // visitor money spent in park histogram
+    this.graphPlotter.plotVisitorMoneySpentInPark(
+      "visitor-money-histogram",
+      this.city.statistics.visitorMoneySpent
+    );
   }
 
   /**
