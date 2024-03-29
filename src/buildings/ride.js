@@ -55,6 +55,47 @@ export class Ride extends Zone {
      * @type {Vehicle[]}
      */
     this.loadedVisitors = [];
+
+    /**
+     * Statistics for each ride, used for plotting the statistics for the whole scene
+     * @type {{
+     * queueStats: {
+     * status: {
+     * timeStamps: number[],
+     * rideStatus: number[]
+     * },
+     * queue: {
+     * timeStamps: number[],
+     * waitingLength: number[],
+     * loadedLength: number[],
+     * totalLength: number[]
+     * }
+     * },
+     * revenueStas: {
+     * ridership: {
+     * timeStamps: number[],
+     * totalRidership: number[],
+     * currentTotalRidership: number,
+     * },
+     * revenue: {
+     * timeStamps: number[],
+     * totalRevenue: number[],
+     * revenuePerTime: number[],
+     * currentTotalRevenue: number,
+     * currentRevenuePerTime: number,
+     * },
+     * profit: {
+     * timeStamps: number[],
+     * totalProfit: number[],
+     * profitPerTime: number[],
+     * currentTotalProfit: number,
+     * currentProfitPerTime: number,
+     * }
+     * },
+     *
+     * }}
+     */
+    this.rideStatistics = { queueStats: {}, revenueStas: {} };
   }
 
   /**
