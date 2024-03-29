@@ -124,6 +124,13 @@ export class Game {
       "visitor-money-histogram",
       this.city.statistics.visitorMoneySpent
     );
+
+    let allRideStats = this.city.getAllRideStatistics();
+
+    this.graphPlotter.plotRideStatusTimeSeries(
+      "ride-status-line-chart",
+      allRideStats["queue-status"]
+    );
   }
 
   /**

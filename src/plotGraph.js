@@ -3,7 +3,30 @@ class GraphPlotter {
    * The id of the window to insert graph
    *
    */
-  constructor() {}
+  constructor() {
+    this.colorPalette = [
+      "rgba(255, 100, 102, 1)",
+      "rgba(100, 200, 102, 1)",
+      "rgba(149, 100, 255, 1)",
+      "rgba(48, 90, 255, 1)",
+      "rgba(255, 200, 100, 1)",
+      "rgba(100, 255, 200, 1)",
+      "rgba(200, 100, 255, 1)",
+      "rgba(255, 150, 50, 1)",
+      "rgba(50, 255, 150, 1)",
+      "rgba(150, 50, 255, 1)",
+      "rgba(255, 0, 255, 1)",
+      "rgba(0, 255, 255, 1)",
+      "rgba(255, 255, 0, 1)",
+      "rgba(0, 255, 0, 1)",
+      "rgba(255, 0, 0, 1)",
+      "rgba(0, 0, 255, 1)",
+      "rgba(255, 128, 0, 1)",
+      "rgba(128, 0, 255, 1)",
+      "rgba(0, 255, 128, 1)",
+      "rgba(128, 255, 0, 1)",
+    ];
+  }
 
   /**
    * Heatmap on the number of times hit each tile
@@ -133,7 +156,7 @@ class GraphPlotter {
       yaxis: { title: "Count" },
       margin: { t: 20 },
       plot_bgcolor: "rgba(0,0,0,0)",
-      paper_bgcolor: "rgba(0,0,0,0)",
+      // paper_bgcolor: "rgba(0,0,0,0)",
     };
 
     Plotly.newPlot(div_id, data, layout);
@@ -224,7 +247,48 @@ class GraphPlotter {
       yaxis: { title: "Count" },
       margin: { t: 20 },
       plot_bgcolor: "rgba(0,0,0,0)",
-      paper_bgcolor: "rgba(0,0,0,0)",
+      // paper_bgcolor: "rgba(0,0,0,0)",
+    };
+
+    Plotly.newPlot(div_id, data, layout);
+  }
+
+  /**
+   * Time series showing the status of each ride (idle / in operation)
+   * @param {string} div_id
+   * @param {{
+   * ride_name: string,
+   * ride_status: {
+   * timeStamps: number[],
+   * rideStatus: number[]
+   * }
+   * }[]} ride_status_data
+   */
+  plotRideStatusTimeSeries(div_id, ride_status_data) {
+    var data = [];
+
+    for (let i = 0; i < ride_status_data.length; i++) {
+      const ride_status_data_i = ride_status_data[i];
+      var trace_i = {
+        x: ride_status_data_i.ride_status.timeStamps,
+        y: ride_status_data_i.ride_status.rideStatus.map((d) => d + 2 * i),
+        mode: "lines",
+        name: ride_status_data_i.ride_name,
+        line: { shape: "hv", color: this.colorPalette[i] },
+        type: "scatter",
+      };
+      data.push(trace_i);
+    }
+
+    var layout = {
+      xaxis: { title: "Time" },
+      yaxis: { title: "Ride Status" },
+      margin: { t: 20 },
+      plot_bgcolor: "rgba(0,0,0,0)",
+      // paper_bgcolor: "rgba(0,0,0,0)",
+      legend: {
+        traceorder: "reversed",
+      },
     };
 
     Plotly.newPlot(div_id, data, layout);

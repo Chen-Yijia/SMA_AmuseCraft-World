@@ -162,6 +162,33 @@ export class City {
     return revenue;
   }
 
+  getAllRideStatistics() {
+    let allRideStats = {
+      "queue-status": [],
+      "queue-queue": [],
+      "revenue-ridership": [],
+      "revenue-revenue": [],
+      "revenue-profit": [],
+    };
+
+    for (let x = 0; x < this.size; x++) {
+      for (let y = 0; y < this.size; y++) {
+        const tile = this.getTile(x, y);
+        if (tile.building) {
+          if (tile.building.type === "ride") {
+            // update the stats
+            allRideStats["queue-status"].push({
+              ride_name: tile.building.subType,
+              ride_status: tile.building.rideStatistics.queueStats.status,
+            });
+          }
+        }
+      }
+    }
+
+    return allRideStats;
+  }
+
   /**
    * Places a building at the specified coordinates if the
    * tile does not already have a building on it
