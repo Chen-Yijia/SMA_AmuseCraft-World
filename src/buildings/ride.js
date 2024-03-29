@@ -95,7 +95,41 @@ export class Ride extends Zone {
      *
      * }}
      */
-    this.rideStatistics = { queueStats: {}, revenueStas: {} };
+    this.rideStatistics = {
+      queueStats: {
+        status: {
+          timeStamps: [],
+          rideStatus: [],
+        },
+        queue: {
+          timeStamps: [],
+          waitingLength: [],
+          loadedLength: [],
+          totalLength: [],
+        },
+      },
+      revenueStas: {
+        ridership: {
+          timeStamps: [],
+          totalRidership: [],
+          currentTotalRidership: 0,
+        },
+        revenue: {
+          timeStamps: [],
+          totalRevenue: [],
+          revenuePerTime: [],
+          currentTotalRevenue: 0,
+          currentRevenuePerTime: 0,
+        },
+        profit: {
+          timeStamps: [],
+          totalProfit: [],
+          profitPerTime: [],
+          currentTotalProfit: 0,
+          currentProfitPerTime: 0,
+        },
+      },
+    };
   }
 
   /**
@@ -177,6 +211,9 @@ export class Ride extends Zone {
         this.isMeshOutOfDate = true;
       }
     }
+
+    // update statistics
+    this.updateStatistics(city);
   }
 
   /**
@@ -313,6 +350,91 @@ export class Ride extends Zone {
 
     this.waitingVisitors = [];
     this.loadedVisitors = [];
+  }
+
+  /**
+   * Update the statistics for the ride
+   * @param {City} city
+   */
+  updateStatistics(city) {
+    this.updateQueueStats(city);
+    this.updateRevenueStats(city);
+  }
+
+  /**
+   * Update the queue stats for ride
+   * @param {City} city
+   */
+  updateQueueStats(city) {
+    // update status stats
+    this.rideStatistics.queueStats.status.timeStamps.push(
+      city.currentSimulationTime
+    );
+    this.rideStatistics.queueStats.status.rideStatus.push(
+      this.state == "idle" ? 0 : 1
+    );
+
+    // update queue stats
+    this.rideStatistics.queueStats.queue.timeStamps.push(
+      city.currentSimulationTime
+    );
+    this.rideStatistics.queueStats.queue.waitingLength.push(
+      this.waitingVisitors.length
+    );
+    this.rideStatistics.queueStats.queue.loadedLength.push(
+      this.loadedVisitors.length
+    );
+    this.rideStatistics.queueStats.queue.totalLength.push(
+      this.waitingVisitors.length + this.loadedVisitors.length
+    );
+  }
+
+  /**
+   * Update the revenue stats for ride
+   * @param {City} city
+   */
+  updateRevenueStats(city) {
+    // update ridership stats
+    this.rideStatistics.revenueStas.ridership.timeStamps.push(
+      city.currentSimulationTime
+    );
+    this.rideStatistics.revenueStas.ridership.totalRidership.push(
+      this.totalRidership
+    );
+    this.rideStatistics.revenueStas.ridership.currentTotalRidership =
+      this.totalRidership;
+
+    // update revenue stats
+    this.rideStatistics.revenueStas.revenue.timeStamps.push(
+      city.currentSimulationTime
+    );
+    this.rideStatistics.revenueStas.revenue.totalRevenue.push(
+      this.accumulatedRevenue
+    );
+    this.rideStatistics.revenueStas.revenue.revenuePerTime.push(
+      this.accumulatedRevenue / city.currentSimulationTime
+    );
+    this.rideStatistics.revenueStas.revenue.currentTotalRevenue =
+      this.accumulatedRevenue;
+    this.rideStatistics.revenueStas.revenue.currentRevenuePerTime =
+      this.accumulatedRevenue / city.currentSimulationTime;
+
+    // update profit stats
+    this.rideStatistics.revenueStas.profit.timeStamps.push(
+      city.currentSimulationTime
+    );
+    this.rideStatistics.revenueStas.profit.totalProfit.push(
+      this.accumulatedRevenue - this.accumulatedCost
+    );
+    this.rideStatistics.revenueStas.profit.profitPerTime.push(
+      (this.accumulatedRevenue - this.accumulatedCost) /
+        city.currentSimulationTime
+    );
+    this.rideStatistics.revenueStas.profit.currentTotalProfit =
+      this.accumulatedRevenue - this.accumulatedCost;
+    this.rideStatistics.revenueStas.profit.currentProfitPerTime =
+      (this.accumulatedRevenue - this.accumulatedCost) /
+      city.currentSimulationTime;
   }
 
   /**
