@@ -75,8 +75,14 @@
           <button id="button-select" class="ui-button selected" data-type="select" onclick="game.onToolSelected(event)">
             <img class="toolbar-icon" src="public/icons/select-color.png" />
           </button>
+          <button id="button-play" class="ui-button" onclick="game.togglePlay()">
+            <img id="play-button-icon" class="toolbar-icon" src="public/icons/play-color.png" />
+          </button>
           <button id="button-bulldoze" class="ui-button" data-type="bulldoze" onclick="game.onToolSelected(event)">
             <img class="toolbar-icon" src="public/icons/bulldozer-color.png" />
+          </button>
+          <button id="button-entrance" class="ui-button" data-type="entrance" onclick="game.onToolSelected(event)">
+            <img class="toolbar-icon" src="public/icons/entrance.png" />
           </button>
           <button id="button-road" class="ui-button" data-type="road" onclick="game.onToolSelected(event)">
             <img class="toolbar-icon" src="public/icons/road-color.png" />
@@ -84,13 +90,6 @@
           <!-- <button id='button-pause' class="ui-button" onclick="game.togglePause()">
             <img id='pause-button-icon' class="toolbar-icon" src="public/icons/pause.png">
           </button> -->
-          <button id="button-play" class="ui-button" onclick="game.togglePlay()">
-            <img id="play-button-icon" class="toolbar-icon" src="public/icons/play-color.png" />
-          </button>
-
-          <button id="button-entrance" class="ui-button" data-type="entrance" onclick="game.onToolSelected(event)">
-            <img class="toolbar-icon" src="public/icons/entrance.png" />
-          </button>
 
           <button id="button-ride" class="ui-button" data-type="ride" onclick="game.onToolSelected(event)">
             <img class="toolbar-icon" src="public/icons/carousel.png" />
@@ -102,6 +101,10 @@
 
           <button id="button-setting" class="ui-button" data-type="setting" onclick="game.onToolSelected(event)">
             <img class="toolbar-icon" src="public/icons/settings.png" />
+          </button>
+
+          <button id="button-plot" class="ui-button" data-type="plot" onclick="game.onToolSelected(event)">
+            <img class="toolbar-icon" src="public/icons/visualise.png" />
           </button>
 
           <button id="button-download" class="ui-button" data-type="download" onclick="game.onToolSelected(event)">

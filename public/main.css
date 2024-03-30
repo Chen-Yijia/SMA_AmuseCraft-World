@@ -117,7 +117,7 @@ h1 {
   align-items: center;
 }
 
-#button-select {
+/* #button-select {
   background-color: hsl(36, 0%, 60%);
   box-shadow: 0 6px 0 0px hsl(36, 0%, 40%);
 }
@@ -141,6 +141,82 @@ h1 {
   background-color: hsl(110, 100%, 80%);
   box-shadow: 0 6px 0 0px hsl(110, 100%, 30%);
 }
+
+#button-plot {
+  background-color: hsl(200, 80%, 70%);
+  box-shadow: 0 6px 0 0px hsl(200, 80%, 30%);
+}
+
+#button-ride {
+  background-color: hsl(30, 60%, 70%);
+  box-shadow: 0 6px 0 0px hsl(30, 60%, 40%);
+}
+
+#button-stand {
+  background-color: hsl(270, 60%, 70%);
+  box-shadow: 0 6px 0 0px hsl(270, 60%, 40%);
+}
+
+#button-setting {
+  background-color: hsl(160, 60%, 70%);
+  box-shadow: 0 6px 0 0px hsl(160, 60%, 40%);
+}
+
+#button-download {
+  background-color: hsl(240, 60%, 70%);
+  box-shadow: 0 6px 0 0px hsl(240, 60%, 40%);
+} */
+
+#button-select {
+  background-color: hsl(36, 0%, 60%);
+  box-shadow: 0 6px 0 0px hsl(36, 0%, 40%);
+}
+
+#button-bulldoze {
+  background-color: hsl(342, 60%, 70%);
+  box-shadow: 0 6px 0 0px hsl(342, 60%, 40%);
+}
+
+#button-road {
+  background-color: hsl(201, 60%, 70%);
+  box-shadow: 0 6px 0 0px hsl(201, 60%, 40%);
+}
+
+#button-play {
+  background-color: hsl(56, 60%, 70%);
+  box-shadow: 0 6px 0 0px hsl(56, 60%, 40%);
+}
+
+#button-entrance {
+  background-color: hsl(110, 60%, 70%);
+  box-shadow: 0 6px 0 0px hsl(110, 60%, 40%);
+}
+
+#button-ride {
+  background-color: hsl(30, 60%, 70%);
+  box-shadow: 0 6px 0 0px hsl(30, 60%, 40%);
+}
+
+#button-stand {
+  background-color: hsl(270, 60%, 70%);
+  box-shadow: 0 6px 0 0px hsl(270, 60%, 40%);
+}
+
+#button-setting {
+  background-color: hsl(160, 60%, 70%);
+  box-shadow: 0 6px 0 0px hsl(160, 60%, 40%);
+}
+
+#button-plot {
+  background-color: hsl(0, 0%, 80%);
+  box-shadow: 0 6px 0 0px hsl(0, 0%, 50%);
+}
+
+#button-download {
+  background-color: hsl(240, 60%, 70%);
+  box-shadow: 0 6px 0 0px hsl(240, 60%, 40%);
+}
+
 
 .ui-button.selected {
   /* background-color: #121622d3;

@@ -108,6 +108,124 @@ export class Game {
     }
 
     // PLOTTING
+    // Comment out since it's making simulation stuck
+    // this.plotGraphs();
+  }
+
+  /**
+   *
+   * @param {*} event
+   */
+  onToolSelected(event) {
+    // Deselect previously selected button and selected this one
+    if (this.selectedControl) {
+      this.selectedControl.classList.remove("selected");
+    }
+    this.selectedControl = event.target;
+    this.activeToolId = this.selectedControl.getAttribute("data-type");
+    console.log(this.activeToolId);
+
+    if (this.activeToolId !== "plot" && this.activeToolId !== "download") {
+      this.selectedControl.classList.add("selected");
+    }
+
+    // If the activeTool is "Ride", then show the ride tool kit list
+    if (
+      this.ridesElements.includes(this.activeToolId) ||
+      this.activeToolId === "ride"
+    ) {
+      document.getElementById("ride-tool-kit-list").style.visibility =
+        "visible";
+    } else {
+      document.getElementById("ride-tool-kit-list").style.visibility = "hidden";
+    }
+
+    // If the activeTool is "Stand", then show the stand tool kit list
+    if (
+      this.standElements.includes(this.activeToolId) ||
+      this.activeToolId === "stand"
+    ) {
+      document.getElementById("stand-tool-kit-list").style.visibility =
+        "visible";
+    } else {
+      document.getElementById("stand-tool-kit-list").style.visibility =
+        "hidden";
+    }
+
+    if (this.activeToolId === "setting") {
+      document.getElementById("setting-kit-list").style.visibility = "visible";
+    } else {
+      document.getElementById("setting-kit-list").style.visibility = "hidden";
+    }
+
+    if (this.activeToolId == "plot") {
+      this.plotGraphs();
+    }
+
+    if (this.activeToolId === "download") {
+      const refinedData = [
+        ["firstName", "lastName"],
+        ["Idorenyin", "Udoh"],
+        ["Loyle", "Carner"],
+        ["Tamunotekena", "Dagogo"],
+      ];
+      let csvContent = "";
+      refinedData.forEach((row) => {
+        csvContent += row.join(",") + "\n";
+      });
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8," });
+      const objUrl = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.setAttribute("href", objUrl);
+      link.setAttribute("download", "File.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      // this.graphPlotter = new GraphPlotter();
+      // this.graphPlotter.plotRoadHeatmap(
+      //   "roat-tile-heatmap",
+      //   this.city.statistics.roadHeatmap
+      // );
+    }
+  }
+
+  /**
+   * Toggles the pause state of the game
+   */
+  togglePause() {
+    this.isPaused = !this.isPaused;
+    console.log(`Is Paused: ${this.isPaused}`);
+    if (this.isPaused) {
+      document.getElementById("pause-button-icon").src =
+        "public/icons/play.png";
+    } else {
+      document.getElementById("pause-button-icon").src =
+        "public/icons/pause.png";
+    }
+  }
+
+  /**
+   * Start the simulation & start updating the currentTime
+   */
+  togglePlay() {
+    this.simulationStarted = !this.simulationStarted;
+    this.city.simulatedStarted = this.simulationStarted;
+    console.log(`Simulation is started: ${this.simulationStarted}`);
+    if (this.simulationStarted) {
+      document.getElementById("play-button-icon").src =
+        "public/icons/pause-color.png";
+    } else {
+      document.getElementById("play-button-icon").src =
+        "public/icons/play-color.png";
+    }
+  }
+
+  /**
+   * Plot all graphs
+   */
+  plotGraphs() {
+    // PLOTTING
     let allRideStats = this.city.getAllRideStatistics();
 
     // road tile heatmap
@@ -173,109 +291,6 @@ export class Game {
       "ride-revenue-per-time-line-chart",
       allRideStats["revenue-revenue"]
     );
-  }
-
-  /**
-   *
-   * @param {*} event
-   */
-  onToolSelected(event) {
-    // Deselect previously selected button and selected this one
-    if (this.selectedControl) {
-      this.selectedControl.classList.remove("selected");
-    }
-    this.selectedControl = event.target;
-    this.selectedControl.classList.add("selected");
-
-    this.activeToolId = this.selectedControl.getAttribute("data-type");
-    console.log(this.activeToolId);
-
-    // If the activeTool is "Ride", then show the ride tool kit list
-    if (
-      this.ridesElements.includes(this.activeToolId) ||
-      this.activeToolId === "ride"
-    ) {
-      document.getElementById("ride-tool-kit-list").style.visibility =
-        "visible";
-    } else {
-      document.getElementById("ride-tool-kit-list").style.visibility = "hidden";
-    }
-
-    // If the activeTool is "Stand", then show the stand tool kit list
-    if (
-      this.standElements.includes(this.activeToolId) ||
-      this.activeToolId === "stand"
-    ) {
-      document.getElementById("stand-tool-kit-list").style.visibility =
-        "visible";
-    } else {
-      document.getElementById("stand-tool-kit-list").style.visibility =
-        "hidden";
-    }
-
-    if (this.activeToolId === "setting") {
-      document.getElementById("setting-kit-list").style.visibility = "visible";
-    } else {
-      document.getElementById("setting-kit-list").style.visibility = "hidden";
-    }
-
-    if (this.activeToolId === "download") {
-      const refinedData = [
-        ["firstName", "lastName"],
-        ["Idorenyin", "Udoh"],
-        ["Loyle", "Carner"],
-        ["Tamunotekena", "Dagogo"],
-      ];
-      let csvContent = "";
-      refinedData.forEach((row) => {
-        csvContent += row.join(",") + "\n";
-      });
-      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8," });
-      const objUrl = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.setAttribute("href", objUrl);
-      link.setAttribute("download", "File.csv");
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-
-      // this.graphPlotter = new GraphPlotter();
-      // this.graphPlotter.plotRoadHeatmap(
-      //   "roat-tile-heatmap",
-      //   this.city.statistics.roadHeatmap
-      // );
-    }
-  }
-
-  /**
-   * Toggles the pause state of the game
-   */
-  togglePause() {
-    this.isPaused = !this.isPaused;
-    console.log(`Is Paused: ${this.isPaused}`);
-    if (this.isPaused) {
-      document.getElementById("pause-button-icon").src =
-        "public/icons/play.png";
-    } else {
-      document.getElementById("pause-button-icon").src =
-        "public/icons/pause.png";
-    }
-  }
-
-  /**
-   * Start the simulation & start updating the currentTime
-   */
-  togglePlay() {
-    this.simulationStarted = !this.simulationStarted;
-    this.city.simulatedStarted = this.simulationStarted;
-    console.log(`Simulation is started: ${this.simulationStarted}`);
-    if (this.simulationStarted) {
-      document.getElementById("play-button-icon").src =
-        "public/icons/pause-color.png";
-    } else {
-      document.getElementById("play-button-icon").src =
-        "public/icons/play-color.png";
-    }
   }
 
   /**
