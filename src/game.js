@@ -131,6 +131,11 @@ export class Game {
       "ride-status-line-chart",
       allRideStats["queue-status"]
     );
+
+    this.graphPlotter.plotRideProportionBusy(
+      "ride-busy-bar-chart",
+      allRideStats["queue-status"]
+    );
   }
 
   /**

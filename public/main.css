@@ -458,7 +458,7 @@ summary::-webkit-details-marker {
 
 /* Plots  */
 .road-plot-container {
-  width: 500px;
+  width: 400px;
   /* height: 250px; */
   margin-top: 30px;
   align-items: center;
@@ -473,7 +473,7 @@ summary::-webkit-details-marker {
 }
 
 .visitor-plot-container {
-  width: 500px;
+  width: 400px;
   /* height: 250px; */
   margin-top: 30px;
   align-items: center;
@@ -488,7 +488,7 @@ summary::-webkit-details-marker {
 }
 
 .ride-queue-plot-container {
-  width: 500px;
+  width: 400px;
   /* height: 250px; */
   margin-top: 30px;
   align-items: center;

@@ -293,4 +293,63 @@ class GraphPlotter {
 
     Plotly.newPlot(div_id, data, layout);
   }
+
+  /**
+   * Bar chart showing the long run proportion of time being busy (realtime)
+   * @param {string} div_id
+   * @param {{
+   * ride_name: string,
+   * ride_status: {
+   * timeStamps: number[],
+   * rideStatus: number[]
+   * }
+   * }[]} ride_status_data
+   */
+  plotRideProportionBusy(div_id, ride_status_data) {
+    var x = [];
+    var y = [];
+
+    ride_status_data.forEach((ride_status_data_i) => {
+      x.push(ride_status_data_i.ride_name);
+
+      var sum_status = ride_status_data_i.ride_status.rideStatus.reduce(
+        (partialSum, a) => partialSum + a,
+        0
+      );
+      var total_time =
+        ride_status_data_i.ride_status.timeStamps[
+          ride_status_data_i.ride_status.timeStamps.length - 1
+        ];
+      y.push(sum_status / total_time);
+    });
+
+    console.log(y);
+
+    var trace = {
+      x: x,
+      y: y,
+      type: "bar",
+      text: y.map((d) => d.toFixed(2)),
+      textposition: "auto",
+      hoverinfo: "none",
+      marker: {
+        color: "rgba(58,200,225,.5)",
+        line: {
+          color: "rgb(8,48,107)",
+          width: 1.5,
+        },
+      },
+    };
+
+    var data = [trace];
+
+    var layout = {
+      yaxis: { title: "Proportion of time the ride being busy" },
+      margin: { t: 20 },
+      plot_bgcolor: "rgba(0,0,0,0)",
+      // paper_bgcolor: "rgba(0,0,0,0)",
+    };
+
+    Plotly.newPlot(div_id, data, layout);
+  }
 }
