@@ -128,17 +128,27 @@ export class Game {
       this.city.statistics.visitorMoneySpent
     );
 
+    // visitor distribution
+    this.graphPlotter.plotVisitorDistribution(
+      "visitor-distribution-pie-chart",
+      allRideStats["queue-queue"],
+      this.sceneManager.vehicleGraph.vehicles.children.length
+    );
+
+    // ride status in time series
     this.graphPlotter.plotRideStatusTimeSeries(
       "ride-status-line-chart",
       allRideStats["queue-status"]
     );
 
+    // ride proportion of time being busy
     this.graphPlotter.plotRideProportionBusy(
       "ride-busy-bar-chart",
       "ride-busy-line-chart",
       allRideStats["queue-status"]
     );
 
+    // ride queue stats
     this.graphPlotter.plotRideQueueStats(
       "ride-queue-bar-chart",
       allRideStats["queue-queue"]

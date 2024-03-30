@@ -512,4 +512,63 @@ class GraphPlotter {
 
     Plotly.newPlot(div_id, data, layout);
   }
+
+  /**
+   * Pie chart showing the realtime visitor distribution. (in queue waiting & loaded & others (travelling/in store))
+   * @param {string} div_id
+   * @param {{
+   * ride_name: string,
+   * ride_queue: {
+   * timeStamps: number[],
+   * waitingLength: number[],
+   * loadedLength: number[],
+   * totalLength: number[]
+   * }
+   * }[]} ride_queue_data
+   * @param {number} num_visitor_scene
+   */
+  plotVisitorDistribution(div_id, ride_queue_data, num_visitor_scene) {
+    var labels = ["Waiting", "Loaded", "Travelling"];
+    var num_waiting = 0;
+    var num_loaded = 0;
+
+    ride_queue_data.forEach((ride_queue_data_i) => {
+      var waitingLength = ride_queue_data_i.ride_queue.waitingLength;
+      var loadedLength = ride_queue_data_i.ride_queue.loadedLength;
+      num_waiting += waitingLength[waitingLength.length - 1];
+      num_loaded += loadedLength[loadedLength.length - 1];
+    });
+
+    var num_traveling = num_visitor_scene - num_waiting - num_loaded;
+
+    var values = [num_waiting, num_loaded, num_traveling];
+
+    var data = [
+      {
+        type: "pie",
+        values: values,
+        labels: labels,
+        textinfo: "label+percent",
+        // textposition: "outside",
+        insidetextorientation: "radial",
+        automargin: true,
+        marker: {
+          colors: [
+            "rgba(58,200,225,.5)",
+            "rgba(255,165,0,.5)",
+            "rgba(144,238,144,.5)",
+          ],
+        },
+      },
+    ];
+
+    var layout = {
+      margin: { t: 20 },
+      plot_bgcolor: "rgba(0,0,0,0)",
+      paper_bgcolor: "rgba(0,0,0,0)",
+      showlegend: false,
+    };
+
+    Plotly.newPlot(div_id, data, layout);
+  }
 }
