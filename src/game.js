@@ -166,6 +166,13 @@ export class Game {
       allRideStats["revenue-revenue"],
       allRideStats["revenue-profit"]
     );
+
+    // ride long-run revenue per time
+    this.graphPlotter.plotRideRevenuePerTime(
+      "ride-revenue-per-time-bar-chart",
+      "ride-revenue-per-time-line-chart",
+      allRideStats["revenue-revenue"]
+    );
   }
 
   /**
