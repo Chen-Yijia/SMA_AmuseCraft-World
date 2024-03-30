@@ -156,7 +156,7 @@ class GraphPlotter {
       yaxis: { title: "Count" },
       margin: { t: 20 },
       plot_bgcolor: "rgba(0,0,0,0)",
-      // paper_bgcolor: "rgba(0,0,0,0)",
+      paper_bgcolor: "rgba(0,0,0,0)",
     };
 
     Plotly.newPlot(div_id, data, layout);
@@ -247,7 +247,7 @@ class GraphPlotter {
       yaxis: { title: "Count" },
       margin: { t: 20 },
       plot_bgcolor: "rgba(0,0,0,0)",
-      // paper_bgcolor: "rgba(0,0,0,0)",
+      paper_bgcolor: "rgba(0,0,0,0)",
     };
 
     Plotly.newPlot(div_id, data, layout);
@@ -285,7 +285,7 @@ class GraphPlotter {
       yaxis: { title: "Ride Status" },
       margin: { t: 20 },
       plot_bgcolor: "rgba(0,0,0,0)",
-      // paper_bgcolor: "rgba(0,0,0,0)",
+      paper_bgcolor: "rgba(0,0,0,0)",
       legend: {
         traceorder: "reversed",
       },
@@ -296,7 +296,8 @@ class GraphPlotter {
 
   /**
    * Bar chart showing the long run proportion of time being busy (realtime)
-   * @param {string} div_id
+   * @param {string} div_id_bar_chart
+   * @param {string} div_id_line_chart
    * @param {{
    * ride_name: string,
    * ride_status: {
@@ -305,11 +306,36 @@ class GraphPlotter {
    * }
    * }[]} ride_status_data
    */
-  plotRideProportionBusy(div_id, ride_status_data) {
-    var x = [];
-    var y = [];
+  plotRideProportionBusy(
+    div_id_bar_chart,
+    div_id_line_chart,
+    ride_status_data
+  ) {
+    /**
+     *
+     * @param {number[]} time_stamps
+     * @param {number[]} ride_status
+     * @returns
+     */
+    function proportionBusyTimeSeries(time_stamps, ride_status) {
+      return time_stamps.map((d, i) => {
+        var ride_status_slice = [...ride_status].slice(0, i + 1);
+        var ride_status_slice_sum = ride_status_slice.reduce(
+          (partialSum, a) => partialSum + a,
+          0
+        );
+        return ride_status_slice_sum / d;
+      });
+    }
 
-    ride_status_data.forEach((ride_status_data_i) => {
+    var x = [];
+    var y_bar = [];
+    var data_line = [];
+
+    for (let i = 0; i < ride_status_data.length; i++) {
+      const ride_status_data_i = ride_status_data[i];
+
+      // for bar chart
       x.push(ride_status_data_i.ride_name);
 
       var sum_status = ride_status_data_i.ride_status.rideStatus.reduce(
@@ -320,16 +346,30 @@ class GraphPlotter {
         ride_status_data_i.ride_status.timeStamps[
           ride_status_data_i.ride_status.timeStamps.length - 1
         ];
-      y.push(sum_status / total_time);
-    });
+      y_bar.push(sum_status / total_time);
 
-    console.log(y);
+      // for line chart
+      var proportionTimeSeries = proportionBusyTimeSeries(
+        ride_status_data_i.ride_status.timeStamps,
+        ride_status_data_i.ride_status.rideStatus
+      );
 
-    var trace = {
+      var line_trace_i = {
+        x: ride_status_data_i.ride_status.timeStamps,
+        y: proportionTimeSeries,
+        mode: "lines",
+        name: ride_status_data_i.ride_name,
+        line: { shape: "spline", color: this.colorPalette[i] },
+        type: "scatter",
+      };
+      data_line.push(line_trace_i);
+    }
+
+    var trace_bar = {
       x: x,
-      y: y,
+      y: y_bar,
       type: "bar",
-      text: y.map((d) => d.toFixed(2)),
+      text: y_bar.map((d) => d.toFixed(2)),
       textposition: "auto",
       hoverinfo: "none",
       marker: {
@@ -341,13 +381,133 @@ class GraphPlotter {
       },
     };
 
-    var data = [trace];
+    var data_bar = [trace_bar];
 
-    var layout = {
+    var layout_bar = {
       yaxis: { title: "Proportion of time the ride being busy" },
       margin: { t: 20 },
       plot_bgcolor: "rgba(0,0,0,0)",
-      // paper_bgcolor: "rgba(0,0,0,0)",
+      paper_bgcolor: "rgba(0,0,0,0)",
+    };
+
+    var layout_line = {
+      xaxis: { title: "Time" },
+      yaxis: { title: "Proportion of time the ride being busy" },
+      margin: { t: 10 },
+      plot_bgcolor: "rgba(0,0,0,0)",
+      paper_bgcolor: "rgba(0,0,0,0)",
+    };
+
+    Plotly.newPlot(div_id_bar_chart, data_bar, layout_bar);
+    Plotly.newPlot(div_id_line_chart, data_line, layout_line);
+  }
+
+  /**
+   * Bar chart showing the long run proportion of time being busy (realtime)
+   * @param {string} div_id
+   * @param {{
+   * ride_name: string,
+   * ride_queue: {
+   * timeStamps: number[],
+   * waitingLength: number[],
+   * loadedLength: number[],
+   * totalLength: number[]
+   * }
+   * }[]} ride_queue_data
+   */
+  plotRideQueueStats(div_id, ride_queue_data) {
+    var x = [];
+    var y_waiting = [];
+    var y_loaded = [];
+    var y_total = [];
+
+    ride_queue_data.forEach((ride_queue_data_i) => {
+      x.push(ride_queue_data_i.ride_name);
+
+      var sum_waiting = ride_queue_data_i.ride_queue.waitingLength.reduce(
+        (partialSum, a) => partialSum + a,
+        0
+      );
+
+      var sum_loaded = ride_queue_data_i.ride_queue.loadedLength.reduce(
+        (partialSum, a) => partialSum + a,
+        0
+      );
+
+      var sum_total = ride_queue_data_i.ride_queue.totalLength.reduce(
+        (partialSum, a) => partialSum + a,
+        0
+      );
+
+      var total_time =
+        ride_queue_data_i.ride_queue.timeStamps[
+          ride_queue_data_i.ride_queue.timeStamps.length - 1
+        ];
+
+      y_waiting.push(sum_waiting / total_time);
+      y_loaded.push(sum_loaded / total_time);
+      y_total.push(sum_total / total_time);
+    });
+
+    var trace_waiting = {
+      x: x,
+      y: y_waiting,
+      type: "bar",
+      name: "Waiting Visitors",
+      text: y_waiting.map((d) => d.toFixed(2)),
+      textposition: "auto",
+      hoverinfo: "none",
+      marker: {
+        color: "rgba(58,200,225,.5)",
+        line: {
+          color: "rgb(8,48,107)",
+          width: 1.5,
+        },
+      },
+    };
+
+    var trace_loaded = {
+      x: x,
+      y: y_loaded,
+      type: "bar",
+      name: "Loaded Visitors",
+      text: y_loaded.map((d) => d.toFixed(2)),
+      textposition: "auto",
+      hoverinfo: "none",
+      marker: {
+        color: "rgba(144,238,144,.5)",
+        line: {
+          color: "rgb(34,139,34)",
+          width: 1.5,
+        },
+      },
+    };
+
+    var trace_total = {
+      x: x,
+      y: y_total,
+      type: "bar",
+      name: "Total Visitors",
+      text: y_total.map((d) => d.toFixed(2)),
+      textposition: "auto",
+      hoverinfo: "none",
+      marker: {
+        color: "rgba(255,105,180,.5)",
+        line: {
+          color: "rgb(199,21,133)",
+          width: 1.5,
+        },
+      },
+    };
+
+    var data = [trace_waiting, trace_loaded, trace_total];
+
+    var layout = {
+      barmode: "group",
+      yaxis: { title: "Long Run Average Number of Visitors" },
+      margin: { t: 20 },
+      plot_bgcolor: "rgba(0,0,0,0)",
+      paper_bgcolor: "rgba(0,0,0,0)",
     };
 
     Plotly.newPlot(div_id, data, layout);

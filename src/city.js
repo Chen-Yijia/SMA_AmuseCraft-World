@@ -181,6 +181,11 @@ export class City {
               ride_name: tile.building.subType,
               ride_status: tile.building.rideStatistics.queueStats.status,
             });
+
+            allRideStats["queue-queue"].push({
+              ride_name: tile.building.subType,
+              ride_queue: tile.building.rideStatistics.queueStats.queue,
+            });
           }
         }
       }

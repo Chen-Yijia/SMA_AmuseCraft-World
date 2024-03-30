@@ -458,13 +458,14 @@ summary::-webkit-details-marker {
 
 /* Plots  */
 .road-plot-container {
-  width: 400px;
+  width: 500px;
   /* height: 250px; */
   margin-top: 30px;
   align-items: center;
   text-align: center;
-  background-color: #FFF3;
-  margin-left: 40px;
+  background-color: rgba(255, 255, 255, 0.717);
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .visitor-all-plots {
@@ -478,13 +479,20 @@ summary::-webkit-details-marker {
   margin-top: 30px;
   align-items: center;
   text-align: center;
-  background-color: #FFF3;
-  margin-left: 40px;
+  background-color: rgba(255, 255, 255, 0.717);
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.ride-status-all-plots {
+  display: flex;
+  justify-content: flex-start;
 }
 
 .ride-queue-all-plots {
   display: flex;
   justify-content: flex-start;
+  overflow-x: scroll;
 }
 
 .ride-queue-plot-container {
@@ -493,6 +501,7 @@ summary::-webkit-details-marker {
   margin-top: 30px;
   align-items: center;
   text-align: center;
-  background-color: #FFF3;
-  margin-left: 40px;
+  background-color:  rgba(255, 255, 255, 0.717);
+  margin-left: 10px;
+  margin-right: 10px;
 }

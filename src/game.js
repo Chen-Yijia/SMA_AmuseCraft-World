@@ -107,6 +107,9 @@ export class Game {
       this.simulationTime++;
     }
 
+    // PLOTTING
+    let allRideStats = this.city.getAllRideStatistics();
+
     // road tile heatmap
     this.graphPlotter.plotRoadHeatmap(
       "road-tile-heatmap",
@@ -125,8 +128,6 @@ export class Game {
       this.city.statistics.visitorMoneySpent
     );
 
-    let allRideStats = this.city.getAllRideStatistics();
-
     this.graphPlotter.plotRideStatusTimeSeries(
       "ride-status-line-chart",
       allRideStats["queue-status"]
@@ -134,7 +135,13 @@ export class Game {
 
     this.graphPlotter.plotRideProportionBusy(
       "ride-busy-bar-chart",
+      "ride-busy-line-chart",
       allRideStats["queue-status"]
+    );
+
+    this.graphPlotter.plotRideQueueStats(
+      "ride-queue-bar-chart",
+      allRideStats["queue-queue"]
     );
   }
 
