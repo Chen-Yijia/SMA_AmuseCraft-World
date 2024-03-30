@@ -620,4 +620,90 @@ class GraphPlotter {
 
     Plotly.newPlot(div_id, data, layout);
   }
+
+  /**
+   * Bar chart showing the real time profit and revenue
+   * @param {string} div_id
+   * @param {{
+   * ride_name: string,
+   * ride_revenue: {
+   * timeStamps: number[],
+   * totalRevenue: number[],
+   * revenuePerTime: number[],
+   * currentTotalRevenue: number,
+   * currentRevenuePerTime: number,
+   * }
+   * }[]} ride_revenue_data
+   * @param {{
+   * ride_name: string,
+   * ride_profit: {
+   * timeStamps: number[],
+   * totalProfit: number[],
+   * profitPerTime: number[],
+   * currentTotalProfit: number,
+   * currentProfitPerTime: number,
+   * }
+   * }[]} ride_profit_data
+   */
+  plotRideRevenueAndProfit(div_id, ride_revenue_data, ride_profit_data) {
+    var x = [];
+    var y_revenue = [];
+    var y_profit = [];
+    var numTotalRides = ride_revenue_data.length;
+    for (let i = 0; i < numTotalRides; i++) {
+      const ride_revenue_data_i = ride_revenue_data[i];
+      const ride_profit_data_i = ride_profit_data[i];
+
+      x.push(ride_revenue_data_i.ride_name);
+
+      y_revenue.push(ride_revenue_data_i.ride_revenue.currentTotalRevenue);
+      y_profit.push(ride_profit_data_i.ride_profit.currentTotalProfit);
+    }
+
+    var trace_revenue = {
+      x: x,
+      y: y_revenue,
+      type: "bar",
+      name: "Total Revenue",
+      text: y_revenue.map((d) => d.toFixed(2)),
+      textposition: "auto",
+      hoverinfo: "none",
+      marker: {
+        color: "rgba(58,200,225,.5)",
+        line: {
+          color: "rgb(8,48,107)",
+          width: 1.5,
+        },
+      },
+    };
+
+    var trace_profit = {
+      x: x,
+      y: y_profit,
+      type: "bar",
+      name: "Total Profit",
+      text: y_profit.map((d) => d.toFixed(2)),
+      textposition: "auto",
+      hoverinfo: "none",
+      marker: {
+        color: "rgba(144,238,144,.5)",
+        line: {
+          color: "rgb(34,139,34)",
+          width: 1.5,
+        },
+      },
+    };
+
+    var data = [trace_revenue, trace_profit];
+
+    var layout = {
+      barmode: "group",
+      yaxis: { title: "Ride Total Revenue/ Profit" },
+      margin: { t: 20 },
+      plot_bgcolor: "rgba(0,0,0,0)",
+      paper_bgcolor: "rgba(0,0,0,0)",
+    };
+
+    Plotly.newPlot(div_id, data, layout);
+  }
 }

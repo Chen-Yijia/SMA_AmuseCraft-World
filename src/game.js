@@ -159,6 +159,13 @@ export class Game {
       "ride-ridership-bar-chart",
       allRideStats["revenue-ridership"]
     );
+
+    // ride realtime profit & revenue
+    this.graphPlotter.plotRideRevenueAndProfit(
+      "ride-revenue-profit-bar-chart",
+      allRideStats["revenue-revenue"],
+      allRideStats["revenue-profit"]
+    );
   }
 
   /**

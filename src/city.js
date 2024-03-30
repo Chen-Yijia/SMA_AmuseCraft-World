@@ -192,6 +192,16 @@ export class City {
               ride_ridership:
                 tile.building.rideStatistics.revenueStas.ridership,
             });
+
+            allRideStats["revenue-revenue"].push({
+              ride_name: tile.building.subType,
+              ride_revenue: tile.building.rideStatistics.revenueStas.revenue,
+            });
+
+            allRideStats["revenue-profit"].push({
+              ride_name: tile.building.subType,
+              ride_profit: tile.building.rideStatistics.revenueStas.profit,
+            });
           }
         }
       }
