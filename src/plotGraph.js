@@ -571,4 +571,53 @@ class GraphPlotter {
 
     Plotly.newPlot(div_id, data, layout);
   }
+
+  /**
+   * Bar chart showing the real time total ridership for all rides
+   * @param {string} div_id
+   * @param {{
+   * ride_name: string,
+   * ride_ridership: {
+   * timeStamps: number[],
+   * totalRidership: number[],
+   * currentTotalRidership: number,
+   * }
+   * }[]} ride_ridership_data
+   */
+  plotRideTotalRidership(div_id, ride_ridership_data) {
+    var x = [];
+    var y = [];
+    for (let i = 0; i < ride_ridership_data.length; i++) {
+      const ride_ridership_data_i = ride_ridership_data[i];
+      x.push(ride_ridership_data_i.ride_name);
+      y.push(ride_ridership_data_i.ride_ridership.currentTotalRidership);
+    }
+
+    var trace = {
+      x: x,
+      y: y,
+      type: "bar",
+      text: y.map((d) => d.toFixed(0)),
+      textposition: "auto",
+      hoverinfo: "none",
+      marker: {
+        color: "rgba(58,200,225,.5)",
+        line: {
+          color: "rgb(8,48,107)",
+          width: 1.5,
+        },
+      },
+    };
+
+    var data = [trace];
+
+    var layout = {
+      yaxis: { title: "Total Ridership" },
+      margin: { t: 20 },
+      plot_bgcolor: "rgba(0,0,0,0)",
+      paper_bgcolor: "rgba(0,0,0,0)",
+    };
+
+    Plotly.newPlot(div_id, data, layout);
+  }
 }

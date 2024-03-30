@@ -492,10 +492,25 @@ summary::-webkit-details-marker {
 .ride-queue-all-plots {
   display: flex;
   justify-content: flex-start;
-  overflow-x: scroll;
 }
 
 .ride-queue-plot-container {
+  width: 400px;
+  /* height: 250px; */
+  margin-top: 30px;
+  align-items: center;
+  text-align: center;
+  background-color:  rgba(255, 255, 255, 0.717);
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.ride-revenue-all-plots {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.ride-revenue-plot-container {
   width: 400px;
   /* height: 250px; */
   margin-top: 30px;

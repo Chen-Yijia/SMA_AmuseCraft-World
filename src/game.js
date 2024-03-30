@@ -153,6 +153,12 @@ export class Game {
       "ride-queue-bar-chart",
       allRideStats["queue-queue"]
     );
+
+    // ride ridership
+    this.graphPlotter.plotRideTotalRidership(
+      "ride-ridership-bar-chart",
+      allRideStats["revenue-ridership"]
+    );
   }
 
   /**
