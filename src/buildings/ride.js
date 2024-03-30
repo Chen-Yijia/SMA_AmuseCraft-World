@@ -126,7 +126,7 @@ export class Ride extends Zone {
           totalProfit: [],
           profitPerTime: [],
           currentTotalProfit: 0,
-          currentProfitPerTime: 0,
+          currentProfitPerTime: 0, // revenue per time - operation cost
         },
       },
     };
@@ -427,14 +427,14 @@ export class Ride extends Zone {
       this.accumulatedRevenue - this.accumulatedCost
     );
     this.rideStatistics.revenueStas.profit.profitPerTime.push(
-      (this.accumulatedRevenue - this.accumulatedCost) /
-        city.currentSimulationTime
+      this.accumulatedRevenue / city.currentSimulationTime -
+        this.operationalCost
     );
     this.rideStatistics.revenueStas.profit.currentTotalProfit =
       this.accumulatedRevenue - this.accumulatedCost;
     this.rideStatistics.revenueStas.profit.currentProfitPerTime =
-      (this.accumulatedRevenue - this.accumulatedCost) /
-      city.currentSimulationTime;
+      this.accumulatedRevenue / city.currentSimulationTime -
+      this.operationalCost;
   }
 
   /**

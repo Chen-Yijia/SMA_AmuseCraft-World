@@ -63,6 +63,9 @@ class GraphPlotter {
       yaxis: {
         title: "X Axis",
       },
+      font: {
+        size: 8,
+      },
     };
 
     Plotly.newPlot(div_id, data, layout);
@@ -157,6 +160,9 @@ class GraphPlotter {
       margin: { t: 20 },
       plot_bgcolor: "rgba(0,0,0,0)",
       paper_bgcolor: "rgba(0,0,0,0)",
+      font: {
+        size: 8,
+      },
     };
 
     Plotly.newPlot(div_id, data, layout);
@@ -248,6 +254,9 @@ class GraphPlotter {
       margin: { t: 20 },
       plot_bgcolor: "rgba(0,0,0,0)",
       paper_bgcolor: "rgba(0,0,0,0)",
+      font: {
+        size: 8,
+      },
     };
 
     Plotly.newPlot(div_id, data, layout);
@@ -288,6 +297,9 @@ class GraphPlotter {
       paper_bgcolor: "rgba(0,0,0,0)",
       legend: {
         traceorder: "reversed",
+      },
+      font: {
+        size: 8,
       },
     };
 
@@ -387,6 +399,9 @@ class GraphPlotter {
       margin: { t: 20 },
       plot_bgcolor: "rgba(0,0,0,0)",
       paper_bgcolor: "rgba(0,0,0,0)",
+      font: {
+        size: 8,
+      },
     };
 
     var layout_line = {
@@ -395,6 +410,9 @@ class GraphPlotter {
       margin: { t: 10 },
       plot_bgcolor: "rgba(0,0,0,0)",
       paper_bgcolor: "rgba(0,0,0,0)",
+      font: {
+        size: 8,
+      },
     };
 
     Plotly.newPlot(div_id_bar_chart, data_bar, layout_bar);
@@ -455,7 +473,7 @@ class GraphPlotter {
       name: "Waiting Visitors",
       text: y_waiting.map((d) => d.toFixed(2)),
       textposition: "auto",
-      hoverinfo: "none",
+      // hoverinfo: "none",
       marker: {
         color: "rgba(58,200,225,.5)",
         line: {
@@ -472,7 +490,7 @@ class GraphPlotter {
       name: "Loaded Visitors",
       text: y_loaded.map((d) => d.toFixed(2)),
       textposition: "auto",
-      hoverinfo: "none",
+      // hoverinfo: "none",
       marker: {
         color: "rgba(144,238,144,.5)",
         line: {
@@ -489,7 +507,7 @@ class GraphPlotter {
       name: "Total Visitors",
       text: y_total.map((d) => d.toFixed(2)),
       textposition: "auto",
-      hoverinfo: "none",
+      // hoverinfo: "none",
       marker: {
         color: "rgba(255,105,180,.5)",
         line: {
@@ -507,6 +525,14 @@ class GraphPlotter {
       margin: { t: 20 },
       plot_bgcolor: "rgba(0,0,0,0)",
       paper_bgcolor: "rgba(0,0,0,0)",
+      font: {
+        size: 8,
+      },
+      // legend: {
+      //   "orientation": "h",
+      //   x: 0.5,
+      //   y: 1.2,
+      // },
     };
 
     Plotly.newPlot(div_id, data, layout);
@@ -566,6 +592,9 @@ class GraphPlotter {
       plot_bgcolor: "rgba(0,0,0,0)",
       paper_bgcolor: "rgba(0,0,0,0)",
       showlegend: false,
+      font: {
+        size: 8,
+      },
     };
 
     Plotly.newPlot(div_id, data, layout);
@@ -615,6 +644,9 @@ class GraphPlotter {
       margin: { t: 20 },
       plot_bgcolor: "rgba(0,0,0,0)",
       paper_bgcolor: "rgba(0,0,0,0)",
+      font: {
+        size: 8,
+      },
     };
 
     Plotly.newPlot(div_id, data, layout);
@@ -701,6 +733,9 @@ class GraphPlotter {
       margin: { t: 20 },
       plot_bgcolor: "rgba(0,0,0,0)",
       paper_bgcolor: "rgba(0,0,0,0)",
+      font: {
+        size: 8,
+      },
     };
 
     Plotly.newPlot(div_id, data, layout);
@@ -720,22 +755,36 @@ class GraphPlotter {
    * currentRevenuePerTime: number,
    * }
    * }[]} ride_revenue_data
+   * @param {{
+   * ride_name: string,
+   * ride_profit: {
+   * timeStamps: number[],
+   * totalProfit: number[],
+   * profitPerTime: number[],
+   * currentTotalProfit: number,
+   * currentProfitPerTime: number,
+   * }
+   * }[]} ride_profit_data
    */
   plotRideRevenuePerTime(
     div_id_bar_chart,
     div_id_line_chart,
-    ride_revenue_data
+    ride_revenue_data,
+    ride_profit_data
   ) {
     var x = [];
     var y_bar = [];
+    var y_bar_profit = [];
     var data_line = [];
 
     for (let i = 0; i < ride_revenue_data.length; i++) {
       const ride_revenue_data_i = ride_revenue_data[i];
+      const ride_profit_data_i = ride_profit_data[i];
 
       // for bar chart
       x.push(ride_revenue_data_i.ride_name);
       y_bar.push(ride_revenue_data_i.ride_revenue.currentRevenuePerTime);
+      y_bar_profit.push(ride_profit_data_i.ride_profit.currentProfitPerTime);
 
       // for line chart
       var line_trace_i = {
@@ -749,13 +798,14 @@ class GraphPlotter {
       data_line.push(line_trace_i);
     }
 
-    var trace_bar = {
+    var trace_bar_revenue = {
       x: x,
       y: y_bar,
       type: "bar",
+      name: "Revenue",
       text: y_bar.map((d) => d.toFixed(2)),
       textposition: "auto",
-      hoverinfo: "none",
+      // hoverinfo: "none",
       marker: {
         color: "rgba(58,200,225,.5)",
         line: {
@@ -765,13 +815,40 @@ class GraphPlotter {
       },
     };
 
-    var data_bar = [trace_bar];
+    var trace_bar_profit = {
+      x: x,
+      y: y_bar_profit,
+      type: "bar",
+      name: "Operation Profit",
+      text: y_bar_profit.map((d) => d.toFixed(2)),
+      textposition: "auto",
+      // hoverinfo: "none",
+      marker: {
+        color: "rgba(144,238,144,.5)",
+        line: {
+          color: "rgb(34,139,34)",
+          width: 1.5,
+        },
+      },
+    };
+
+    var data_bar = [trace_bar_revenue, trace_bar_profit];
 
     var layout_bar = {
+      barmode: "group",
       yaxis: { title: "Long Run Revenue Per Time" },
       margin: { t: 20 },
       plot_bgcolor: "rgba(0,0,0,0)",
       paper_bgcolor: "rgba(0,0,0,0)",
+      // legend: {
+      //   // orientation: "h",
+      //   // x: 0.5,
+      //   // y: 1.2,
+      //   // showlegend: false
+      // },
+      font: {
+        size: 8,
+      },
     };
 
     var layout_line = {
@@ -780,9 +857,59 @@ class GraphPlotter {
       margin: { t: 10 },
       plot_bgcolor: "rgba(0,0,0,0)",
       paper_bgcolor: "rgba(0,0,0,0)",
+      font: {
+        size: 8,
+      },
     };
 
     Plotly.newPlot(div_id_bar_chart, data_bar, layout_bar);
     Plotly.newPlot(div_id_line_chart, data_line, layout_line);
+  }
+
+  /**
+   * Time average profit per time (revenue - operational cost) line chart
+   * @param {string} div_id
+   * @param {{
+   * ride_name: string,
+   * ride_profit: {
+   * timeStamps: number[],
+   * totalProfit: number[],
+   * profitPerTime: number[],
+   * currentTotalProfit: number,
+   * currentProfitPerTime: number,
+   * }
+   * }[]} ride_profit_data
+   */
+  plotRideProfitPerTime(div_id, ride_profit_data) {
+    var data_line = [];
+
+    for (let i = 0; i < ride_profit_data.length; i++) {
+      const ride_profit_data_i = ride_profit_data[i];
+
+      var line_trace_i = {
+        x: ride_profit_data_i.ride_profit.timeStamps,
+        y: ride_profit_data_i.ride_profit.profitPerTime,
+        mode: "lines",
+        name: ride_profit_data_i.ride_name,
+        line: { shape: "spline", color: this.colorPalette[i] },
+        type: "scatter",
+      };
+      data_line.push(line_trace_i);
+    }
+
+    var layout_line = {
+      xaxis: { title: "Time" },
+      yaxis: {
+        title: "Time Average Revenue Adjusted for Operational Cost Per Time",
+      },
+      margin: { t: 10 },
+      plot_bgcolor: "rgba(0,0,0,0)",
+      paper_bgcolor: "rgba(0,0,0,0)",
+      font: {
+        size: 8,
+      },
+    };
+
+    Plotly.newPlot(div_id, data_line, layout_line);
   }
 }

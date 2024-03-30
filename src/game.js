@@ -289,7 +289,14 @@ export class Game {
     this.graphPlotter.plotRideRevenuePerTime(
       "ride-revenue-per-time-bar-chart",
       "ride-revenue-per-time-line-chart",
-      allRideStats["revenue-revenue"]
+      allRideStats["revenue-revenue"],
+      allRideStats["revenue-profit"]
+    );
+
+    // ride long run profit per time line chart
+    this.graphPlotter.plotRideProfitPerTime(
+      "ride-profit-per-time-line-chart",
+      allRideStats["revenue-profit"]
     );
   }
 
