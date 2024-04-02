@@ -210,6 +210,41 @@ export class City {
     return allRideStats;
   }
 
+  getAllStandStatistics() {
+    let allStandStats = {
+      traffic: [],
+      revenue: [],
+      profit: [],
+    };
+
+    for (let x = 0; x < this.size; x++) {
+      for (let y = 0; y < this.size; y++) {
+        const tile = this.getTile(x, y);
+        if (tile.building) {
+          if (tile.building.type === "stand") {
+            // update the stats
+            allStandStats.traffic.push({
+              stand_name: tile.building.subType,
+              stand_traffic: tile.building.standStatistics.trafficStats,
+            });
+
+            allStandStats.revenue.push({
+              stand_name: tile.building.subType,
+              stand_revenue: tile.building.standStatistics.revenue,
+            });
+
+            allStandStats.profit.push({
+              stand_name: tile.building.subType,
+              stand_profit: tile.building.standStatistics.profit,
+            });
+          }
+        }
+      }
+    }
+
+    return allStandStats;
+  }
+
   /**
    * Places a building at the specified coordinates if the
    * tile does not already have a building on it

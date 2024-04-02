@@ -51,6 +51,53 @@ export class Stand extends Zone {
     this.accumulatedRevenue = 0;
     this.accumulatedCost = 0;
     this.customerTraffic = 0;
+
+    /**
+     * @type {{
+     * trafficStats: {
+     * timeStamps: number[],
+     * currentLoaded: number[],
+     * totalTraffic: number[],
+     * currentTotalTraffic: number
+     * },
+     * revenue: {
+     * timeStamps: number[],
+     * totalRevenue: number[],
+     * revenuePerTime: number[],
+     * currentTotalRevenue: number,
+     * currentRevenuePerTime: number,
+     * },
+     * profit: {
+     * timeStamps: number[],
+     * totalProfit: number[],
+     * profitPerTime: number[],
+     * currentTotalProfit: number,
+     * currentProfitPerTime: number,
+     * }
+     * }}
+     */
+    this.standStatistics = {
+      trafficStats: {
+        timeStamps: [],
+        currentLoaded: [],
+        totalTraffic: [],
+        currentTotalTraffic: 0,
+      },
+      revenue: {
+        timeStamps: [],
+        totalRevenue: [],
+        revenuePerTime: [],
+        currentTotalRevenue: 0,
+        currentRevenuePerTime: 0,
+      },
+      profit: {
+        timeStamps: [],
+        totalProfit: [],
+        profitPerTime: [],
+        currentTotalProfit: 0,
+        currentProfitPerTime: 0,
+      },
+    };
   }
 
   /**
@@ -87,6 +134,8 @@ export class Stand extends Zone {
         this.loadedVisitors.splice(i, 1);
       }
     }
+
+    this.updateStatistics(city);
   }
 
   /**
@@ -147,6 +196,48 @@ export class Stand extends Zone {
 
     // revert the mesh style (opacity = 1, visibility = true )
     loadedVisitor.visitor.children[0].visible = true;
+  }
+
+  /**
+   * Update the statistics for the stand
+   * @param {City} city
+   */
+  updateStatistics(city) {
+    // update traffic stats
+    this.standStatistics.trafficStats.timeStamps.push(
+      city.currentSimulationTime
+    );
+    this.standStatistics.trafficStats.currentLoaded.push(
+      this.loadedVisitors.length
+    );
+    this.standStatistics.trafficStats.totalTraffic.push(this.customerTraffic);
+    this.standStatistics.trafficStats.currentTotalTraffic =
+      this.customerTraffic;
+
+    // update revenue stats
+    this.standStatistics.revenue.timeStamps.push(city.currentSimulationTime);
+    this.standStatistics.revenue.totalRevenue.push(this.accumulatedRevenue);
+    this.standStatistics.revenue.revenuePerTime.push(
+      this.accumulatedRevenue / city.currentSimulationTime
+    );
+    this.standStatistics.revenue.currentTotalRevenue = this.accumulatedRevenue;
+    this.standStatistics.revenue.currentRevenuePerTime =
+      this.accumulatedRevenue / city.currentSimulationTime;
+
+    // update profit stats
+    this.standStatistics.profit.timeStamps.push(city.currentSimulationTime);
+    this.standStatistics.profit.totalProfit.push(
+      this.accumulatedRevenue - this.accumulatedCost
+    );
+    this.standStatistics.profit.profitPerTime.push(
+      this.accumulatedRevenue / city.currentSimulationTime -
+        this.operationalCost
+    );
+    this.standStatistics.profit.currentTotalProfit =
+      this.accumulatedRevenue - this.accumulatedCost;
+    this.standStatistics.profit.currentProfitPerTime =
+      this.accumulatedRevenue / city.currentSimulationTime -
+      this.operationalCost;
   }
 
   /**

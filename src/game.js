@@ -227,6 +227,7 @@ export class Game {
   plotGraphs() {
     // PLOTTING
     let allRideStats = this.city.getAllRideStatistics();
+    let allStandStats = this.city.getAllStandStatistics();
 
     // road tile heatmap
     this.graphPlotter.plotRoadHeatmap(
