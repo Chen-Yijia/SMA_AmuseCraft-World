@@ -966,4 +966,69 @@ class GraphPlotter {
 
     Plotly.newPlot(div_id, data, layout);
   }
+
+  /**
+   * Bar chart of long run average number of visitors loaded
+   * @param {string} div_id
+   * @param {{
+   * stand_name: string,
+   * stand_traffic: {
+   * timeStamps: number[],
+   * currentLoaded: number[],
+   * totalTraffic: number[],
+   * currentTotalTraffic: number
+   * }
+   * }[]} stand_traffic_data
+   */
+  plotStandLongRunLoaded(div_id, stand_traffic_data) {
+    var x = [];
+    var y = [];
+
+    stand_traffic_data.forEach((stand_traffic_data_i) => {
+      x.push(stand_traffic_data_i.stand_name);
+
+      var sum_loaded = stand_traffic_data_i.stand_traffic.currentLoaded.reduce(
+        (partialSum, a) => partialSum + a,
+        0
+      );
+
+      var total_time =
+        stand_traffic_data_i.stand_traffic.timeStamps[
+          stand_traffic_data_i.stand_traffic.timeStamps.length - 1
+        ];
+
+      y.push(sum_loaded / total_time);
+    });
+
+    var trace = {
+      x: x,
+      y: y,
+      type: "bar",
+      name: "Number of Loaded Visitors",
+      text: y.map((d) => d.toFixed(2)),
+      textposition: "auto",
+      // hoverinfo: "none",
+      marker: {
+        color: "rgba(58,200,225,.5)",
+        line: {
+          color: "rgb(8,48,107)",
+          width: 1.5,
+        },
+      },
+    };
+
+    var data = [trace];
+
+    var layout = {
+      yaxis: { title: "Long Run Average Number of Visitors Loaded" },
+      margin: { t: 20 },
+      plot_bgcolor: "rgba(0,0,0,0)",
+      paper_bgcolor: "rgba(0,0,0,0)",
+      font: {
+        size: 8,
+      },
+    };
+
+    Plotly.newPlot(div_id, data, layout);
+  }
 }

@@ -305,6 +305,12 @@ export class Game {
       "stand-traffic-bar-chart",
       allStandStats.traffic
     );
+
+    // stand loaded customer
+    this.graphPlotter.plotStandLongRunLoaded(
+      "stand-loaded-bar-chart",
+      allStandStats.traffic
+    );
   }
 
   /**
