@@ -912,4 +912,58 @@ class GraphPlotter {
 
     Plotly.newPlot(div_id, data_line, layout_line);
   }
+
+  /**
+   * Bar chart of the total traffic for stands
+   * @param {string} div_id
+   * @param {{
+   * stand_name: string,
+   * stand_traffic: {
+   * timeStamps: number[],
+   * currentLoaded: number[],
+   * totalTraffic: number[],
+   * currentTotalTraffic: number
+   * }
+   * }[]} stand_traffic_data
+   */
+  plotStandTotalTraffic(div_id, stand_traffic_data) {
+    var x = [];
+    var y = [];
+
+    for (let i = 0; i < stand_traffic_data.length; i++) {
+      const stand_traffic_data_i = stand_traffic_data[i];
+      x.push(stand_traffic_data_i.stand_name);
+      y.push(stand_traffic_data_i.stand_traffic.currentTotalTraffic);
+    }
+
+    var trace = {
+      x: x,
+      y: y,
+      type: "bar",
+      text: y.map((d) => d.toFixed(0)),
+      textposition: "auto",
+      hoverinfo: "none",
+      marker: {
+        color: "rgba(58,200,225,.5)",
+        line: {
+          color: "rgb(8,48,107)",
+          width: 1.5,
+        },
+      },
+    };
+
+    var data = [trace];
+
+    var layout = {
+      yaxis: { title: "Total Customer Traffic" },
+      margin: { t: 20 },
+      plot_bgcolor: "rgba(0,0,0,0)",
+      paper_bgcolor: "rgba(0,0,0,0)",
+      font: {
+        size: 8,
+      },
+    };
+
+    Plotly.newPlot(div_id, data, layout);
+  }
 }

@@ -299,6 +299,12 @@ export class Game {
       "ride-profit-per-time-line-chart",
       allRideStats["revenue-profit"]
     );
+
+    // stand total customer
+    this.graphPlotter.plotStandTotalTraffic(
+      "stand-traffic-bar-chart",
+      allStandStats.traffic
+    );
   }
 
   /**
