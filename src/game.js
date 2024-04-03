@@ -311,6 +311,15 @@ export class Game {
       "stand-loaded-bar-chart",
       allStandStats.traffic
     );
+
+    // stand revenue / operation profit per time bar chart & line chart
+    this.graphPlotter.plotStandRevenueAndProfitPerTime(
+      "stand-revenue-per-time-bar-chart",
+      "stand-revenue-per-time-line-chart",
+      "stand-profit-per-time-line-chart",
+      allStandStats.revenue,
+      allStandStats.profit
+    );
   }
 
   /**

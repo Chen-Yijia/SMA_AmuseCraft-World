@@ -1031,4 +1031,158 @@ class GraphPlotter {
 
     Plotly.newPlot(div_id, data, layout);
   }
+
+  /**
+   * Bar chart for the long run revenue / operation profit per time
+   * @param {string} div_id_bar_chart
+   * @param {string} div_id_line_chart_profit
+   * @param {string} div_id_line_chart_revenue
+   * @param {{
+   * stand_name: string,
+   * stand_revenue: {
+   * timeStamps: number[],
+   * totalRevenue: number[],
+   * revenuePerTime: number[],
+   * currentTotalRevenue: number,
+   * currentRevenuePerTime: number,
+   * }
+   * }[]} stand_revenue_data
+   * @param {{
+   * stand_name: string,
+   * stand_profit: {
+   * timeStamps: number[],
+   * totalProfit: number[],
+   * profitPerTime: number[],
+   * currentTotalProfit: number,
+   * currentProfitPerTime: number,
+   * }
+   * }[]} stand_profit_data
+   */
+  plotStandRevenueAndProfitPerTime(
+    div_id_bar_chart,
+    div_id_line_chart_revenue,
+    div_id_line_chart_profit,
+    stand_revenue_data,
+    stand_profit_data
+  ) {
+    var x = [];
+    var y_revenue_bar = [];
+    var y_profit_bar = [];
+    var data_revenue_line = [];
+    var data_profit_line = [];
+
+    for (let i = 0; i < stand_revenue_data.length; i++) {
+      const stand_revenue_data_i = stand_revenue_data[i];
+      const stand_profit_data_i = stand_profit_data[i];
+
+      // for bar chart
+      x.push(stand_revenue_data_i.stand_name);
+      y_revenue_bar.push(
+        stand_revenue_data_i.stand_revenue.currentRevenuePerTime
+      );
+      y_profit_bar.push(stand_profit_data_i.stand_profit.currentProfitPerTime);
+
+      // for line chart
+      var revenue_line_trace_i = {
+        x: stand_revenue_data_i.stand_revenue.timeStamps,
+        y: stand_revenue_data_i.stand_revenue.revenuePerTime,
+        mode: "lines",
+        name: stand_revenue_data_i.stand_name,
+        line: { shape: "spline", color: this.colorPalette[i] },
+        type: "scatter",
+      };
+      data_revenue_line.push(revenue_line_trace_i);
+
+      var profit_line_trace_i = {
+        x: stand_profit_data_i.stand_profit.timeStamps,
+        y: stand_profit_data_i.stand_profit.profitPerTime,
+        mode: "lines",
+        name: stand_profit_data_i.stand_name,
+        line: { shape: "spline", color: this.colorPalette[i] },
+        type: "scatter",
+      };
+      data_profit_line.push(profit_line_trace_i);
+    }
+
+    var trace_bar_revenue = {
+      x: x,
+      y: y_revenue_bar,
+      type: "bar",
+      name: "Revenue",
+      text: y_revenue_bar.map((d) => d.toFixed(2)),
+      textposition: "auto",
+      // hoverinfo: "none",
+      marker: {
+        color: "rgba(58,200,225,.5)",
+        line: {
+          color: "rgb(8,48,107)",
+          width: 1.5,
+        },
+      },
+    };
+
+    var trace_bar_profit = {
+      x: x,
+      y: y_profit_bar,
+      type: "bar",
+      name: "Operation Profit",
+      text: y_profit_bar.map((d) => d.toFixed(2)),
+      textposition: "auto",
+      // hoverinfo: "none",
+      marker: {
+        color: "rgba(144,238,144,.5)",
+        line: {
+          color: "rgb(34,139,34)",
+          width: 1.5,
+        },
+      },
+    };
+
+    var data_bar = [trace_bar_revenue, trace_bar_profit];
+
+    var layout_bar = {
+      barmode: "group",
+      yaxis: { title: "Long Run Revenue Per Time" },
+      margin: { t: 20 },
+      plot_bgcolor: "rgba(0,0,0,0)",
+      paper_bgcolor: "rgba(0,0,0,0)",
+      font: {
+        size: 8,
+      },
+    };
+
+    var layout_line_revenue = {
+      xaxis: { title: "Time" },
+      yaxis: { title: "Time Average Revenue Per Time" },
+      margin: { t: 10 },
+      plot_bgcolor: "rgba(0,0,0,0)",
+      paper_bgcolor: "rgba(0,0,0,0)",
+      font: {
+        size: 8,
+      },
+    };
+
+    var layout_line_profit = {
+      xaxis: { title: "Time" },
+      yaxis: { title: "Time Average Operation Profit Per Time" },
+      margin: { t: 10 },
+      plot_bgcolor: "rgba(0,0,0,0)",
+      paper_bgcolor: "rgba(0,0,0,0)",
+      font: {
+        size: 8,
+      },
+    };
+
+    Plotly.newPlot(div_id_bar_chart, data_bar, layout_bar);
+    Plotly.newPlot(
+      div_id_line_chart_revenue,
+      data_revenue_line,
+      layout_line_revenue
+    );
+    Plotly.newPlot(
+      div_id_line_chart_profit,
+      data_profit_line,
+      layout_line_profit
+    );
+  }
 }
