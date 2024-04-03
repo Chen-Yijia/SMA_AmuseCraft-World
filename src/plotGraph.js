@@ -550,12 +550,27 @@ class GraphPlotter {
    * totalLength: number[]
    * }
    * }[]} ride_queue_data
+   * @param {{
+   * stand_name: string,
+   * stand_traffic: {
+   * timeStamps: number[],
+   * currentLoaded: number[],
+   * totalTraffic: number[],
+   * currentTotalTraffic: number
+   * }
+   * }[]} stand_traffic_data
    * @param {number} num_visitor_scene
    */
-  plotVisitorDistribution(div_id, ride_queue_data, num_visitor_scene) {
-    var labels = ["Waiting", "Loaded", "Travelling"];
+  plotVisitorDistribution(
+    div_id,
+    ride_queue_data,
+    stand_traffic_data,
+    num_visitor_scene
+  ) {
+    var labels = ["Waiting", "Loaded in Rides", "In Stores", "Travelling"];
     var num_waiting = 0;
     var num_loaded = 0;
+    var num_store = 0;
 
     ride_queue_data.forEach((ride_queue_data_i) => {
       var waitingLength = ride_queue_data_i.ride_queue.waitingLength;
@@ -564,9 +579,15 @@ class GraphPlotter {
       num_loaded += loadedLength[loadedLength.length - 1];
     });
 
-    var num_traveling = num_visitor_scene - num_waiting - num_loaded;
+    stand_traffic_data.forEach((stand_traffic_data_i) => {
+      var standVisitorLength = stand_traffic_data_i.stand_traffic.currentLoaded;
+      num_store += standVisitorLength[standVisitorLength.length - 1];
+    });
 
-    var values = [num_waiting, num_loaded, num_traveling];
+    var num_traveling =
+      num_visitor_scene - num_waiting - num_loaded - num_store;
+
+    var values = [num_waiting, num_loaded, num_store, num_traveling];
 
     var data = [
       {
@@ -582,6 +603,7 @@ class GraphPlotter {
             "rgba(58,200,225,.5)",
             "rgba(255,165,0,.5)",
             "rgba(144,238,144,.5)",
+            "rgba(255,105,180,.5)",
           ],
         },
       },

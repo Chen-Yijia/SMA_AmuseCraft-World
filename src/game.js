@@ -251,6 +251,7 @@ export class Game {
     this.graphPlotter.plotVisitorDistribution(
       "visitor-distribution-pie-chart",
       allRideStats["queue-queue"],
+      allStandStats.traffic,
       this.sceneManager.vehicleGraph.vehicles.children.length
     );
 
