@@ -162,6 +162,19 @@ export class City {
     return revenue;
   }
 
+  getBreakEvenTime() {
+    var fixedCost = this.getFixedCost();
+    var operatiionalProfitPerTime =
+      (this.getTotalRevenue() - this.getOperationalCost()) /
+      this.currentSimulationTime;
+    var breakEvenTime = fixedCost / operatiionalProfitPerTime;
+    if (breakEvenTime > 0) {
+      return breakEvenTime.toFixed(2) + "\n Simulation Time Unit";
+    } else {
+      return "Negative Operational Profit";
+    }
+  }
+
   getAllRideStatistics() {
     let allRideStats = {
       "queue-status": [],

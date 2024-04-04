@@ -643,3 +643,9 @@ summary::-webkit-details-marker {
   font-size: 12px;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
+
+#break-even-time {
+  font-size: 30px;
+  margin: auto;
+  margin-top: 50px;
+}

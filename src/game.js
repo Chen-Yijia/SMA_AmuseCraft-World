@@ -431,5 +431,8 @@ export class Game {
 
     document.getElementById("variable-cost-total").innerHTML =
       "-$ " + this.city.getOperationalCost().toFixed(1);
+
+    document.getElementById("break-even-time").innerHTML =
+      this.city.getBreakEvenTime();
   }
 }
