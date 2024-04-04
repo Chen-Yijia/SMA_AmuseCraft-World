@@ -72,6 +72,138 @@ class GraphPlotter {
   }
 
   /**
+   * Bar shart showing the revenue & operational profit per time for the park
+   * @param {string} div_id
+   * @param {{
+   * ride_name: string,
+   * ride_revenue: {
+   * timeStamps: number[],
+   * totalRevenue: number[],
+   * revenuePerTime: number[],
+   * currentTotalRevenue: number,
+   * currentRevenuePerTime: number,
+   * }
+   * }[]} ride_revenue_data
+   * @param {{
+   * ride_name: string,
+   * ride_profit: {
+   * timeStamps: number[],
+   * totalProfit: number[],
+   * profitPerTime: number[],
+   * currentTotalProfit: number,
+   * currentProfitPerTime: number,
+   * }
+   * }[]} ride_profit_data
+   * @param {{
+   * stand_name: string,
+   * stand_revenue: {
+   * timeStamps: number[],
+   * totalRevenue: number[],
+   * revenuePerTime: number[],
+   * currentTotalRevenue: number,
+   * currentRevenuePerTime: number,
+   * }
+   * }[]} stand_revenue_data
+   * @param {{
+   * stand_name: string,
+   * stand_profit: {
+   * timeStamps: number[],
+   * totalProfit: number[],
+   * profitPerTime: number[],
+   * currentTotalProfit: number,
+   * currentProfitPerTime: number,
+   * }
+   * }[]} stand_profit_data
+   */
+  plotParkRevenueAndProfitPerTime(
+    div_id,
+    ride_revenue_data,
+    ride_profit_data,
+    stand_revenue_data,
+    stand_profit_data
+  ) {
+    var x = ["All Rides", "All Stands", "Whole Park"];
+    var ride_revenue = 0;
+    var ride_profit = 0;
+    var stand_revenue = 0;
+    var stand_profit = 0;
+
+    // ride
+    for (let i = 0; i < ride_revenue_data.length; i++) {
+      const ride_revenue_data_i = ride_revenue_data[i];
+      const ride_profit_data_i = ride_profit_data[i];
+
+      ride_revenue += ride_revenue_data_i.ride_revenue.currentRevenuePerTime;
+      ride_profit += ride_profit_data_i.ride_profit.currentProfitPerTime;
+    }
+
+    // stand
+    for (let i = 0; i < stand_revenue_data.length; i++) {
+      const stand_revenue_data_i = stand_revenue_data[i];
+      const stand_profit_data_i = stand_profit_data[i];
+
+      stand_revenue += stand_revenue_data_i.stand_revenue.currentRevenuePerTime;
+      stand_profit += stand_profit_data_i.stand_profit.currentProfitPerTime;
+    }
+
+    // park
+    var park_revenue = ride_revenue + stand_revenue;
+    var park_profit = ride_profit + stand_profit;
+
+    var y_revenue = [ride_revenue, stand_revenue, park_revenue];
+    var y_profit = [ride_profit, stand_profit, park_profit];
+
+    var trace_bar_revenue = {
+      x: x,
+      y: y_revenue,
+      type: "bar",
+      name: "Revenue",
+      text: y_revenue.map((d) => d.toFixed(2)),
+      textposition: "auto",
+      // hoverinfo: "none",
+      marker: {
+        color: "rgba(58,200,225,.5)",
+        line: {
+          color: "rgb(8,48,107)",
+          width: 1.5,
+        },
+      },
+    };
+
+    var trace_bar_profit = {
+      x: x,
+      y: y_profit,
+      type: "bar",
+      name: "Operation Profit",
+      text: y_profit.map((d) => d.toFixed(2)),
+      textposition: "auto",
+      // hoverinfo: "none",
+      marker: {
+        color: "rgba(144,238,144,.5)",
+        line: {
+          color: "rgb(34,139,34)",
+          width: 1.5,
+        },
+      },
+    };
+
+    var data_bar = [trace_bar_revenue, trace_bar_profit];
+
+    var layout_bar = {
+      barmode: "group",
+      yaxis: { title: "Long Run Revenue Per Time" },
+      margin: { t: 20 },
+      plot_bgcolor: "rgba(0,0,0,0)",
+      paper_bgcolor: "rgba(0,0,0,0)",
+      font: {
+        size: 8,
+      },
+    };
+
+    Plotly.newPlot(div_id, data_bar, layout_bar);
+  }
+
+  /**
    * Histogram on the time in park for each visitor profile
    * @param {string} div_id
    * @param {{

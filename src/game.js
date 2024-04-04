@@ -235,6 +235,15 @@ export class Game {
       this.city.statistics.roadHeatmap
     );
 
+    // park revenue & operatiional profit per time
+    this.graphPlotter.plotParkRevenueAndProfitPerTime(
+      "park-revenue-profit-per-time-bar-chart",
+      allRideStats["revenue-revenue"],
+      allRideStats["revenue-profit"],
+      allStandStats.revenue,
+      allStandStats.profit
+    );
+
     // visitor time in park histogram
     this.graphPlotter.plotVisitorTimeInPark(
       "visitor-time-histogram",
