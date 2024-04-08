@@ -72,6 +72,7 @@ export class Building {
       <span class="info-value">${this.type} --- ${this.subType}</span>
       <br>
     `;
+    return html;
     // let html = `
     //   <div class="info-heading">Building</div>
     //   <span class="info-label">Name </span>
@@ -87,6 +88,5 @@ export class Building {
     //   <span class="info-value">${this.rotation}</span>
     //   <br>
     // `;
-    return html;
   }
 }

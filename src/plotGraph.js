@@ -50,15 +50,6 @@ class GraphPlotter {
       paper_bgcolor: "rgba(0,0,0,0)",
       xaxis: {
         title: "Y Axis",
-        // title: {
-        //   text: "Y Axis",
-        //   font: {
-        //     family: "Courier New, monospace",
-        //     size: 18,
-        //     color: "#7f7f7f",
-        //   },
-        // },
-        // range: [0, 15],
       },
       yaxis: {
         title: "X Axis",

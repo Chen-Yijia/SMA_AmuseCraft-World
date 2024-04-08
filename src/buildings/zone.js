@@ -1,9 +1,6 @@
 import { defaultConfig, updateConfig } from "../config.js";
 import { Building } from "./building.js";
 
-/**
- * Represents a zoned building such as residential, commercial or industrial
- */
 var config = { ...defaultConfig };
 
 export class Zone extends Building {

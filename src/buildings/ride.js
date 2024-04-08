@@ -29,7 +29,6 @@ export class Ride extends Zone {
     this.ticketPrice = config.ride.ticketPrice[this.subType];
     this.rideDuration = config.ride.rideDuration[this.subType];
     this.rideCapacity = config.ride.rideCapacity[this.subType];
-
     this.lastRunTime = 0;
 
     /**

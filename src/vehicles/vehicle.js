@@ -204,12 +204,6 @@ export class Vehicle extends THREE.Group {
       return;
     }
 
-    // WIP (Temp). For now, do not dispose on max life
-    // if (this.getAge() > config.vehicle.maxLifetime) {
-    //   this.dispose(assetManager);
-    //   return;
-    // }
-
     const cycleTime = this.getCycleTime();
     if (cycleTime === 1) {
       // if the visitor is leaving and reached the destination

@@ -388,10 +388,10 @@ export class Game {
 
         // if selected is "Ride" type
         if (this.ridesElements.includes(this.activeToolId)) {
-          this.city.placeBuilding(tile.x, tile.y, "ride", buildingType); // WIP (need to change to specific ride)
+          this.city.placeBuilding(tile.x, tile.y, "ride", buildingType);
           this.sceneManager.applyChanges(this.city);
         } else if (this.standElements.includes(this.activeToolId)) {
-          this.city.placeBuilding(tile.x, tile.y, "stand", buildingType); // WIP (need to change to specific stand)
+          this.city.placeBuilding(tile.x, tile.y, "stand", buildingType);
           this.sceneManager.applyChanges(this.city);
         } else {
           this.city.placeBuilding(tile.x, tile.y, buildingType, "");
